@@ -53,3 +53,23 @@ test("admin can open /admin", async ({ page }) => {
   await expect(page).toHaveURL("/admin");
   await expect(page.getByRole("heading", { name: "Verification queue" })).toBeVisible();
 });
+
+test("public nav reflects the session and sign-out clears it", async ({ page }) => {
+  await page.goto("/drives");
+  await expect(page.getByRole("link", { name: "Sign in" })).toBeVisible();
+
+  await signIn(page, "student@seed.test", "/drives");
+  await expect(page).toHaveURL("/drives");
+  await expect(page.getByRole("link", { name: "Dashboard" })).toBeVisible();
+
+  await page.getByRole("button", { name: "Sign out" }).click();
+  await expect(page).toHaveURL("/");
+  await page.goto("/dashboard");
+  await expect(page).toHaveURL(/\/login\?next=/);
+});
+
+test("unknown URLs render the global not-found page with 404", async ({ page }) => {
+  const res = await page.goto("/definitely-not-a-page");
+  expect(res?.status()).toBe(404);
+  await expect(page.getByText("We couldn't find that page.")).toBeVisible();
+});
