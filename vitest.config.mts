@@ -1,7 +1,11 @@
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
-const alias = { "@": fileURLToPath(new URL(".", import.meta.url)) };
+const alias = {
+  "@": fileURLToPath(new URL(".", import.meta.url)),
+  // `server-only` throws outside a React Server environment; Vitest is Node.
+  "server-only": fileURLToPath(new URL("./tests/stubs/empty.ts", import.meta.url)),
+};
 
 export default defineConfig({
   resolve: { alias },
@@ -17,6 +21,7 @@ export default defineConfig({
       },
       {
         // Runs against local Supabase (`npx supabase start` + `db reset` first).
+        // Includes Server Action tests (Next runtime mocked, DB real).
         resolve: { alias },
         test: {
           name: "rls",

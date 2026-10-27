@@ -9,3 +9,8 @@ if (!process.env.SUPABASE_URL || !process.env.SUPABASE_ANON_KEY || !process.env.
   process.env.SUPABASE_ANON_KEY ??= status.ANON_KEY;
   process.env.SUPABASE_SERVICE_ROLE_KEY ??= status.SERVICE_ROLE_KEY;
 }
+
+// The app's own env names, for Server Actions imported by tests.
+process.env.NEXT_PUBLIC_SUPABASE_URL ??= process.env.SUPABASE_URL;
+process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ??= process.env.SUPABASE_ANON_KEY;
+process.env.SUPABASE_SECRET_KEY ??= process.env.SUPABASE_SERVICE_ROLE_KEY;

@@ -244,6 +244,13 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
+# Confirmation links point at app/auth/confirm (token_hash flow, works with
+# server-side sessions). Production: paste the same template into the
+# dashboard (Auth → Email Templates → Confirm signup).
+[auth.email.template.confirmation]
+subject = "Confirm your Beyond the Rumour Mill account"
+content_path = "./supabase/templates/confirmation.html"
+
 # Uncomment to customize email template
 # [auth.email.template.invite]
 # subject = "You have been invited"

@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 // Shared Zod schemas (client pre-validation + server authoritative).
-// Feature schemas land in Phase 1; auth is the only form in Phase 0.
 
 export const credentialsSchema = z.object({
   email: z.string().trim().toLowerCase().pipe(z.email("Enter a valid email address")),
@@ -15,3 +14,7 @@ export const safeNextPath = (value: unknown, fallback = "/dashboard") =>
   typeof value === "string" && value.startsWith("/") && !value.startsWith("//") && !value.startsWith("/\\")
     ? value
     : fallback;
+
+export const deleteAccountSchema = z.object({
+  confirm: z.literal("DELETE", { error: "Type DELETE to confirm" }),
+});

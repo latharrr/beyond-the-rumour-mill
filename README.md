@@ -162,7 +162,19 @@ npx supabase db advisors --local --type security
 - **Admin access:** admins view evidence through 60-second signed URLs. These are issued by a Server Action after a fresh `is_admin()` check.
 - **Retention:** evidence is kept for verification only and deleted on request.
 
-**Known limitation (spec §1.2):** `experiences.user_id` has no `ON DELETE` action. Deleting an account that has experiences first requires deleting or reassigning those experiences, and their evidence objects, with the service role.
+**Account deletion** (`deleteAccount`, on the profile page, confirmed by typing DELETE):
+
+1. All of the user's evidence objects are deleted and `evidence_path` is cleared (service role, scoped to the caller's own id).
+2. The auth user is deleted. The profile and prep plans cascade away.
+3. Experiences they shared **stay**, anonymised: `user_id` becomes null and the author shows as "Former student". This keeps the verified dataset intact for juniors without keeping anything that identifies the author.
+
+If an admin deletes their account, `verified_by` / `drives.created_by` are set to null.
+
+### Email confirmation
+
+Sign-up confirmation links go to `GET /auth/confirm` (token-hash flow). The local template is `supabase/templates/confirmation.html`, wired in `config.toml`.
+
+**Production:** paste the same template into the Supabase dashboard (Auth → Email Templates → Confirm signup) and set Site URL to the Vercel production URL.
 
 ---
 
@@ -250,6 +262,8 @@ CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests and a build. It
 | §1.5 evidence check "starts with uid/" | Full format check `{uid}/{uuid}.{ext}`; `null` allowed | Matches the §1.6 path format, blocks `..`. Evidence is optional (TrustScore completeness) |
 | §1.5 `save_plan` | Rejects unverified `experience_ids` (RPC + RLS) | The FK alone accepts pending or rejected ids |
 | §1 "email login" | Email + password | Works offline locally and with e2e, and needs no SMTP for the demo |
+| §1.2 `experiences.user_id not null`, no `ON DELETE` | Nullable, `on delete set null`. `verified_by`, `drives.created_by` also set null. `public_experiences` uses a left join | Account deletion on request. Anonymised experiences stay public as "Former student" |
+| — | `deleteAccount` clears `evidence_path` after deleting the objects | The objects no longer exist, so `has_evidence` must not claim they do |
 
 ## Contribution declarations
 

@@ -9,7 +9,9 @@ import { credentialsSchema } from "@/lib/schemas";
 type Mode = "signin" | "signup";
 
 export function LoginForm() {
-  const next = useSearchParams().get("next") ?? "";
+  const params = useSearchParams();
+  const next = params.get("next") ?? "";
+  const linkError = params.get("error") === "confirm" ? "That confirmation link is invalid or has expired. Sign in, or sign up again." : null;
   const [mode, setMode] = useState<Mode>("signin");
   const [signInState, signInAction, signingIn] = useActionState(signIn, {} as AuthState);
   const [signUpState, signUpAction, signingUp] = useActionState(signUp, {} as AuthState);
@@ -46,6 +48,7 @@ export function LoginForm() {
         aria-invalid={!!fieldErrors?.password} aria-describedby="password-error" />
       {fieldErrors?.password && <p id="password-error" role="alert">{fieldErrors.password[0]}</p>}
 
+      {linkError && !state.error && <p role="alert">{linkError}</p>}
       {state.error && <p role="alert">{state.error}</p>}
       {state.message && <p role="status">{state.message}</p>}
 

@@ -8,6 +8,9 @@ import { requireAdmin } from "@/lib/auth";
 // layout checks is_admin() on every request and redirects non-admins.
 // Under Cache Components the session read must sit inside <Suspense>;
 // nothing in the group (nav included) renders until the gate resolves.
+// The role gate must block on the server: no instant/prefetched admin shell.
+export const instant = false;
+
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
     <Suspense fallback={<LoadingState label="Checking access…" />}>
