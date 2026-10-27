@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRightIcon } from "@/components/icons";
-import { cn } from "@/lib/cn";
+import { StatusDot } from "@/components/ui/status";
 import type { Verdict } from "@/lib/rumour";
 
 export type ChipData = { verdict: Verdict; cited: number; total: number; lowSample: boolean };
@@ -11,10 +11,6 @@ const DOT: Record<Verdict, string> = {
   "Not supported": "bg-rumour",
   "No verified evidence yet": "bg-ink-dim",
 };
-
-export function StatusDot({ className }: { className?: string }) {
-  return <span aria-hidden="true" className={cn("size-2 shrink-0 rounded-full", className)} />;
-}
 
 /** Compact verdict line under the claim bar: status, share, flags and the way to the evidence. */
 export function VerdictChip({ data, href, sample }: { data: ChipData; href: string; sample: boolean }) {

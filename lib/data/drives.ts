@@ -64,6 +64,19 @@ export async function listDrives(): Promise<DriveSummary[]> {
     );
 }
 
+export type DriveWithRounds = DriveSummary & { round_count: number };
+
+/** Adds each drive's published round count (one query for the whole list). */
+export async function withRoundCounts(drives: DriveSummary[]): Promise<DriveWithRounds[]> {
+  if (drives.length === 0) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("rounds").select("drive_id").in("drive_id", drives.map((d) => d.id));
+  if (error) throw error;
+  const counts = new Map<string, number>();
+  for (const r of data) counts.set(r.drive_id, (counts.get(r.drive_id) ?? 0) + 1);
+  return drives.map((d) => ({ ...d, round_count: counts.get(d.id) ?? 0 }));
+}
+
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export const isUuid = (v: string) => UUID.test(v);
 

@@ -42,6 +42,8 @@ Where the implementation deliberately differs from it, see
   - Hero: a poster-scale headline and a working rumour-check bar with typed example claims and real verdicts.
   - Body: the problem, then Module 1 drive cards, then Module 2 (topic bars, a verified card, a quarantined rumour card), then Module 3 (a real plan preview from the engine), then the integration strip, then a closing CTA.
 - **Footer:** a short verdict/rumour key, four link columns (Prepare, Contribute, Account, Project), a full-width amber wordmark and the legal line, on every public page.
+- **Discovery pages:** `/drives` (filter bar, open/past groups, eligibility pill per card), `/drives/[id]` (requirements with a per-rule check against your profile, numbered rounds rail, prep-plan card, matched experiences), `/experiences` (company chips, topic bars, verified cards, dashed rumour lane), `/experiences/[id]` (TrustScore broken into its three weighted inputs) and `/rumour-check` (claim form beside the verdict, with the 15% / 50% thresholds marked on the share bar).
+- **UI kit:** `components/ui/` holds the pills, status pills, sample tag, chips, cards, page header, empty state and form controls. The landing page and the discovery pages share it, along with one `DriveCard`.
 - **Privacy page:** `/privacy` explains in plain words what is stored, what is public, how evidence is handled and how account deletion works. It mirrors the evidence/PII notes below.
 - **Moves and tests:** `/login` now sits inside the public layout so it gets the nav and footer, and the e2e selectors are scoped for the repeated footer links.
 
@@ -49,13 +51,12 @@ Where the implementation deliberately differs from it, see
 
 **UI design pass (Deepanshu)**
 
-1. **Discovery pages:** `/drives`, `/drives/[id]`, `/experiences`, `/experiences/[id]`, `/rumour-check`.
-2. **Student flows:** `/login`, `/onboarding`, `/experiences/new`, `/dashboard`, `/dashboard/plans/[id]`.
-3. **Admin and states:**
+1. **Student flows:** `/login`, `/onboarding`, `/experiences/new`, `/dashboard`, `/dashboard/plans/[id]`.
+2. **Admin and states:**
    - `/admin` and `/admin/drives`;
    - the loading, error and not-found screens;
-   - the shared `components/ui/` kit (spec §3.3).
-4. **Pre-merge gate, then PR:**
+   - extend `components/ui/` to the admin forms (spec §3.3).
+3. **Pre-merge gate, then PR:**
    - `supabase db reset`, lint, typecheck, Vitest, RLS, Playwright;
    - Lighthouse ≥ 90 on `/` and `/drives`, run on a production build.
 

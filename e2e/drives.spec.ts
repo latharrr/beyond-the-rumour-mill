@@ -51,7 +51,7 @@ test("search and company filters narrow /drives via the URL", async ({ page }) =
   await expect(page.getByRole("link", { name: "TCS NQT 2026 — Ninja & Digital" })).toHaveCount(0);
 
   await page.goto("/drives?q=zzzz");
-  await expect(page.getByText("No drives match these filters.")).toBeVisible();
+  await expect(page.getByRole("main").getByText("No drives match these filters.")).toBeVisible();
 });
 
 test("signed-out drive page invites sign-in instead of guessing eligibility", async ({ page }) => {

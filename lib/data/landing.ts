@@ -1,9 +1,8 @@
 import "server-only";
 import { cache } from "react";
 import { buildPlan, type PlanScope } from "@/lib/plan-engine";
-import { createClient } from "@/lib/supabase/server";
 import type { TopicFrequency } from "@/lib/topic-frequency";
-import { type DriveSummary, getDrive, listDrives } from "./drives";
+import { type DriveSummary, type DriveWithRounds, getDrive, listDrives, withRoundCounts } from "./drives";
 import { type CommunityTip, type ExperienceView, listCommunityTips, listVerifiedExperiences } from "./experiences";
 import { loadEngineInput } from "./plans";
 import { listResources } from "./taxonomy";
@@ -12,19 +11,12 @@ import { listResources } from "./taxonomy";
 
 const isOpen = (d: DriveSummary) => d.status === "upcoming" || d.status === "ongoing";
 
-export type LandingDrive = DriveSummary & { round_count: number };
+export type LandingDrive = DriveWithRounds;
 
 /** The next open drives (ongoing first, then soonest), each with its round count. */
 export async function listUpcomingDrives(limit = 3): Promise<{ drives: LandingDrive[]; now: Date }> {
   const drives = (await listDrives()).filter(isOpen).slice(0, limit);
-  const now = new Date();
-  if (drives.length === 0) return { drives: [], now };
-  const supabase = await createClient();
-  const { data, error } = await supabase.from("rounds").select("drive_id").in("drive_id", drives.map((d) => d.id));
-  if (error) throw error;
-  const counts = new Map<string, number>();
-  for (const r of data) counts.set(r.drive_id, (counts.get(r.drive_id) ?? 0) + 1);
-  return { drives: drives.map((d) => ({ ...d, round_count: counts.get(d.id) ?? 0 })), now };
+  return { drives: await withRoundCounts(drives), now: new Date() };
 }
 
 export type ExperienceSnapshot = {

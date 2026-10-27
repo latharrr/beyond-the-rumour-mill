@@ -1,15 +1,11 @@
-import Link from "next/link";
-import type { ReactNode } from "react";
+import { DRIVE_CARD as CARD, DriveCard } from "@/components/drives/DriveCard";
 import { ArrowRightIcon } from "@/components/icons";
-import { type LandingDrive, listUpcomingDrives } from "@/lib/data/landing";
-import { daysUntil, formatCgpa, formatDriveDate } from "@/lib/format";
+import { listUpcomingDrives } from "@/lib/data/landing";
 import { SEED_DRIVES_ARE_SAMPLE } from "@/lib/sample-data";
 import { PillLink, SampleTag, SECTION_SPACE, SectionHeading } from "./parts";
 import { Reveal } from "./Reveal";
 
 const HEADING_ID = "drives-title";
-// Card footprint shared by the real cards and the loading placeholders.
-const CARD = "relative flex min-h-[292px] flex-col rounded-[var(--radius-card)] border border-line bg-panel p-6";
 
 function Intro() {
   return (
@@ -81,79 +77,5 @@ export async function DrivesSection() {
         </>
       )}
     </Reveal>
-  );
-}
-
-function DriveCard({ drive: d, now }: { drive: LandingDrive; now: Date }) {
-  const days = d.drive_date ? daysUntil(d.drive_date, now) : null;
-  const when =
-    days === null ? null : days === 0 ? "Today" : days > 0 ? (
-      <>
-        In <span className="type-data">{days}</span> day{days === 1 ? "" : "s"}
-      </>
-    ) : (
-      "Date passed"
-    );
-  const titleId = `drive-${d.id}`;
-  return (
-    <article
-      aria-labelledby={titleId}
-      className={`${CARD} group h-full transition-colors duration-200 has-[a:hover]:border-white/16 has-[a:hover]:bg-panel-2`}
-    >
-      <div className="flex items-center justify-between gap-3">
-        <span className="type-label text-ink-muted">{d.company.name}</span>
-        <span className="type-label text-ink-dim">{d.status === "ongoing" ? "Ongoing" : "Upcoming"}</span>
-      </div>
-
-      <h3 id={titleId} className="mt-5 type-title text-ink">
-        {/* The whole card is this link's hit area. */}
-        <Link href={`/drives/${d.id}`} className="after:absolute after:inset-0 after:rounded-[inherit] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-amber">
-          {d.title}
-        </Link>
-      </h3>
-      <p className="mt-1.5 type-small text-ink-muted">
-        {d.role.label}
-        {d.location && <> · {d.location}</>}
-      </p>
-
-      <p className="mt-5 flex items-baseline gap-2.5">
-        {d.drive_date ? (
-          <>
-            <time dateTime={d.drive_date} className="type-data text-[17px] text-ink">
-              {formatDriveDate(d.drive_date)}
-            </time>
-            <span className="type-small text-ink-dim">{when}</span>
-          </>
-        ) : (
-          <span className="type-small text-ink-muted">Date to be announced</span>
-        )}
-      </p>
-
-      <dl className="mt-auto grid grid-cols-3 gap-3 border-t border-line pt-4">
-        <Spec label="CGPA" value={d.eligibility_cgpa === null ? "Any" : `${formatCgpa(d.eligibility_cgpa)}+`} numeric={d.eligibility_cgpa !== null} />
-        <Spec
-          label="Backlogs"
-          value={
-            d.max_backlogs <= 0 ? (
-              "None"
-            ) : (
-              <>
-                Up to <span className="type-data">{d.max_backlogs}</span>
-              </>
-            )
-          }
-        />
-        <Spec label="Rounds" value={String(d.round_count)} numeric />
-      </dl>
-    </article>
-  );
-}
-
-function Spec({ label, value, numeric = false }: { label: string; value: ReactNode; numeric?: boolean }) {
-  return (
-    <div className="min-w-0">
-      <dt className="type-label text-ink-dim">{label}</dt>
-      <dd className={`mt-2 text-[15px] text-ink ${numeric ? "type-data" : ""}`}>{value}</dd>
-    </div>
   );
 }
