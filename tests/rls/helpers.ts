@@ -42,7 +42,8 @@ export async function createAdmin(): Promise<TestUser> {
 export async function deleteUsers(...users: TestUser[]) {
   const svc = serviceClient();
   const ids = users.map((u) => u.id);
-  // experiences.user_id has no ON DELETE action (spec §1.2), so clear them first.
+  // Delete test users' experiences outright (account deletion would only
+  // anonymise them) so they never leak into the seeded public views.
   await svc.from("plan_experiences").delete().in("plan_id",
     ((await svc.from("prep_plans").select("id").in("user_id", ids)).data ?? []).map((p) => p.id));
   await svc.from("experiences").delete().in("user_id", ids);

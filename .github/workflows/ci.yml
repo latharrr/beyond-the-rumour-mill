@@ -30,7 +30,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-placeholder
 
   database:
-    name: Migrations + RLS tests
+    name: Migrations, RLS + Server Action tests, E2E
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Start Supabase (only the services the tests use)
-        run: npx supabase start -x realtime,imgproxy,mailpit,studio,edge-runtime,logflare,vector,supavisor
+        run: npx supabase start -x realtime,imgproxy,studio,edge-runtime,logflare,vector,supavisor
       - name: Reset database from scratch (all migrations + seed)
         run: npx supabase db reset
       - name: RLS tests
@@ -50,6 +50,25 @@ jobs:
           npm run db:types
           git diff --exit-code lib/supabase/database.types.ts \
             || (echo "::error::Run 'npm run db:types' and commit the result" && exit 1)
+      - name: App env from the local stack
+        run: |
+          npx supabase status -o json | node -e '
+            let s = ""; process.stdin.on("data", d => s += d).on("end", () => {
+              const j = JSON.parse(s);
+              require("fs").writeFileSync(".env.local",
+                `NEXT_PUBLIC_SUPABASE_URL=${j.API_URL}\nNEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${j.PUBLISHABLE_KEY}\nSUPABASE_SECRET_KEY=${j.SECRET_KEY}\n`);
+            });'
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+      - name: E2E (Playwright, production build)
+        run: npm run test:e2e
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
       - name: Stop Supabase
         if: always()
         run: npx supabase stop --no-backup

@@ -187,14 +187,14 @@ isOneToOne: false
                   ]
                 },"experiences": {
                   Row: {
-                    "company_id": string,"created_at": string | null,"drive_id": string | null,"evidence_path": string | null,"id": string,"preparation_timeline": string | null,"rejection_reason": string | null,"role_id": string,"rounds_summary": string | null,"status": string,"updated_at": string | null,"user_id": string,"verified_at": string | null,"verified_by": string | null
+                    "company_id": string,"created_at": string | null,"drive_id": string | null,"evidence_path": string | null,"id": string,"preparation_timeline": string | null,"rejection_reason": string | null,"role_id": string,"rounds_summary": string | null,"status": string,"updated_at": string | null,"user_id": string | null,"verified_at": string | null,"verified_by": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "company_id": string,"created_at"?: string | null,"drive_id"?: string | null,"evidence_path"?: string | null,"id"?: string,"preparation_timeline"?: string | null,"rejection_reason"?: string | null,"role_id": string,"rounds_summary"?: string | null,"status"?: string,"updated_at"?: string | null,"user_id": string,"verified_at"?: string | null,"verified_by"?: string | null
+                    "company_id": string,"created_at"?: string | null,"drive_id"?: string | null,"evidence_path"?: string | null,"id"?: string,"preparation_timeline"?: string | null,"rejection_reason"?: string | null,"role_id": string,"rounds_summary"?: string | null,"status"?: string,"updated_at"?: string | null,"user_id"?: string | null,"verified_at"?: string | null,"verified_by"?: string | null
                   }
                   Update: {
-                    "company_id"?: string,"created_at"?: string | null,"drive_id"?: string | null,"evidence_path"?: string | null,"id"?: string,"preparation_timeline"?: string | null,"rejection_reason"?: string | null,"role_id"?: string,"rounds_summary"?: string | null,"status"?: string,"updated_at"?: string | null,"user_id"?: string,"verified_at"?: string | null,"verified_by"?: string | null
+                    "company_id"?: string,"created_at"?: string | null,"drive_id"?: string | null,"evidence_path"?: string | null,"id"?: string,"preparation_timeline"?: string | null,"rejection_reason"?: string | null,"role_id"?: string,"rounds_summary"?: string | null,"status"?: string,"updated_at"?: string | null,"user_id"?: string | null,"verified_at"?: string | null,"verified_by"?: string | null
                   }
                   Relationships: [
                     {
@@ -586,7 +586,7 @@ isOneToOne: false
                   ]
                 },"public_experiences": {
                   Row: {
-                    "author_role": string,"company_id": string,"created_at": string | null,"drive_id": string | null,"grad_year": number | null,"has_evidence": boolean | null,"id": string,"preparation_timeline": string | null,"role_id": string,"rounds_summary": string | null,"verified_at": string | null
+                    "author_role": string | null,"company_id": string,"created_at": string | null,"drive_id": string | null,"grad_year": number | null,"has_evidence": boolean | null,"id": string,"preparation_timeline": string | null,"role_id": string,"rounds_summary": string | null,"verified_at": string | null
                   }
                   ComputedFields: never
                   Relationships: [
