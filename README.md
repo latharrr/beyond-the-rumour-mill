@@ -100,6 +100,7 @@ tests/rls/                  §5 RLS checklist as automated tests
 8. `…028000200_save_drive.sql`: atomic drive + rounds write for admins.
 9. `…028000300_submit_experience_drive_match.sql`: `submit_experience` rejects a drive whose company/role differ.
 10. `…028000400_evidence_4mb.sql`: evidence bucket limit lowered to 4 MB.
+11. `…028000500_revoke_platform_event_trigger_fn.sql`: revokes execute on hosted Supabase's `rls_auto_enable()` (no-op locally) so the advisor stays clean.
 
 ### Security model
 
@@ -271,6 +272,8 @@ CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests and a build. It
 | §1.5 `submit_experience` (drive check unspecified) | Raises `22023` if `drive_id` is set and the drive's company/role differ | Team decision: an experience can't be filed against another company's drive |
 | §1.6, §2.2 evidence limit 5 MB | 4 MB bucket limit; Server Action body limit 4.4 MB | Team decision: Vercel functions cap request bodies at 4.5 MB, so a 5 MB upload through a Server Action could never arrive |
 | §1.6 MIME allowlist | Also sniffs magic bytes (JPEG/PNG/PDF) server-side | Security: the browser-declared MIME type is client-controlled |
+| §2.4 step 5 "round_resources of this drive's rounds" | A topic gets the round resources only of rounds that list that topic | Attaching every round resource to every topic would put an HR-round link under "Arrays" |
+| §2.4 step 2 fallback | Company experiences that have no tagged topics count as "none", so the plan falls back to round_topics | Otherwise the plan would be empty |
 | §1.5 lists two RPCs | Third RPC `save_drive` (security invoker, admin RLS + explicit `is_admin()` check) | `createDrive` / `updateDrive` write 5 tables (§2.2); PostgREST calls are not atomic. A half-built drive must be impossible |
 
 ## Contribution declarations

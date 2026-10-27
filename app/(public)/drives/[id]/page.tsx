@@ -5,9 +5,12 @@ import { DriveRequirements } from "@/components/drives/DriveRequirements";
 import { EligibilityBadge } from "@/components/drives/EligibilityBadge";
 import { IneligibilityExplainer } from "@/components/drives/IneligibilityExplainer";
 import { RoundList } from "@/components/drives/RoundList";
+import { GeneratePlanButton } from "@/components/plans/GeneratePlanButton";
 import { LoadingState } from "@/components/route-states";
+import { getSessionUser } from "@/lib/auth";
 import { getDrive } from "@/lib/data/drives";
 import { listMatchedExperiences } from "@/lib/data/experiences";
+import { getMyPlanIdForDrive } from "@/lib/data/plans";
 import { getMyProfile } from "@/lib/data/profile";
 import { branchCodeMap, listBranches } from "@/lib/data/taxonomy";
 import { evaluateEligibility, explainEligibility } from "@/lib/eligibility";
@@ -28,10 +31,12 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
   const drive = await getDrive(id);
   if (!drive) notFound();
 
-  const [profile, branches, matched] = await Promise.all([
+  const user = await getSessionUser();
+  const [profile, branches, matched, planId] = await Promise.all([
     getMyProfile(),
     listBranches(),
     listMatchedExperiences(drive.company_id, drive.role_id),
+    user ? getMyPlanIdForDrive(user.id, drive.id) : null,
   ]);
   const codes = branchCodeMap(branches);
   const eligibility = profile ? evaluateEligibility(profile, drive, codes) : null;
@@ -54,6 +59,18 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
           <p><Link href={`/login?next=/drives/${drive.id}`}>Sign in</Link> to check your eligibility.</p>
         )}
         {eligibility && <IneligibilityExplainer explanations={explainEligibility(eligibility)} />}
+      </section>
+
+      <section aria-labelledby="prep-plan">
+        <h2 id="prep-plan">Prep plan</h2>
+        {user ? (
+          <>
+            {planId && <p><Link href={`/dashboard/plans/${planId}`}>Open your prep plan</Link></p>}
+            <GeneratePlanButton driveId={drive.id} existing={!!planId} />
+          </>
+        ) : (
+          <p><Link href={`/login?next=/drives/${drive.id}`}>Sign in</Link> to generate a prep plan for this drive.</p>
+        )}
       </section>
 
       <section aria-labelledby="rounds">
