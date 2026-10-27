@@ -416,9 +416,8 @@ describe("admin-only operations", () => {
     expect((await anonClient().rpc("is_admin")).error).not.toBeNull();
   });
 
-  // Server Actions do not exist until Phase 1/2; the DB-level guards they
-  // rely on are covered above. These become real tests with the actions.
-  it.todo("non-admin calling verifyExperience / rejectExperience → rejected");
-  it.todo("non-admin calling getEvidenceUrl → rejected");
+  // Admin Server Actions (non-admin → rejected) are tested against the real
+  // DB in tests/rls/experiences-actions.test.ts (verify / reject /
+  // getEvidenceUrl) and tests/rls/drives-actions.test.ts (create / update).
   // createDrive / updateDrive: tests/rls/drives-actions.test.ts
 });

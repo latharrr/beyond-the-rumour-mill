@@ -106,3 +106,45 @@ export const driveFiltersSchema = z.object({
 });
 
 export type DriveFilters = z.infer<typeof driveFiltersSchema>;
+
+// --- Experiences (submitExperience / verify / reject) ------------------------
+
+export const EVIDENCE_MAX_BYTES = 4 * 1024 * 1024; // team decision: Vercel 4.5 MB body cap
+export const EVIDENCE_TYPES = { "image/jpeg": "jpg", "image/png": "png", "application/pdf": "pdf" } as const;
+export type EvidenceType = keyof typeof EVIDENCE_TYPES;
+
+const optionalText = (max: number) =>
+  z.preprocess((v) => (typeof v === "string" && v.trim() === "" ? null : v), z.string().trim().max(max).nullable().optional())
+    .transform((v) => v ?? null);
+
+export const experienceSchema = z.object({
+  company_id: uuid("company"),
+  role_id: uuid("role"),
+  drive_id: z.preprocess(blankToNull, z.uuid().nullable()),
+  rounds_summary: z.string().trim().min(30, "Describe the rounds in at least 30 characters").max(5000),
+  preparation_timeline: optionalText(2000),
+  topic_ids: z.array(z.uuid()).min(1, "Pick at least one topic").max(20, "Pick at most 20 topics"),
+  resource_ids: z.array(z.uuid()).max(20).default([]),
+});
+
+export type ExperienceInput = z.infer<typeof experienceSchema>;
+
+/** Client + server pre-check on the evidence file (server also sniffs bytes). */
+export const evidenceFileSchema = z
+  .instanceof(File)
+  .refine((f) => f.size <= EVIDENCE_MAX_BYTES, "Evidence must be 4 MB or smaller")
+  .refine((f) => f.type in EVIDENCE_TYPES, "Evidence must be a JPEG, PNG or PDF");
+
+export const reviewIdSchema = z.object({ id: z.uuid("Missing experience id") });
+
+export const rejectSchema = z.object({
+  id: z.uuid("Missing experience id"),
+  reason: z.string().trim().min(5, "Give the student a reason (at least 5 characters)").max(500),
+});
+
+// --- Rumour check (§2.5) ------------------------------------------------------
+
+export const claimSchema = z.object({
+  company_id: uuid("company"),
+  topic_id: uuid("topic"),
+});

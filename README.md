@@ -98,6 +98,8 @@ tests/rls/                  §5 RLS checklist as automated tests
 6. `…600_rpcs.sql`: `submit_experience`, `save_plan`.
 7. `…028000100_account_deletion.sql`: anonymise experiences on account deletion.
 8. `…028000200_save_drive.sql`: atomic drive + rounds write for admins.
+9. `…028000300_submit_experience_drive_match.sql`: `submit_experience` rejects a drive whose company/role differ.
+10. `…028000400_evidence_4mb.sql`: evidence bucket limit lowered to 4 MB.
 
 ### Security model
 
@@ -148,7 +150,7 @@ Hardening on these views:
 - `security_barrier = true`, so caller filters can't be evaluated against hidden rows.
 - Select-only grants. `community_tips` is a single-table view, which Postgres makes auto-updatable. Without the explicit revoke, anon could UPDATE or DELETE pending experiences through it.
 
-**The Supabase security advisor flags exactly these four views (`security_definer_view`).** This is intentional. Any *other* security finding is a bug.
+**The Supabase security advisor flags exactly these four views (`security_definer_view`).** This is intentional. It also WARNs that `is_admin()` and `submit_experience()` are security-definer functions executable by `authenticated`. Both are intentional: `is_admin()` must read `profiles.role` past RLS, and `submit_experience` is the only insert path (see deviations). Any *other* security finding is a bug.
 
 Check with:
 
@@ -158,7 +160,7 @@ npx supabase db advisors --local --type security
 
 ### Evidence: PII and retention
 
-- **Bucket:** `evidence` is private, limited to 5 MB, and accepts only JPEG, PNG and PDF.
+- **Bucket:** `evidence` is private, limited to 4 MB, and accepts only JPEG, PNG and PDF. The Server Action also checks the file's magic bytes, so a renamed executable is refused before upload.
 - **Paths:** objects are stored at `{user_id}/{uuid}.{ext}`. The server generates the uuid; client filenames are never used.
 - **Student access:** students can upload but cannot read, list, overwrite or delete anything, including their own uploads.
 - **Admin access:** admins view evidence through 60-second signed URLs. These are issued by a Server Action after a fresh `is_admin()` check.
@@ -266,6 +268,9 @@ CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests and a build. It
 | §1 "email login" | Email + password | Works offline locally and with e2e, and needs no SMTP for the demo |
 | §1.2 `experiences.user_id not null`, no `ON DELETE` | Nullable, `on delete set null`. `verified_by`, `drives.created_by` also set null. `public_experiences` uses a left join | Account deletion on request. Anonymised experiences stay public as "Former student" |
 | — | `deleteAccount` clears `evidence_path` after deleting the objects | The objects no longer exist, so `has_evidence` must not claim they do |
+| §1.5 `submit_experience` (drive check unspecified) | Raises `22023` if `drive_id` is set and the drive's company/role differ | Team decision: an experience can't be filed against another company's drive |
+| §1.6, §2.2 evidence limit 5 MB | 4 MB bucket limit; Server Action body limit 4.4 MB | Team decision: Vercel functions cap request bodies at 4.5 MB, so a 5 MB upload through a Server Action could never arrive |
+| §1.6 MIME allowlist | Also sniffs magic bytes (JPEG/PNG/PDF) server-side | Security: the browser-declared MIME type is client-controlled |
 | §1.5 lists two RPCs | Third RPC `save_drive` (security invoker, admin RLS + explicit `is_admin()` check) | `createDrive` / `updateDrive` write 5 tables (§2.2); PostgREST calls are not atomic. A half-built drive must be impossible |
 
 ## Contribution declarations
