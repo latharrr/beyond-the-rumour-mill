@@ -96,6 +96,8 @@ tests/rls/                  §5 RLS checklist as automated tests
 4. `…400_rls_and_grants.sql`: explicit grant matrix + RLS policies on every table.
 5. `…500_storage_evidence.sql`: private `evidence` bucket + policies.
 6. `…600_rpcs.sql`: `submit_experience`, `save_plan`.
+7. `…028000100_account_deletion.sql`: anonymise experiences on account deletion.
+8. `…028000200_save_drive.sql`: atomic drive + rounds write for admins.
 
 ### Security model
 
@@ -264,6 +266,7 @@ CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests and a build. It
 | §1 "email login" | Email + password | Works offline locally and with e2e, and needs no SMTP for the demo |
 | §1.2 `experiences.user_id not null`, no `ON DELETE` | Nullable, `on delete set null`. `verified_by`, `drives.created_by` also set null. `public_experiences` uses a left join | Account deletion on request. Anonymised experiences stay public as "Former student" |
 | — | `deleteAccount` clears `evidence_path` after deleting the objects | The objects no longer exist, so `has_evidence` must not claim they do |
+| §1.5 lists two RPCs | Third RPC `save_drive` (security invoker, admin RLS + explicit `is_admin()` check) | `createDrive` / `updateDrive` write 5 tables (§2.2); PostgREST calls are not atomic. A half-built drive must be impossible |
 
 ## Contribution declarations
 

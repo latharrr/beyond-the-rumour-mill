@@ -616,6 +616,9 @@ isOneToOne: false
             "is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
+"save_drive":
+{ Args: { "p_branch_ids": (string)[],"p_company_id": string,"p_drive_date": string,"p_drive_id": string,"p_eligibility_cgpa": number,"p_grad_years": (number)[],"p_location": string,"p_max_backlogs": number,"p_min_10th_pct": number,"p_min_12th_pct": number,"p_role_id": string,"p_rounds": Json,"p_status": string,"p_title": string }; Returns: string
+                           },
 "save_plan":
 { Args: { "p_drive_id": string,"p_experience_ids": (string)[],"p_items": Json }; Returns: string
                            },

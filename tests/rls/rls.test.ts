@@ -420,5 +420,5 @@ describe("admin-only operations", () => {
   // rely on are covered above. These become real tests with the actions.
   it.todo("non-admin calling verifyExperience / rejectExperience → rejected");
   it.todo("non-admin calling getEvidenceUrl → rejected");
-  it.todo("non-admin calling createDrive / updateDrive → rejected");
+  // createDrive / updateDrive: tests/rls/drives-actions.test.ts
 });
