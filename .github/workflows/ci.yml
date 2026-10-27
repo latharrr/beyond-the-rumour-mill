@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint, typecheck, unit tests, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:54321
+          NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ci-placeholder
+
+  database:
+    name: Migrations + RLS tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Start Supabase (only the services the tests use)
+        run: npx supabase start -x realtime,imgproxy,mailpit,studio,edge-runtime,logflare,vector,supavisor
+      - name: Reset database from scratch (all migrations + seed)
+        run: npx supabase db reset
+      - name: RLS tests
+        run: npm run test:rls
+      - name: Generated DB types are up to date
+        run: |
+          npm run db:types
+          git diff --exit-code lib/supabase/database.types.ts \
+            || (echo "::error::Run 'npm run db:types' and commit the result" && exit 1)
+      - name: Stop Supabase
+        if: always()
+        run: npx supabase stop --no-backup
