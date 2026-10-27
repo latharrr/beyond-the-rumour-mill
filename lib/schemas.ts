@@ -148,3 +148,11 @@ export const claimSchema = z.object({
   company_id: uuid("company"),
   topic_id: uuid("topic"),
 });
+
+// --- Plans (generatePlan, toggleChecklistItem) -------------------------------
+export const generatePlanSchema = z.object({ drive_id: z.uuid("Missing drive id") });
+
+export const toggleItemSchema = z.object({
+  id: z.uuid("Missing checklist item id"),
+  done: z.boolean(),
+});
