@@ -41,23 +41,21 @@ Where the implementation deliberately differs from it, see
 - **Landing page, with live data tagged "Sample data" while the seed is synthetic:**
   - Hero: a poster-scale headline and a working rumour-check bar with typed example claims and real verdicts.
   - Body: the problem, then Module 1 drive cards, then Module 2 (topic bars, a verified card, a quarantined rumour card), then Module 3 (a real plan preview from the engine), then the integration strip, then a closing CTA.
-- **Footer:** link columns and a full-width amber wordmark, on every public page.
+- **Footer:** a short verdict/rumour key, four link columns (Prepare, Contribute, Account, Project), a full-width amber wordmark and the legal line, on every public page.
+- **Privacy page:** `/privacy` explains in plain words what is stored, what is public, how evidence is handled and how account deletion works. It mirrors the evidence/PII notes below.
 - **Moves and tests:** `/login` now sits inside the public layout so it gets the nav and footer, and the e2e selectors are scoped for the repeated footer links.
 
 ### Left to do
 
 **UI design pass (Deepanshu)**
 
-1. **Landing footer:** the legal wording and GitHub link are done. Still to do:
-   - make the footer denser, with real links only;
-   - add a `/privacy` page built from the evidence/PII notes below.
-2. **Discovery pages:** `/drives`, `/drives/[id]`, `/experiences`, `/experiences/[id]`, `/rumour-check`.
-3. **Student flows:** `/login`, `/onboarding`, `/experiences/new`, `/dashboard`, `/dashboard/plans/[id]`.
-4. **Admin and states:**
+1. **Discovery pages:** `/drives`, `/drives/[id]`, `/experiences`, `/experiences/[id]`, `/rumour-check`.
+2. **Student flows:** `/login`, `/onboarding`, `/experiences/new`, `/dashboard`, `/dashboard/plans/[id]`.
+3. **Admin and states:**
    - `/admin` and `/admin/drives`;
    - the loading, error and not-found screens;
    - the shared `components/ui/` kit (spec §3.3).
-5. **Pre-merge gate, then PR:**
+4. **Pre-merge gate, then PR:**
    - `supabase db reset`, lint, typecheck, Vitest, RLS, Playwright;
    - Lighthouse ≥ 90 on `/` and `/drives`, run on a production build.
 

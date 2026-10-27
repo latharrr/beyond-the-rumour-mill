@@ -4,6 +4,8 @@ import { Reveal } from "@/components/landing/Reveal";
 import { getSessionUser } from "@/lib/auth";
 import { SEED_DRIVES_ARE_SAMPLE, SEED_EXPERIENCES_ARE_SAMPLE } from "@/lib/sample-data";
 
+const GITHUB = "https://github.com/latharrr/beyond-the-rumour-mill";
+
 const LINK =
   "inline-flex min-h-11 min-w-11 items-center text-[15px] text-ink-muted underline-offset-4 transition-colors duration-200 hover:text-ink hover:underline";
 
@@ -13,6 +15,17 @@ function FooterLink({ href, children }: { href: string; children: ReactNode }) {
       <Link href={href} className={LINK}>
         {children}
       </Link>
+    </li>
+  );
+}
+
+function ExternalLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <li>
+      <a href={href} target="_blank" rel="noreferrer" className={LINK}>
+        {children}
+        <span className="sr-only"> (opens in a new tab)</span>
+      </a>
     </li>
   );
 }
@@ -76,11 +89,19 @@ export function SiteFooter() {
   return (
     <footer className="mt-20 border-t border-line md:mt-32">
       <div className="container-page pt-12 md:pt-16">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-14">
-          <p className="max-w-[34ch] type-body text-pretty text-ink-muted">
-            Placement prep from official drives and verified senior experiences. Rumours stay labelled as rumours.
-          </p>
-          <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-14">
+          <div className="flex flex-col gap-6">
+            <p className="max-w-[34ch] type-body text-pretty text-ink-muted">
+              Placement prep from official drives and verified senior experiences. Rumours stay labelled as rumours.
+            </p>
+            <dl className="grid max-w-[34ch] grid-cols-[auto_1fr] items-baseline gap-x-4 gap-y-2 type-small">
+              <dt className="type-label text-ink-dim">Verdicts</dt>
+              <dd className="text-ink-muted">Supported, Mixed evidence or Not supported, each citing its experiences.</dd>
+              <dt className="type-label text-ink-dim">Rumours</dt>
+              <dd className="text-ink-muted">Shown, labelled, and left out of every count.</dd>
+            </dl>
+          </div>
+          <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
             <Column title="Prepare">
               <FooterLink href="/drives">Drives</FooterLink>
               <FooterLink href="/experiences">Experiences</FooterLink>
@@ -93,6 +114,11 @@ export function SiteFooter() {
               <Suspense fallback={<AccountLinksFallback />}>
                 <AccountLinks />
               </Suspense>
+            </Column>
+            <Column title="Project">
+              <FooterLink href="/privacy">Privacy</FooterLink>
+              <ExternalLink href={GITHUB}>Source on GitHub</ExternalLink>
+              <ExternalLink href={`${GITHUB}/issues`}>Report an issue</ExternalLink>
             </Column>
           </nav>
         </div>
@@ -115,17 +141,7 @@ export function SiteFooter() {
         </Reveal>
 
         <div className="mt-8 flex flex-col gap-2 border-t border-line py-6 type-small text-ink-dim md:mt-10 md:flex-row md:justify-between md:gap-10">
-          <p className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-1">
-            <span>© 2026 Group 8 · INT252/257</span>
-            <a
-              href="https://github.com/latharrr/beyond-the-rumour-mill"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-h-11 items-center underline-offset-4 hover:text-ink hover:underline md:min-h-0"
-            >
-              Source on GitHub<span className="sr-only"> (opens in a new tab)</span>
-            </a>
-          </p>
+          <p className="shrink-0">© 2026 Group 8 · INT252/257</p>
           <p className="max-w-[72ch] md:text-right">
             A student course project. Not affiliated with or endorsed by the LPU placement cell.{note && ` ${note}`}
           </p>
