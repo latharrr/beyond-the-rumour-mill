@@ -46,10 +46,10 @@ npm run dev                   # http://localhost:3000
 | Email | Role |
 |---|---|
 | `admin@seed.test` | admin |
-| `alumni1@seed.test`, `alumni2@seed.test` | alumni |
-| `student@seed.test` | student |
+| `alumni1@seed.test` … `alumni6@seed.test` | alumni (batches 2024–2026) |
+| `student@seed.test` | student (empty profile: shows the onboarding nudge) |
 
-The seed is never pushed to production.
+The seed adds 3 drives and 28 **synthetic** experiences (24 verified, 3 pending, 1 rejected) written by the team in the real submission shape. They are not real interviews. Phase 3 replaces them with senior-sourced ones (see *Importing experiences*). The seed is never pushed to production. Taxonomy (companies, roles, branches, topics, starter resources) comes from migration `…028000600_base_taxonomy.sql`, so production has it too.
 
 ### Scripts
 
@@ -62,6 +62,22 @@ The seed is never pushed to production.
 | `npm run test:e2e` | Playwright (`e2e/`; starts the dev server) |
 | `npm run db:reset` | Rebuild the local DB from migrations + seed |
 | `npm run db:types` | Regenerate `lib/supabase/database.types.ts` (CI fails on drift) |
+| `npm run import:experiences -- file.csv [--apply]` | Validate a CSV of experiences (dry run prints the `submit_experience` args); `--apply` inserts them as pending |
+
+### Phase 3 docs
+
+- [Demo script](docs/demo-script.md): seed logins and exact clicks for the 2-minute demo.
+- [L2 session log](docs/l2-session-log.md): template for the 8–10 junior sessions.
+- [L3 outreach email](docs/l3-outreach-email.md): the pilot request, with the live URL.
+
+### Importing experiences
+
+For seniors who send their experience by form/sheet instead of using `/experiences/new`. Template: `scripts/experiences.sample.csv`.
+
+- Columns: `email, company, role, drive, rounds_summary, preparation_timeline, topics, resources`. `topics` and `resources` are `;`-separated; names, aliases, titles and URLs all match (case-insensitive).
+- Validation is the form's own `experienceSchema` plus the drive-must-match-company/role rule. Any invalid row aborts the whole `--apply`.
+- Each `email` must already have an account (the senior signs up first, so the experience is theirs and account deletion anonymises it).
+- `--apply` needs `SUPABASE_SECRET_KEY` in `.env.local` and targets whichever project `NEXT_PUBLIC_SUPABASE_URL` names. Rows go in as **pending**, respect the 5-pending cap, and still need an admin to verify them at `/admin`. Evidence is never imported.
 
 ---
 
@@ -101,6 +117,7 @@ tests/rls/                  §5 RLS checklist as automated tests
 9. `…028000300_submit_experience_drive_match.sql`: `submit_experience` rejects a drive whose company/role differ.
 10. `…028000400_evidence_4mb.sql`: evidence bucket limit lowered to 4 MB.
 11. `…028000500_revoke_platform_event_trigger_fn.sql`: revokes execute on hosted Supabase's `rls_auto_enable()` (no-op locally) so the advisor stays clean.
+12. `…028000600_base_taxonomy.sql`: companies, roles, branches, topics and starter resources (reference data for every environment).
 
 ### Security model
 
@@ -274,6 +291,8 @@ CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests and a build. It
 | §1.6 MIME allowlist | Also sniffs magic bytes (JPEG/PNG/PDF) server-side | Security: the browser-declared MIME type is client-controlled |
 | §2.4 step 5 "round_resources of this drive's rounds" | A topic gets the round resources only of rounds that list that topic | Attaching every round resource to every topic would put an HR-round link under "Arrays" |
 | §2.4 step 2 fallback | Company experiences that have no tagged topics count as "none", so the plan falls back to round_topics | Otherwise the plan would be empty |
+| §1.7 taxonomy in `seed.sql` | Taxonomy moved to migration `…000600`; the seed keeps users, drives, experiences | The seed is local-only, so production had no branches, roles or topics and nobody could onboard |
+| §1.6 "inserts only via `submit_experience`" | `scripts/import-experiences.ts --apply` inserts with the secret key (trusted operator only) | The RPC needs the author's session. The script re-applies the RPC's checks (schema, drive match, 5-pending cap); rows stay pending until an admin verifies |
 | §1.5 lists two RPCs | Third RPC `save_drive` (security invoker, admin RLS + explicit `is_admin()` check) | `createDrive` / `updateDrive` write 5 tables (§2.2); PostgREST calls are not atomic. A half-built drive must be impossible |
 
 ## Contribution declarations

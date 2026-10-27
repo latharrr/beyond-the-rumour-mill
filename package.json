@@ -14,7 +14,8 @@
     "db:start": "supabase start",
     "db:reset": "supabase db reset",
     "db:stop": "supabase stop",
-    "db:types": "supabase gen types typescript --local > lib/supabase/database.types.ts"
+    "db:types": "supabase gen types typescript --local > lib/supabase/database.types.ts",
+    "import:experiences": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/import-experiences.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
