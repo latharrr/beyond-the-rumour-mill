@@ -31,14 +31,14 @@ export default function PrivacyPage() {
         <h1 className="mt-4 max-w-[14ch] type-section text-ink">What we keep, and who sees it</h1>
         <p className="mt-6 max-w-[56ch] type-body text-pretty text-ink-muted">
           Beyond the Rumour Mill is a student course project. It stores the least it needs to check eligibility, build your
-          prep plan and verify senior experiences, and nothing on a public page can identify you.
+          prep plan and verify senior experiences. Account fields and evidence files are withheld from public queries.
         </p>
       </header>
 
       <Section id="privacy-collect" title="What we store">
         <ul className={LIST}>
           <li>
-            <span className="text-ink">Your account:</span> email and password, handled by Supabase Auth.
+            <span className="text-ink">Your account:</span> email and sign-in credentials, handled by Supabase Auth. Passwords are not shown to project admins. If you choose Google sign-in, Google shares your email and basic profile (such as name and profile picture) with Supabase Auth. We request no access to your Gmail messages or Drive files.
           </li>
           <li>
             <span className="text-ink">Your profile:</span> branch, CGPA, backlogs, 10th and 12th percentages and graduation
@@ -52,6 +52,7 @@ export default function PrivacyPage() {
             evidence file (an offer letter or similar).
           </li>
         </ul>
+        <p>Email confirmation, recovery and sign-in codes are sent through Resend. Sign-in codes expire, are single-use, and should never be shared. Google sign-in is optional; email/password remains available.</p>
         <p>No analytics, no advertising trackers. The only cookies are the ones that keep you signed in.</p>
       </Section>
 
@@ -61,6 +62,8 @@ export default function PrivacyPage() {
           Your account id, email, grades and evidence file are never part of a public page or a public query.
         </p>
         <p>
+          Public interview text can identify you if you include personal details. Do not include names, phone numbers, email addresses or private documents in public descriptions.
+        </p><p>
           Your plans are visible only to you. Your profile is visible to you and authorized project admins. Admins can read pending submissions and evidence to verify them.
         </p>
       </Section>

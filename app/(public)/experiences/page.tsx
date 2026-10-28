@@ -32,10 +32,10 @@ export default function ExperiencesPage({ searchParams }: PageProps<"/experience
         lede="What placed seniors were asked, round by round. Only experiences a project admin has verified are counted; everything else waits below as a rumour."
         actions={<PillLink href="/experiences/new" variant="primary">Share your experience</PillLink>}
       />
-      <CompanyCards compact />
       <Suspense fallback={<ExperiencesFallback />}>
         <Experiences searchParams={searchParams} />
       </Suspense>
+      <CompanyCards compact />
     </main>
   );
 }

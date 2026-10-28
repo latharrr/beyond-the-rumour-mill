@@ -1,5 +1,6 @@
 "use client";
 
+import { OtpForm } from "./otp-form";
 import { useActionState, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { signIn, signUp, type AuthState } from "@/app/_actions/auth";
@@ -15,6 +16,7 @@ export function LoginForm({ googleReady = false }: { googleReady?: boolean }) {
   const params = useSearchParams();
   const next = params.get("next") ?? "";
   const linkError = params.get("error") === "oauth" ? "Google sign-in could not finish. Please try again or use your email." : params.get("error") === "confirm" ? "That confirmation link is invalid or has expired. Sign in, or sign up again." : null;
+  const [useOtp, setUseOtp] = useState(false);
   const [mode, setMode] = useState<Mode>("signin");
   const [signInState, signInAction, signingIn] = useActionState(signIn, {} as AuthState);
   const [signUpState, signUpAction, signingUp] = useActionState(signUp, {} as AuthState);
@@ -36,6 +38,8 @@ export function LoginForm({ googleReady = false }: { googleReady?: boolean }) {
     }
   }
 
+  if (useOtp) return <div className="grid gap-5"><h2 className="type-title text-ink">Sign in with an email code</h2><OtpForm /><button type="button" onClick={() => setUseOtp(false)} className="type-small text-amber underline">Use password / create account</button></div>;
+
   return (
     <form action={mode === "signin" ? signInAction : signUpAction} onSubmit={validate} noValidate className="grid gap-5">
       <div>
@@ -45,6 +49,7 @@ export function LoginForm({ googleReady = false }: { googleReady?: boolean }) {
         </p>
       </div>
       {googleReady ? <a href={`/auth/google?next=${encodeURIComponent(next || "/dashboard")}`} className="inline-flex min-h-11 items-center justify-center rounded-full border border-line px-4 type-small text-ink hover:bg-panel-2">Continue with Google</a> : <p className="type-small text-ink-dim">Google sign-in is being configured. Email sign-in is available.</p>}
+      <button type="button" onClick={() => setUseOtp(true)} className="min-h-11 rounded-full border border-line px-4 type-small text-ink hover:bg-panel-2">Sign in with an email code</button>
       <input type="hidden" name="next" value={next} />
 
       <div>

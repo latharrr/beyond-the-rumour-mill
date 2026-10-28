@@ -364,7 +364,7 @@
         ]
       },
       "status": "listed_unverified",
-      "status_note": "Amazon.jobs pages loaded, but live apply state and posting date were not visible in the fetched text. Batch limited to 2025/2026 graduates, so check the user's batch.",
+      "status_note": "Open status not confirmed. Listed for 2025/2026 graduates. Check the official posting before applying.",
       "opening": {
         "label": "SDE I, University Talent Acquisition",
         "status": "listed",

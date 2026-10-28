@@ -4,6 +4,7 @@ import { card } from '@/components/ui/surface';
 import { textLink } from '@/components/ui/pill';
 
 export function CompanyCards({ compact = false, introduction = true }: { compact?: boolean; introduction?: boolean }) {
+  if (compact) return <aside className="my-10 rounded-2xl border border-line p-5"><h2 className="type-title text-ink">Looking for company requirements or interview reports?</h2><p className="mt-2 type-small text-ink-muted">Explore 12 source-linked company guides. Public research is separate from verified student evidence and campus drives.</p><Link href="/companies" className={`${textLink} mt-3 inline-block`}>Browse all 12 company guides</Link></aside>;
   return <section className="my-10" aria-labelledby="public-research">
     <h2 id="public-research" className={introduction ? "type-section text-ink" : "sr-only"}>Company research & public opportunities</h2>
     <p className="mt-3 max-w-[75ch] type-body text-ink-muted">12 companies, official career requirements and attributed interview reports. Checked {researchChecked}. These are not LPU campus announcements. A career page is not proof of an open role; unknown requirements are not eligibility.</p>

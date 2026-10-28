@@ -33,10 +33,10 @@ export default function DrivesPage({ searchParams }: PageProps<"/drives">) {
         title="Drives"
         lede="Browse source-linked public opportunities below. Campus drives are a separate lane; only explicitly published campus rules are checked against your profile."
       />
-      <CompanyCards compact />
       <Suspense fallback={<DriveResultsFallback />}>
         <DriveResults searchParams={searchParams} />
       </Suspense>
+      <CompanyCards compact />
     </main>
   );
 }
