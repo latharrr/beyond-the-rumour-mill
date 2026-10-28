@@ -12,6 +12,6 @@ export const SITE_DESCRIPTION =
 export const REPO_URL = "https://github.com/latharrr/beyond-the-rumour-mill";
 
 /** Pages a visitor (or crawler) can read without signing in. */
-export const PUBLIC_PATHS = ["/", "/drives", "/experiences", "/rumour-check", "/privacy"] as const;
+export const PUBLIC_PATHS = ["/", "/companies", "/drives", "/experiences", "/rumour-check", "/privacy"] as const;
 
 export const absoluteUrl = (path: string) => `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;

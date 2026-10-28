@@ -11,10 +11,10 @@ import { credentialsSchema } from "@/lib/schemas";
 
 type Mode = "signin" | "signup";
 
-export function LoginForm() {
+export function LoginForm({ googleReady = false }: { googleReady?: boolean }) {
   const params = useSearchParams();
   const next = params.get("next") ?? "";
-  const linkError = params.get("error") === "confirm" ? "That confirmation link is invalid or has expired. Sign in, or sign up again." : null;
+  const linkError = params.get("error") === "oauth" ? "Google sign-in could not finish. Please try again or use your email." : params.get("error") === "confirm" ? "That confirmation link is invalid or has expired. Sign in, or sign up again." : null;
   const [mode, setMode] = useState<Mode>("signin");
   const [signInState, signInAction, signingIn] = useActionState(signIn, {} as AuthState);
   const [signUpState, signUpAction, signingUp] = useActionState(signUp, {} as AuthState);
@@ -44,6 +44,7 @@ export function LoginForm() {
           {mode === "signin" ? "Use the email you signed up with." : "We'll send a confirmation link to your email."}
         </p>
       </div>
+      {googleReady ? <a href={`/auth/google?next=${encodeURIComponent(next || "/dashboard")}`} className="inline-flex min-h-11 items-center justify-center rounded-full border border-line px-4 type-small text-ink hover:bg-panel-2">Continue with Google</a> : <p className="type-small text-ink-dim">Google sign-in is being configured. Email sign-in is available.</p>}
       <input type="hidden" name="next" value={next} />
 
       <div>

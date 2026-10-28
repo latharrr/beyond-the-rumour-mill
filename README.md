@@ -32,7 +32,7 @@ DB/E2E tests need an isolated local Supabase project and its keys in `.env.local
 
 ## Hosting and authentication
 
-The canonical address is configured with `NEXT_PUBLIC_SITE_URL`. The VPS runs the full Next.js app behind nginx; a Vercel deployment is another full app, not a frontend proxying to the VPS. Both can use the same Supabase project. Supabase provides Auth, Postgres and private evidence storage. Resend SMTP delivers auth emails.
+The canonical address is https://clg.143.lat, configured with `NEXT_PUBLIC_SITE_URL`. The VPS runs the full Next.js app behind nginx; a Vercel deployment is another full app, not a frontend proxying to the VPS. Both can use the same Supabase project. Supabase provides Auth, Postgres and private evidence storage. Resend SMTP delivers auth emails.
 
 Email confirmation stays on. Token-hash email links enter `/auth/confirm`; recovery continues to `/reset-password`. Provider failures and rate limits are shown without exposing account existence. Never reuse an already-consumed recovery link. Google sign-in requires a separately configured provider/client and a tested callback; it is not enabled merely by deploying a button.
 

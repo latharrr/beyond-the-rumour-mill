@@ -22,7 +22,7 @@ export default function LoginPage() {
     <main className={cn(pageMain, "pb-20 md:pb-28")}>
       <div className="grid gap-10 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:items-start lg:gap-16">
         <div className="lg:pt-6">
-          <p className="type-label text-ink-dim">Account</p>
+          <p className="type-label text-ink-dim">Account · clg.143.lat</p>
           <h1 className="mt-4 max-w-[12ch] type-section text-ink">Sign in</h1>
           <p className="mt-5 max-w-[48ch] type-body text-pretty text-ink-muted">
             Browsing drives, experiences and the rumour check needs no account. Signing in adds the parts that are about you.
@@ -40,7 +40,7 @@ export default function LoginPage() {
         </div>
         <div className={cn(card, "p-5 sm:p-8")}>
           <Suspense fallback={<div aria-hidden="true" className="h-[340px]" />}>
-            <LoginForm />
+            <LoginForm googleReady={process.env.GOOGLE_SIGNIN_PUBLIC_READY === "true"} />
           </Suspense>
         </div>
       </div>

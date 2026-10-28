@@ -1,8 +1,6 @@
 "use client";
 
-import { useGSAP } from "@gsap/react";
 import { AnimatePresence, m } from "framer-motion";
-import gsap from "gsap";
 import { type ReactNode, type Ref, useActionState, useMemo, useRef, useState } from "react";
 import { checkClaim, type ClaimCheck } from "@/app/_actions/rumour";
 import { ChevronDownIcon } from "@/components/icons";
@@ -13,11 +11,6 @@ import { type ChipData, VerdictChip } from "./VerdictChip";
 
 type CompanyOption = { id: string; name: string };
 type TopicOption = { id: string; label: string; category: string };
-
-const CHAR_SECONDS = 0.045;
-const HOLD_SECONDS = 2.8;
-// The demo starts typing once the bar has risen into place.
-const START_SECONDS = 0.9;
 
 const claimKey = (companyId: string, topicId: string) => `${companyId}:${topicId}`;
 const toChip = (r: ClaimCheck): ChipData => ({ verdict: r.verdict, cited: r.cites.length, total: r.total, lowSample: r.lowSample });
@@ -42,8 +35,8 @@ export function ClaimBar({
   const first = examples[0];
   const [companyId, setCompanyId] = useState(first?.companyId ?? companies[0]?.id ?? "");
   const [topicId, setTopicId] = useState(first?.topicId ?? topics[0]?.id ?? "");
-  const [typing, setTyping] = useState(false);
-  const [chipShown, setChipShown] = useState(true);
+  const typing = false;
+  const chipShown = true;
   const [submitted, setSubmitted] = useState<string | null>(null);
   const [state, action, pending] = useActionState(checkClaim, null as ActionState<ClaimCheck>);
 
@@ -63,84 +56,6 @@ export function ClaimBar({
     for (const t of topics) groups.set(t.category, [...(groups.get(t.category) ?? []), t]);
     return [...groups];
   }, [topics]);
-
-  useGSAP(
-    () => {
-      const root = rootRef.current;
-      const companyEl = companyTyped.current;
-      const topicEl = topicTyped.current;
-      if (!root || !companyEl || !topicEl || examples.length < 2) return;
-      const q = gsap.utils.selector(root);
-
-      const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const [companyCaret, topicCaret] = [q("[data-caret=company]"), q("[data-caret=topic]")];
-        const typeInto = (tl: gsap.core.Timeline, el: HTMLElement, text: string) => {
-          const p = { n: 0 };
-          tl.to(p, {
-            n: text.length,
-            duration: text.length * CHAR_SECONDS,
-            ease: `steps(${text.length})`,
-            onUpdate: () => {
-              el.textContent = text.slice(0, Math.round(p.n));
-            },
-          });
-        };
-
-        // With motion on, the bar arrives empty and types its first claim
-        // rather than holding a finished one.
-        companyEl.textContent = "";
-        topicEl.textContent = "";
-        setChipShown(false);
-        setTyping(true);
-
-        const tl = gsap.timeline({ repeat: -1, delay: START_SECONDS });
-        for (const ex of examples) {
-          tl.call(() => {
-            companyEl.textContent = "";
-            topicEl.textContent = "";
-            setChipShown(false);
-            setTyping(true);
-            setCompanyId(ex.companyId);
-            setTopicId(ex.topicId);
-          });
-          tl.set(companyCaret, { opacity: 1 });
-          typeInto(tl, companyEl, ex.company);
-          tl.set(companyCaret, { opacity: 0 }, "+=0.12");
-          tl.set(topicCaret, { opacity: 1 });
-          typeInto(tl, topicEl, ex.topic);
-          tl.set(topicCaret, { opacity: 0 }, "+=0.3");
-          tl.call(() => {
-            setTyping(false);
-            setChipShown(true);
-          });
-          tl.to({}, { duration: HOLD_SECONDS });
-        }
-
-        // Only run while the bar is on screen.
-        const visibility = new IntersectionObserver(([entry]) => {
-          if (entry.isIntersecting) tl.resume();
-          else tl.pause();
-        });
-        visibility.observe(root);
-
-        stopDemo.current = () => {
-          tl.kill();
-          visibility.disconnect();
-          gsap.set([companyCaret, topicCaret], { opacity: 0 });
-          setTyping(false);
-          setChipShown(true);
-          stopDemo.current = () => {};
-        };
-
-        return () => {
-          tl.kill();
-          visibility.disconnect();
-        };
-      });
-    },
-    { scope: rootRef },
-  );
 
   const stop = () => stopDemo.current();
 
@@ -279,11 +194,11 @@ function ClaimSelect({
   children: ReactNode;
 }) {
   return (
-    <span className="relative inline-flex h-12 min-w-0 items-center gap-1.5 rounded-xl px-2.5 font-medium hover:bg-paper-ink/[0.05] has-[select:focus-visible]:outline-2 has-[select:focus-visible]:outline-offset-2 has-[select:focus-visible]:outline-paper-ink md:h-14">
+    <span className="relative inline-flex h-12 min-w-[8ch] max-w-full items-center gap-1.5 rounded-xl px-2.5 font-medium hover:bg-paper-ink/[0.05] has-[select:focus-visible]:outline-2 has-[select:focus-visible]:outline-offset-2 has-[select:focus-visible]:outline-paper-ink md:h-14">
       <label htmlFor={id} className="sr-only">
         {label}
       </label>
-      <span className={cn("truncate", typing && "hidden")}>{display}</span>
+      <span className={cn("whitespace-normal text-left", typing && "hidden")}>{display}</span>
       <span aria-hidden="true" className={cn("items-center whitespace-nowrap", typing ? "inline-flex" : "hidden")}>
         <span ref={typedRef} />
         <span data-caret={caret} className="ml-px h-[1.05em] w-0.5 bg-paper-ink opacity-0" />
