@@ -1,6 +1,8 @@
 import "server-only";
 import { checkClaimVerdict, type ClaimResult, type Verdict } from "@/lib/rumour";
-import { createClient } from "@/lib/supabase/server";
+import { publicClient } from "@/lib/supabase/public";
+import { connection } from "next/server";
+import { cacheLife, cacheTag } from "next/cache";
 import type { Company, Topic } from "./taxonomy";
 
 /** A real claim and its real verdict, for the landing page's claim bar. */
@@ -34,9 +36,12 @@ const toExample = (company: Company, topic: Topic, r: ClaimResult): ClaimExample
  * verdicts vary from one claim to the next. With no verified experiences yet,
  * it falls back to plain claims whose honest verdict is "no evidence yet".
  */
-export async function listClaimExamples(companies: Company[], topics: Topic[], limit = 6): Promise<ClaimExample[]> {
+async function cachedClaimExamples(companies: Company[], topics: Topic[], limit = 6): Promise<ClaimExample[]> {
+  "use cache";
+  cacheLife({ stale: 30, revalidate: 30, expire: 60 });
+  cacheTag("public-evidence");
   if (companies.length === 0 || topics.length === 0) return [];
-  const supabase = await createClient();
+  const supabase = publicClient();
   const [exps, links] = await Promise.all([
     supabase.from("public_experiences").select("id, company_id"),
     supabase.from("public_experience_topics").select("experience_id, topic_id"),
@@ -94,4 +99,9 @@ export async function listClaimExamples(companies: Company[], topics: Topic[], l
     });
   }
   return out.slice(0, limit);
+}
+
+export async function listClaimExamples(companies: Company[], topics: Topic[], limit = 6): Promise<ClaimExample[]> {
+  await connection();
+  return cachedClaimExamples(companies, topics, limit);
 }

@@ -48,7 +48,7 @@ Migrations are in `supabase/migrations`. Base taxonomy is migration-backed. `scr
 
 ## Performance boundaries
 
-Native scrolling, static landing sections and immediate hero visibility. Primary navigation prefetches and shows real pending state. Supabase clients/session/profile reads are deduplicated within a request. Only public taxonomy is cached across requests (5-minute revalidation, invalidated after drive management); user/account data is not shared-cached.
+Native scrolling, static landing sections and immediate hero visibility. Primary navigation prefetches and shows real pending state. Supabase clients/session/profile reads are deduplicated within a request. Public taxonomy has 5-minute revalidation. Anonymous public evidence/tip snapshots have 30-second revalidation and are invalidated after submissions, reviews, profile edits and account deletion. User/account data is not shared-cached.
 
 ## Limits
 

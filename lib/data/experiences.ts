@@ -1,5 +1,7 @@
+import { connection } from "next/server";
+import { cacheLife, cacheTag } from "next/cache";
+import { publicClient } from "@/lib/supabase/public";
 import "server-only";
-import { createClient } from "@/lib/supabase/server";
 import { type TopicFrequency, topicFrequency } from "@/lib/topic-frequency";
 import { type TrustInput, trustBreakdown, type TrustBreakdown } from "@/lib/trust";
 
@@ -44,8 +46,11 @@ export type CommunityTip = {
   role: string;
 };
 
-async function loadVerified(filter?: { companyId?: string }) {
-  const supabase = await createClient();
+async function cachedVerified(filter?: { companyId?: string }) {
+  "use cache";
+  cacheLife({ stale: 30, revalidate: 30, expire: 60 });
+  cacheTag("public-evidence");
+  const supabase = publicClient();
   let q = supabase.from("public_experiences").select(PUBLIC_EXPERIENCE_COLUMNS).order("created_at", { ascending: false });
   if (filter?.companyId) q = q.eq("company_id", filter.companyId);
   const [exps, links, resLinks, companies, roles, topics, resources] = await Promise.all([
@@ -67,6 +72,11 @@ async function loadVerified(filter?: { companyId?: string }) {
     topics: topics.data as { id: string; label: string; category: string }[],
     resources: resources.data as ExperienceView["resources"],
   };
+}
+
+async function loadVerified(filter?: { companyId?: string }) {
+  await connection();
+  return cachedVerified(filter);
 }
 
 function group<T>(rows: T[], key: (r: T) => string) {
@@ -124,8 +134,11 @@ export async function getVerifiedExperience(id: string): Promise<ExperienceView 
 }
 
 /** Pending submissions, no author info at all (community_tips view, §3.2). */
-export async function listCommunityTips(filter: { companyId?: string } = {}): Promise<CommunityTip[]> {
-  const supabase = await createClient();
+async function cachedCommunityTips(filter: { companyId?: string } = {}): Promise<CommunityTip[]> {
+  "use cache";
+  cacheLife({ stale: 30, revalidate: 30, expire: 60 });
+  cacheTag("public-evidence");
+  const supabase = publicClient();
   let q = supabase.from("community_tips").select("id, company_id, role_id, rounds_summary, created_at").order("created_at", { ascending: false });
   if (filter.companyId) q = q.eq("company_id", filter.companyId);
   const [tips, companies, roles] = await Promise.all([q, supabase.from("companies").select("id, name"), supabase.from("roles").select("id, label")]);
@@ -144,4 +157,9 @@ export async function listMatchedExperiences(companyId: string, roleId: string) 
   return sameRole.length
     ? { scope: "role" as const, experiences: sameRole }
     : { scope: "company" as const, experiences };
+}
+
+export async function listCommunityTips(filter: { companyId?: string } = {}): Promise<CommunityTip[]> {
+  await connection();
+  return cachedCommunityTips(filter);
 }

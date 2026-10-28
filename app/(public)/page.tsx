@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { CompanyCards } from "@/components/research/CompanyCards";
+import { companyResearch } from "@/lib/company-research";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ClaimBar } from "@/components/landing/ClaimBar";
@@ -43,6 +46,12 @@ export default function LandingPage() {
         </div>
       </HeroStage>
 
+      <section className="container-page -mt-10 pb-12 text-center" aria-label="12 researched companies">
+        <Link href="/companies" className="type-title text-amber hover:underline">Research all 12 companies: requirements, questions & opportunities</Link>
+        <p className="mx-auto mt-3 max-w-[70ch] type-small text-ink-muted">The claim checker above counts verified student evidence only. The source-linked research below is separate, including historical interviews and clearly labelled public hiring status.</p>
+        <ul className="mt-5 flex flex-wrap justify-center gap-2">{companyResearch.map(c => <li key={c.slug}><Link href={`/companies/${c.slug}`} className="inline-flex min-h-11 items-center rounded-full border border-line px-4 type-small text-ink hover:bg-panel">{c.name}</Link></li>)}</ul>
+      </section>
+      <div className="container-page"><CompanyCards compact /></div>
       <ProblemSection />
       <Suspense fallback={<DrivesSectionFallback />}>
         <DrivesSection />

@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { type ActionResult, type ActionState, fail, invalid, NOT_SIGNED_IN, ok } from "@/lib/action-result";
 import { getSessionUser } from "@/lib/auth";
@@ -26,6 +26,7 @@ export async function saveProfile(_prev: ActionState, formData: FormData): Promi
   }
   if (!data.length) return fail("Could not find your profile. Please sign in again.");
 
+  updateTag("public-evidence");
   revalidatePath("/drives");
   revalidatePath("/dashboard");
 

@@ -1,5 +1,6 @@
 "use server";
 
+import { updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { type ActionResult, type ActionState, fail, invalid, NOT_SIGNED_IN } from "@/lib/action-result";
 import { getSessionUser } from "@/lib/auth";
@@ -46,5 +47,6 @@ export async function deleteAccount(_prev: ActionState, formData: FormData): Pro
   const supabase = await createClient();
   await supabase.auth.signOut({ scope: "local" });
 
+  updateTag("public-evidence");
   redirect("/?account=deleted");
 }

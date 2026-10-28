@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { type ActionResult, type ActionState, fail, invalid, NOT_AUTHORISED, NOT_SIGNED_IN, ok } from "@/lib/action-result";
 import { getSessionUser, isAdmin } from "@/lib/auth";
 import { evidenceObjectPath, fileMatchesType } from "@/lib/evidence";
@@ -68,6 +68,7 @@ export async function submitExperience(_prev: ActionState<{ id: string }>, formD
     return fail("Could not submit your experience. Please try again.");
   }
 
+  updateTag("public-evidence");
   revalidatePath("/experiences");
   revalidatePath("/admin");
   return ok({ id: data }, "Thanks! Your experience is in the verification queue.");
@@ -91,6 +92,7 @@ export async function verifyExperience(_prev: ActionState, formData: FormData): 
   if (!data.length) return fail("This experience was already reviewed.");
 
   revalidatePath("/admin");
+  updateTag("public-evidence");
   revalidatePath("/experiences");
   return ok(null, "Verified. It now appears in the public list.");
 }
@@ -113,6 +115,7 @@ export async function rejectExperience(_prev: ActionState, formData: FormData): 
   if (!data.length) return fail("This experience was already reviewed.");
 
   revalidatePath("/admin");
+  updateTag("public-evidence");
   revalidatePath("/experiences");
   return ok(null, "Rejected. It has left the community-tips lane.");
 }
