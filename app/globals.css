@@ -266,7 +266,7 @@
     cursor: not-allowed;
   }
 
-  /* Nav bar-to-pill morph: GSAP tweens --pill (0 → 1) on the nav; labels crossfade from it. */
+  /* Nav bar-to-pill morph: GSAP tweens --pill (0 → 1) on the nav's header; labels crossfade from it. */
   [data-tone="bar"] {
     opacity: calc(1 - var(--pill, 0));
   }

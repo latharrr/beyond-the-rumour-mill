@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type ReactNode, useActionState, useState } from "react";
+import { type ReactNode, startTransition, useActionState, useState } from "react";
 import { z } from "zod";
 import { submitExperience } from "@/app/_actions/experiences";
 import { CheckIcon } from "@/components/icons";
@@ -80,10 +80,14 @@ export function SubmitWizard({ companies, roles, drives, topics, resources }: Pr
     const fileCheck = file instanceof File && file.size > 0 ? evidenceFileSchema.safeParse(file) : null;
     const fieldErrors: FieldErrors = parsed.success ? {} : (z.flattenError(parsed.error).fieldErrors as FieldErrors);
     if (fileCheck && !fileCheck.success) fieldErrors.evidence = fileCheck.error.issues.map((i) => i.message);
+    // Always dispatch by hand: a server-side rejection must not wipe what the senior typed (React resets forms after an action).
+    event.preventDefault();
     if (Object.keys(fieldErrors).length) {
-      event.preventDefault();
       setClientErrors(fieldErrors);
-    } else setClientErrors(undefined);
+      return;
+    }
+    setClientErrors(undefined);
+    startTransition(() => action(fd));
   }
 
   return (

@@ -33,6 +33,7 @@ const MIN_SCROLL_TO_PILL = 80;
  */
 export function SiteNav({ account }: { account: ReactNode }) {
   const navRef = useRef<HTMLElement>(null);
+  const headerRef = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
 
   useGSAP(
@@ -85,7 +86,7 @@ export function SiteNav({ account }: { account: ReactNode }) {
           tl.fromTo(surface, { opacity: 0, scale: 1.04, y: -6 }, { opacity: 1, scale: 1, y: 0, immediateRender: false }, 0)
             .fromTo(left, { x: 0 }, { x: markTo - markBox.left, immediateRender: false }, 0)
             .fromTo(right, { x: 0 }, { x: rightTo - rightBox.right, immediateRender: false }, 0)
-            .fromTo(nav, { "--pill": 0 }, { "--pill": 1, immediateRender: false }, 0);
+            .fromTo(nav.parentElement ?? nav, { "--pill": 0 }, { "--pill": 1, immediateRender: false }, 0);
           tl.eventCallback("onComplete", () => {
             nav.dataset.settled = "pill";
           });
@@ -146,6 +147,22 @@ export function SiteNav({ account }: { account: ReactNode }) {
     { scope: navRef },
   );
 
+  // Inner pages: once content scrolls under the transparent bar, give the bar a
+  // ground backdrop (it fades out again as the pill takes over). The landing
+  // keeps its bare bar over the hero glow.
+  useEffect(() => {
+    const update = () => {
+      headerRef.current?.setAttribute("data-scrolled", String(window.location.pathname !== "/" && window.scrollY > 4));
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("popstate", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("popstate", update);
+    };
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -154,7 +171,12 @@ export function SiteNav({ account }: { account: ReactNode }) {
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header ref={headerRef} className="group/header fixed inset-x-0 top-0 z-50">
+      <div
+        data-bar-backdrop
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[var(--nav-h)] border-b border-line bg-ground/85 opacity-0 backdrop-blur-md transition-opacity duration-200 group-data-[scrolled=true]/header:opacity-[calc(1-var(--pill,0))] md:h-[var(--nav-h-md)]"
+      />
       <nav ref={navRef} aria-label="Main" className="relative mx-auto h-[var(--nav-h)] max-w-[1200px] px-4 md:h-[var(--nav-h-md)] md:px-6">
         <div
           data-pill-surface

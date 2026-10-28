@@ -33,9 +33,14 @@ export function HeroStage({ children }: { children: ReactNode }) {
           html.dataset.motion = "ready";
           return;
         }
-        gsap.set(lines, { yPercent: 110 });
-        gsap.set(rise, { opacity: 0.01, y: 16 });
+        // Lift the CSS gate *before* GSAP measures: otherwise it parses the
+        // gate's translateY(110%) as a pixel y offset, keeps it, and the lines
+        // end the entrance still pushed out of view (seen on production
+        // builds, where the CSS is applied before hydration). Same task, so
+        // nothing paints in between; y is pinned explicitly as well.
         html.dataset.motion = "ready";
+        gsap.set(lines, { y: 0, yPercent: 110 });
+        gsap.set(rise, { opacity: 0.01, y: 16 });
         gsap
           .timeline({ defaults: { ease: "power3.out" } })
           .to(lines, { yPercent: 0, duration: 0.8, stagger: 0.1 })
