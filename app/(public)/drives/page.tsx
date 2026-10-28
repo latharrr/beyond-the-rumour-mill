@@ -70,7 +70,9 @@ async function DriveResults({ searchParams }: Pick<PageProps<"/drives">, "search
   ]);
   const matches = filterDrives(drives, filters, profile, branchCodeMap(branches));
   const now = new Date();
-  const open = matches.filter((m) => m.drive.status === "upcoming" || m.drive.status === "ongoing");
+  const isUnconfirmed = (m: Match) => m.drive.source_kind === "public_hiring" && m.drive.application_status === "unconfirmed";
+  const open = matches.filter((m) => (m.drive.status === "upcoming" || m.drive.status === "ongoing") && !isUnconfirmed(m));
+  const watch = matches.filter((m) => (m.drive.status === "upcoming" || m.drive.status === "ongoing") && isUnconfirmed(m));
   const past = matches.filter((m) => m.drive.status === "completed" || m.drive.status === "cancelled");
 
   return (
@@ -119,6 +121,7 @@ async function DriveResults({ searchParams }: Pick<PageProps<"/drives">, "search
       ) : (
         <>
           <DriveGroup id="open-drives" title="Open" matches={open} now={now} />
+          <DriveGroup id="watch-drives" title="Programs to watch (application status unconfirmed)" matches={watch} now={now} />
           <DriveGroup id="past-drives" title="Past" matches={past} now={now} />
         </>
       )}

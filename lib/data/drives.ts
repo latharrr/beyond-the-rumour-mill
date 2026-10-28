@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 
 // drives.created_by is not granted to clients: always list columns explicitly.
 export const DRIVE_COLUMNS =
-  "id, company_id, role_id, title, eligibility_cgpa, max_backlogs, min_10th_pct, min_12th_pct, grad_years, drive_date, location, status, created_at, updated_at, source_kind, source_url, apply_url, application_deadline, deadline_note, eligibility_note, verified_on";
+  "id, company_id, role_id, title, eligibility_cgpa, max_backlogs, min_10th_pct, min_12th_pct, grad_years, drive_date, location, status, created_at, updated_at, source_kind, source_url, apply_url, application_deadline, deadline_note, eligibility_note, verified_on, application_status";
 
 export type DriveStatus = "upcoming" | "ongoing" | "completed" | "cancelled";
 
@@ -29,6 +29,7 @@ export type DriveSummary = {
   deadline_note: string | null;
   eligibility_note: string | null;
   verified_on: string | null;
+  application_status: "open_stated" | "posting_live" | "unconfirmed";
   company: { id: string; name: string; sector: string | null; logo_url: string | null };
   role: { id: string; label: string; aliases: string[] };
   branch_ids: string[];

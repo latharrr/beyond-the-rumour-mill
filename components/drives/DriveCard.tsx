@@ -17,6 +17,12 @@ export const STATUS_LABEL: Record<DriveStatus, string> = {
   cancelled: "Cancelled",
 };
 
+export const APPLICATION_STATUS_LABEL = {
+  open_stated: "Open per employer page",
+  posting_live: "Live posting, no window stated",
+  unconfirmed: "Application status unconfirmed",
+} as const;
+
 export const KIND_LABEL = { campus: "LPU campus drive", public_hiring: "Public hiring, not an LPU drive" } as const;
 
 /** "In 12 days" / "Today" / "Date passed" next to a drive date. */
@@ -55,7 +61,7 @@ export function DriveCard({
       </div>
       {d.source_kind === "public_hiring" && (
         <p data-kind="public_hiring" className="mt-3 type-label text-ink-dim">
-          {KIND_LABEL.public_hiring}
+          {KIND_LABEL.public_hiring} · {APPLICATION_STATUS_LABEL[d.application_status]}
         </p>
       )}
 
@@ -79,6 +85,8 @@ export function DriveCard({
                 {formatDriveDate(d.application_deadline)}
               </time>
             </>
+          ) : d.application_status === "unconfirmed" ? (
+            <span className="type-small text-ink-muted">No application dates on the source page</span>
           ) : (
             <span className="type-small text-ink-muted">No deadline on the official page</span>
           )

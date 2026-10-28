@@ -109,6 +109,7 @@ test("public hiring listings are labelled, source-linked and never eligibility-c
       role_id: role!.id,
       title,
       source_kind: "public_hiring",
+      application_status: "posting_live",
       source_url: "https://example.com/e2e-listing",
       apply_url: "https://example.com/e2e-listing",
       verified_on: "2026-10-29",
@@ -121,7 +122,7 @@ test("public hiring listings are labelled, source-linked and never eligibility-c
   try {
     await page.goto(`/drives?q=${encodeURIComponent(title)}`);
     await expect(page.getByRole("link", { name: title })).toBeVisible();
-    await expect(page.getByText("Public hiring, not an LPU drive").first()).toBeVisible();
+    await expect(page.getByText("Public hiring, not an LPU drive · Live posting, no window stated").first()).toBeVisible();
     await expect(page.getByText("No deadline on the official page").first()).toBeVisible();
     await page.getByRole("link", { name: title }).click();
     await expect(page.getByRole("heading", { name: "Official source" })).toBeVisible();

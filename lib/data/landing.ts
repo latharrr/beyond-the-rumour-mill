@@ -9,7 +9,8 @@ import { listResources } from "./taxonomy";
 
 // Read-only views of existing data for the landing page. Nothing here writes.
 
-const isOpen = (d: DriveSummary) => d.status === "upcoming" || d.status === "ongoing";
+const isOpen = (d: DriveSummary) =>
+  (d.status === "upcoming" || d.status === "ongoing") && !(d.source_kind === "public_hiring" && d.application_status === "unconfirmed");
 
 export type LandingDrive = DriveWithRounds;
 

@@ -27,6 +27,7 @@ for (const o of opportunities) {
     location: o.location,
     status: "upcoming",
     source_kind: "public_hiring",
+    application_status: o.application_status,
     source_url: o.source_url,
     apply_url: o.apply_url,
     application_deadline: o.application_deadline,

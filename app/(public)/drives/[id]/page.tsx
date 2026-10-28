@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache, Suspense } from "react";
-import { Countdown, KIND_LABEL, STATUS_LABEL } from "@/components/drives/DriveCard";
+import { APPLICATION_STATUS_LABEL, Countdown, KIND_LABEL, STATUS_LABEL } from "@/components/drives/DriveCard";
 import { DriveRequirements } from "@/components/drives/DriveRequirements";
 import { EligibilityBadge } from "@/components/drives/EligibilityBadge";
 import { IneligibilityExplainer } from "@/components/drives/IneligibilityExplainer";
@@ -103,7 +103,7 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <span className="type-label text-ink-muted">{drive.company.name}</span>
           <span className="type-label text-ink-dim">{STATUS_LABEL[drive.status]}</span>
-          {isPublic ? <span className="type-label text-ink-dim">{KIND_LABEL.public_hiring}</span> : SEED_DRIVES_ARE_SAMPLE && <SampleTag />}
+          {isPublic ? <span className="type-label text-ink-dim">{KIND_LABEL.public_hiring} · {APPLICATION_STATUS_LABEL[drive.application_status]}</span> : SEED_DRIVES_ARE_SAMPLE && <SampleTag />}
         </div>
         <h1 className="mt-5 max-w-[22ch] type-section text-balance text-ink">{drive.title}</h1>
         <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1 type-body text-ink-muted">
@@ -117,6 +117,8 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
                   {formatDriveDate(drive.application_deadline)}
                 </time>
               </span>
+            ) : drive.application_status === "unconfirmed" ? (
+              <span>No application dates on the source page</span>
             ) : (
               <span>No deadline on the official page</span>
             )
