@@ -76,7 +76,13 @@ export async function requestPasswordReset(_prev: AuthState, formData: FormData)
   const supabase = await createClient();
   // The email link is fixed by the project template to /auth/confirm
   // (token_hash flow), which forwards recovery sessions to /reset-password.
-  await supabase.auth.resetPasswordForEmail(parsed.data.email);
+  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email);
+  if (error) {
+    if (error.status === 429 || error.code === "over_email_send_rate_limit" || error.code === "over_request_rate_limit") {
+      return { error: "Too many reset requests right now. Please wait a few minutes and try again.", email: parsed.data.email };
+    }
+    return { error: "We could not send a reset link right now. Please try again later.", email: parsed.data.email };
+  }
   return { message: "If an account exists for that email, we've sent a reset link.", email: parsed.data.email };
 }
 

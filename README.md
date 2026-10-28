@@ -430,3 +430,10 @@ exercise admin-generated tokens, not actual signup email delivery.
 
 When running local Supabase on a remote host, publish its ports on 127.0.0.1
 only BEFORE starting containers. Never expose its demo credentials publicly.
+
+Recovery follow-up: custom SMTP alone does not raise Supabase's default
+2-auth-emails/hour quota. Production was set to a bounded 10/hour after two
+test mails exhausted the default. Per-recipient cooldowns remain in place.
+The reset action now reports 429/provider failures instead of falsely showing
+success. Focused accepted/rate-limit/provider-failure checks bring unit coverage
+to 124 tests. This does not change the Resend plan or billing settings.
