@@ -10,8 +10,8 @@ test('research catalog is linked, sourced and separate from verified evidence',a
  await expect(page.getByRole('heading',{name:'Candidate-reported interviews'})).toBeVisible();
  await expect(page.getByRole('link',{name:'Official source',exact:false})).toHaveAttribute('href',/^https:\/\/www.tcs.com\//);
  await page.goto('/drives');
- await expect(page.getByRole('heading',{name:'Company research & public opportunities'})).toBeVisible();
- await expect(page.getByText(/not LPU campus announcements/)).toBeVisible();
+ await expect(page.getByRole('heading',{name:'Looking for company requirements or interview reports?'})).toBeVisible();
+ await expect(page.getByText(/Public research is separate from verified student evidence and campus drives/)).toBeVisible();
  for(const path of ['/admin/users','/admin/content']){
   await page.goto(path); await expect(page).toHaveURL(/\/login/);
   await expect(page.getByText(/Latest 100/)).toHaveCount(0);

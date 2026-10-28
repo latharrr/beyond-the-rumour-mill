@@ -8,7 +8,7 @@ async function signIn(page: Page, email: string, next?: string) {
   await page.getByRole("button", { name: "Use email and password", exact: true }).click();
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill(PASSWORD);
-  await page.getByRole("button", { name: "Sign in" }).click();
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
 }
 
 test("protected routes redirect to /login without a session", async ({ page }) => {
@@ -31,13 +31,13 @@ test("login form shows validation and wrong-password errors", async ({ page }) =
   await page.getByRole("button", { name: "Use email and password", exact: true }).click();
   await page.getByLabel("Email").fill("not-an-email");
   await page.getByLabel("Password").fill("short");
-  await page.getByRole("button", { name: "Sign in" }).click();
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(page.getByText("Enter a valid email address")).toBeVisible();
   await expect(page.getByText("Password must be at least 8 characters")).toBeVisible();
 
   await page.getByLabel("Email").fill("student@seed.test");
   await page.getByLabel("Password").fill("wrong-password");
-  await page.getByRole("button", { name: "Sign in" }).click();
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(page.getByText("Incorrect email or password.")).toBeVisible();
 });
 
@@ -60,7 +60,7 @@ test("public nav reflects the session and sign-out clears it", async ({ page }) 
   await page.goto("/drives");
   // The footer repeats the account links; the nav is the one that reflects the session.
   const nav = page.getByRole("navigation", { name: "Main" });
-  await expect(nav.getByRole("link", { name: "Sign in" })).toBeVisible();
+  await expect(nav.getByRole("link", { name: "Sign in", exact: true })).toBeVisible();
 
   await signIn(page, "student@seed.test", "/drives");
   await expect(page).toHaveURL("/drives");

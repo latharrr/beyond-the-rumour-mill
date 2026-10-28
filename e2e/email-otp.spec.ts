@@ -10,6 +10,6 @@ test('email-code request submits and mobile whole-code paste keeps leading zeros
  const code=page.getByLabel('6-digit email code');await expect(code).toBeVisible();await expect(code).toHaveAttribute('autocomplete','one-time-code');await expect(code).toHaveAttribute('inputmode','numeric');
  await code.evaluate(e=>{const data=new DataTransfer();data.setData('text','00 01-23');e.dispatchEvent(new ClipboardEvent('paste',{clipboardData:data,bubbles:true,cancelable:true}))});await expect(code).toHaveValue('000123');
  const verify=page.getByRole('button',{name:'Verify code & sign in',exact:true});await expect(verify).toHaveAttribute('type','submit');await expect(verify).toBeEnabled();
- await verify.click();await expect(page.getByRole('alert')).toContainText('invalid, expired or already used');
+ await verify.click();await expect(page.locator('form [role=alert]')).toContainText('invalid, expired or already used');
  }finally{await deleteE2EUser(user.id)}
 });

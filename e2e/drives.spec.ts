@@ -59,7 +59,7 @@ test("signed-out drive page invites sign-in instead of guessing eligibility", as
   await page.getByRole("link", { name: "TCS NQT 2026 — Ninja & Digital" }).click();
   await expect(page.getByRole("heading", { name: "Rounds" })).toBeVisible();
   await expect(page.getByText("NQT Online Test")).toBeVisible();
-  await expect(page.getByRole("main").getByRole("link", { name: "Sign in" }).last()).toBeVisible();
+  await expect(page.getByRole("main").getByRole("link", { name: "Sign in", exact: true }).last()).toBeVisible();
   await expect(page.getByRole("heading", { name: "Verified experiences" })).toBeVisible();
 
   await page.goto("/drives/not-a-uuid");
