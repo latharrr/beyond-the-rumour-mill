@@ -44,7 +44,7 @@ test.describe("onboarding → eligibility", () => {
 
 test("search and company filters narrow /drives via the URL", async ({ page }) => {
   await page.goto("/drives");
-  await page.getByLabel("Search").fill("sde");
+  await page.getByLabel("Search", { exact: true }).fill("sde");
   await page.getByRole("button", { name: "Apply filters" }).click();
   await expect(page).toHaveURL(/q=sde/);
   await expect(page.getByRole("link", { name: "Amazon SDE-1 New Grad" })).toBeVisible();
@@ -72,7 +72,7 @@ test("admin creates and edits a drive through the form", async ({ page }) => {
   try {
     await signIn(page, admin.email, "/admin/drives");
     await page.getByLabel("Title").fill(title);
-    await page.getByLabel("Company").selectOption({ label: "Amazon" });
+    await page.getByLabel("Company", { exact: true }).selectOption({ label: "Amazon" });
     await page.getByLabel("Role").selectOption({ label: "Data Analyst" });
     await page.getByLabel("Minimum CGPA (blank = none)").fill("7");
     await page.getByLabel("Name").fill("Aptitude test");

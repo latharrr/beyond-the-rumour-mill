@@ -12,7 +12,7 @@ test("alumni submits → tip lane → admin verifies → appears in the verified
     // Client-side validation before anything is sent.
     await student.getByRole("button", { name: "Submit for verification" }).click();
     await expect(student.getByText("Choose a company")).toHaveCount(2); // option + error
-    await student.getByLabel("Company").selectOption({ label: "TCS" });
+    await student.getByLabel("Company", { exact: true }).selectOption({ label: "TCS" });
     await student.getByLabel("Role").selectOption({ label: "Systems Engineer (SE, Ninja)" });
     await student.getByLabel("What happened in each round?").fill(summary);
     await student.getByLabel("Search topics").fill("pseudo");
@@ -71,7 +71,7 @@ test("rumour check returns a cited verdict", async ({ page }) => {
   await page.getByRole("button", { name: "Check claim" }).click();
   await expect(page.getByText("Choose a company").last()).toBeVisible();
 
-  await page.getByLabel("Company").selectOption({ label: "TCS" });
+  await page.getByLabel("Company", { exact: true }).selectOption({ label: "TCS" });
   await page.getByLabel("Search topics").fill("pseudo");
   await page.getByRole("radio", { name: /Pseudocode/ }).check();
   await page.getByRole("button", { name: "Check claim" }).click();
