@@ -74,7 +74,7 @@ export type PlanPreview = {
  * Never saved. Null when there is no open drive to plan against.
  */
 export const getPlanPreview = cache(async (): Promise<PlanPreview | null> => {
-  const next = (await listDrives()).find(isOpen);
+  const next = (await listDrives()).find((d) => isOpen(d) && d.source_kind !== "public_hiring");
   if (!next) return null;
   const drive = await getDrive(next.id);
   if (!drive) return null;

@@ -62,7 +62,7 @@ export async function DrivesSection() {
         </div>
       ) : (
         <>
-          {SEED_DRIVES_ARE_SAMPLE && (
+          {SEED_DRIVES_ARE_SAMPLE && drives.some((d) => d.source_kind !== "public_hiring") && (
             <div data-rise className="mt-10 md:mt-12">
               <SampleTag />
             </div>

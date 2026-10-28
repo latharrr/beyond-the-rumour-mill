@@ -226,15 +226,17 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
         </aside>
 
         <div className="min-w-0 lg:order-1">
-          <PageSection id="rounds" title="Rounds" className="border-t-0 pt-0 md:pt-0">
-            <RoundList rounds={drive.rounds} />
-          </PageSection>
+          {!isPublic && (
+            <PageSection id="rounds" title="Rounds" className="border-t-0 pt-0 md:pt-0">
+              <RoundList rounds={drive.rounds} />
+            </PageSection>
+          )}
 
           <PageSection
             id="experiences"
             title="Verified experiences"
             aside={matched.experiences.length > 0 && SEED_EXPERIENCES_ARE_SAMPLE ? <SampleTag /> : null}
-            className="pb-0 md:pb-0"
+            className={isPublic ? "border-t-0 pt-0 pb-0 md:pt-0 md:pb-0" : "pb-0 md:pb-0"}
           >
             {matched.experiences.length === 0 ? (
               <EmptyState

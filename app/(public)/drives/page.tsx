@@ -105,7 +105,7 @@ async function DriveResults({ searchParams }: Pick<PageProps<"/drives">, "search
           </span>{" "}
           drives
         </p>
-        {SEED_DRIVES_ARE_SAMPLE && drives.length > 0 && <SampleTag />}
+        {SEED_DRIVES_ARE_SAMPLE && drives.some((d) => d.source_kind !== "public_hiring") && <SampleTag />}
       </div>
 
       {matches.length === 0 ? (
