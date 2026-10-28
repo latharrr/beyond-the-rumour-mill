@@ -1,5 +1,6 @@
 import "server-only";
 import { createServerClient } from "@supabase/ssr";
+import { cache } from "react";
 import { cookies } from "next/headers";
 import { connection } from "next/server";
 import type { Database } from "./database.types";
@@ -7,7 +8,7 @@ import { supabasePublishableKey, supabaseUrl } from "./env";
 
 // Per-request client for Server Components, Server Actions and Route
 // Handlers. Acts as the signed-in user, so RLS applies to every query.
-export async function createClient() {
+export const createClient = cache(async function createClient() {
   // supabase-js reads Date.now() (token expiry); under Cache Components that
   // must happen at request time, never during prerender.
   await connection();
@@ -28,4 +29,4 @@ export async function createClient() {
       },
     },
   });
-}
+});

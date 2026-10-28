@@ -4,6 +4,7 @@ import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { CloseIcon, MenuIcon } from "@/components/icons";
+import { NavigationProgress } from "./NavigationProgress";
 import { BrandMark } from "./BrandMark";
 import { Tone } from "./Tone";
 
@@ -65,10 +66,11 @@ export function SiteNav({ account }: { account: ReactNode }) {
           <ul data-group="links" className="hidden items-center gap-7 md:col-start-2 md:flex">
             {LINKS.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="group hit-44 inline-flex text-[15px]">
+                <Link prefetch={true} href={l.href} className="group hit-44 inline-flex text-[15px]">
                   <Tone bar="text-ink-muted group-hover:text-ink group-hover:underline" pill="text-paper-ink/75 group-hover:underline">
                     {l.label}
                   </Tone>
+                  <NavigationProgress />
                 </Link>
               </li>
             ))}

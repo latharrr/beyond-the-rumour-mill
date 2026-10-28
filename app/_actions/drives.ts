@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { type ActionResult, type ActionState, fail, invalid, NOT_AUTHORISED, ok } from "@/lib/action-result";
 import { isAdmin } from "@/lib/auth";
 import { type DriveInput, driveSchema } from "@/lib/schemas";
@@ -44,6 +44,7 @@ async function save(id: string | null, input: DriveInput): Promise<ActionResult<
     return fail("Could not save the drive. Nothing was changed.");
   }
 
+  updateTag("taxonomy");
   revalidatePath("/drives");
   revalidatePath(`/drives/${data}`);
   revalidatePath("/admin/drives");

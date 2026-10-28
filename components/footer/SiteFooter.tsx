@@ -141,7 +141,11 @@ export function SiteFooter() {
         </Reveal>
 
         <div className="mt-8 flex flex-col gap-2 border-t border-line py-6 type-small text-ink-dim md:mt-10 md:flex-row md:justify-between md:gap-10">
-          <p className="shrink-0">© 2026 Group 8 · INT252/257</p>
+          <p className="shrink-0 flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/deepanshu-labs.svg" alt="" width={24} height={24} />
+            <a href="https://deepanshulathar.com/labs" className="hover:text-ink">Deepanshu Labs</a> · 2026
+          </p>
           <p className="max-w-[72ch] md:text-right">
             A student course project. Not affiliated with or endorsed by the LPU placement cell.{note && ` ${note}`}
           </p>

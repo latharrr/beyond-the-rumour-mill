@@ -280,21 +280,7 @@
     visibility: hidden;
   }
 
-  /*
-   * Load-in gate. The root layout marks <html data-motion="pending"> before first
-   * paint only when JS runs and motion is allowed, so without JS everything is
-   * visible. If hydration is slow, the failsafe reveals content on its own.
-   */
-  html[data-motion="pending"] [data-reveal="line"] {
-    transform: translateY(110%);
-    animation: reveal-failsafe 1ms linear 2.4s forwards;
-  }
-  /* 0.01, not 0: still invisible, but painted, so LCP is timed at first paint, not after hydration. */
-  html[data-motion="pending"] [data-reveal="rise"] {
-    opacity: 0.01;
-    transform: translateY(16px);
-    animation: reveal-failsafe 1ms linear 2.4s forwards;
-  }
+
 }
 
 @keyframes reveal-failsafe {

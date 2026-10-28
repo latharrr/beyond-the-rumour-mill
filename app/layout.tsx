@@ -73,15 +73,9 @@ const WEBSITE_LD = {
   },
 };
 
-// Runs before first paint: hides load-in targets only when JS is on and motion is allowed.
-const motionGate = `try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.dataset.motion="pending"}catch(e){}`;
-
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${archivo.variable} ${geist.variable} ${geistMono.variable}`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: motionGate }} />
-      </head>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(WEBSITE_LD) }} />
         {children}
