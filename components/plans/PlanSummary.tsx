@@ -1,39 +1,64 @@
 import Link from "next/link";
-import type { PlanDetail, PlanSummary as PlanSummaryData } from "@/lib/data/plans";
+import { Countdown } from "@/components/drives/DriveCard";
+import { cardInteractive, stretchedLink } from "@/components/ui/surface";
+import { cn } from "@/lib/cn";
+import type { PlanSummary as PlanSummaryData } from "@/lib/data/plans";
+import { formatDriveDate } from "@/lib/format";
+
+/** A native <progress>, styled: a 6px track with an ink fill. */
+export function ProgressBar({ value, max, label, className }: { value: number; max: number; label: string; className?: string }) {
+  return (
+    <progress
+      value={value}
+      max={max || 1}
+      aria-label={label}
+      className={cn(
+        "block h-1.5 w-full appearance-none overflow-hidden rounded-full bg-white/[0.06]",
+        "[&::-webkit-progress-bar]:bg-white/[0.06] [&::-webkit-progress-value]:rounded-full [&::-webkit-progress-value]:bg-ink [&::-webkit-progress-value]:transition-[width] [&::-webkit-progress-value]:duration-500 [&::-moz-progress-bar]:rounded-full [&::-moz-progress-bar]:bg-ink",
+        className,
+      )}
+    />
+  );
+}
 
 /** Dashboard card: drive, date, progress derived from plan_items. */
-export function PlanSummary({ plan }: { plan: PlanSummaryData }) {
+export function PlanSummary({ plan, now }: { plan: PlanSummaryData; now: Date }) {
+  const pct = plan.total ? Math.round((plan.done / plan.total) * 100) : 0;
   return (
-    <article>
-      <h3>
-        <Link href={`/dashboard/plans/${plan.id}`}>{plan.drive.title}</Link>
+    <article className={cn(cardInteractive, "flex h-full flex-col p-5 md:p-6")}>
+      <span className="type-label text-ink-muted">{plan.drive.company}</span>
+      <h3 className="mt-4 type-title text-ink">
+        <Link href={`/dashboard/plans/${plan.id}`} className={stretchedLink}>
+          {plan.drive.title}
+        </Link>
       </h3>
-      <p>
-        {plan.drive.company}
-        {plan.drive.drive_date && <> · drive on <time dateTime={plan.drive.drive_date}>{plan.drive.drive_date}</time></>}
+      <p className="mt-2 flex items-baseline gap-2.5 type-small text-ink-muted">
+        {plan.drive.drive_date ? (
+          <>
+            <time dateTime={plan.drive.drive_date} className="type-data text-ink">
+              {formatDriveDate(plan.drive.drive_date)}
+            </time>
+            <span className="text-ink-dim">
+              <Countdown date={plan.drive.drive_date} now={now} />
+            </span>
+          </>
+        ) : (
+          "Drive date not announced"
+        )}
       </p>
-      <p>{plan.done} of {plan.total} done</p>
-      <progress value={plan.done} max={plan.total || 1} aria-label={`${plan.drive.title} progress`} />
+      <div className="mt-auto pt-6">
+        <div className="flex items-baseline justify-between gap-3 type-small">
+          <p className="text-ink-muted">
+            <span className="type-data text-ink">
+              {plan.done} of {plan.total}
+            </span>{" "}
+            done
+          </p>
+          <span className="type-data text-ink-dim">{pct}%</span>
+        </div>
+        <ProgressBar value={plan.done} max={plan.total} label={`${plan.drive.title} progress`} className="mt-2.5" />
+      </div>
     </article>
   );
 }
 
-/** Plan page header: provenance and export. */
-export function PlanHeader({ plan }: { plan: PlanDetail }) {
-  const weeks = new Set(plan.items.map((i) => i.week)).size;
-  return (
-    <header>
-      <h1>Prep plan: {plan.drive.title}</h1>
-      <p>
-        {plan.drive.company} · {plan.drive.role} ·{" "}
-        {plan.drive.drive_date ? <>drive on <time dateTime={plan.drive.drive_date}>{plan.drive.drive_date}</time></> : "drive date not announced"}
-        {" "}· {plan.items.length} topics over {weeks} week{weeks === 1 ? "" : "s"}
-      </p>
-      <p>
-        <a href={`/api/plans/${plan.id}/export`} download>Export as Markdown</a>
-        {" · "}
-        <Link href={`/drives/${plan.drive.id}`}>Back to the drive</Link>
-      </p>
-    </header>
-  );
-}

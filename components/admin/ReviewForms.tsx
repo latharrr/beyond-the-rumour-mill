@@ -2,27 +2,44 @@
 
 import { useActionState } from "react";
 import { rejectExperience, verifyExperience } from "@/app/_actions/experiences";
+import { FieldError, FormMessage, input, label } from "@/components/ui/field";
+import { Button } from "@/components/ui/pill";
 import type { ActionState } from "@/lib/action-result";
+import { cn } from "@/lib/cn";
 
 export function ReviewForms({ experienceId }: { experienceId: string }) {
   const [verifyState, verify, verifying] = useActionState(verifyExperience, null as ActionState);
   const [rejectState, reject, rejecting] = useActionState(rejectExperience, null as ActionState);
   const done = verifyState?.ok ? verifyState : rejectState?.ok ? rejectState : null;
-  if (done) return <p role="status">{done.message}</p>;
+  if (done) return <FormMessage ok>{done.message}</FormMessage>;
 
   return (
-    <div>
-      <form action={verify}>
+    <div className="grid gap-5">
+      <form action={verify} className="grid gap-2">
         <input type="hidden" name="id" value={experienceId} />
-        <button type="submit" disabled={verifying || rejecting}>{verifying ? "Verifying…" : "Verify"}</button>
-        {verifyState && !verifyState.ok && <p role="alert">{verifyState.message}</p>}
+        <Button type="submit" disabled={verifying || rejecting} className="w-full">
+          {verifying ? "Verifying…" : "Verify"}
+        </Button>
+        {verifyState && !verifyState.ok && <FormMessage ok={false}>{verifyState.message}</FormMessage>}
       </form>
-      <form action={reject}>
+      <form action={reject} className="grid gap-2 border-t border-line pt-5">
         <input type="hidden" name="id" value={experienceId} />
-        <label htmlFor={`reason-${experienceId}`}>Rejection reason (shown to the student)</label>
-        <input id={`reason-${experienceId}`} name="reason" />
-        {rejectState && !rejectState.ok && <p role="alert">{rejectState.fieldErrors?.reason?.[0] ?? rejectState.message}</p>}
-        <button type="submit" disabled={verifying || rejecting}>{rejecting ? "Rejecting…" : "Reject"}</button>
+        <label htmlFor={`reason-${experienceId}`} className={label}>
+          Rejection reason (shown to the student)
+        </label>
+        <input id={`reason-${experienceId}`} name="reason" aria-describedby={`reason-${experienceId}-error`} className={input} />
+        <FieldError id={`reason-${experienceId}-error`}>
+          {rejectState && !rejectState.ok ? (rejectState.fieldErrors?.reason?.[0] ?? rejectState.message) : undefined}
+        </FieldError>
+        <button
+          type="submit"
+          disabled={verifying || rejecting}
+          className={cn(
+            "inline-flex h-11 w-full items-center justify-center rounded-full border border-rumour/40 px-6 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-rumour/10 disabled:opacity-60",
+          )}
+        >
+          {rejecting ? "Rejecting…" : "Reject"}
+        </button>
       </form>
     </div>
   );

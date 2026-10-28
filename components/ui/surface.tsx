@@ -49,7 +49,7 @@ export function PageHeader({
 }
 
 /** Inner-page main: container plus the top space under the nav. */
-export const pageMain = "container-page pt-10 md:pt-16";
+export const pageMain = "container-page pt-10 md:pt-16 motion-safe:animate-rise";
 
 /** A titled block inside an inner page, separated by a hairline. */
 export function PageSection({ id, title, aside, children, className }: { id: string; title: ReactNode; aside?: ReactNode; children: ReactNode; className?: string }) {

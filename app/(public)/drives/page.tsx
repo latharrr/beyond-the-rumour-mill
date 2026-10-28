@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { DRIVE_CARD, DriveCard } from "@/components/drives/DriveCard";
@@ -13,6 +14,13 @@ import type { EligibilityResult } from "@/lib/eligibility";
 import { isProfileComplete } from "@/lib/eligibility";
 import { SEED_DRIVES_ARE_SAMPLE } from "@/lib/sample-data";
 import { driveFiltersSchema } from "@/lib/schemas";
+
+export const metadata: Metadata = {
+  title: "Placement drives: eligibility rules and rounds",
+  description:
+    "Every campus placement drive with its CGPA cut-off, branches, backlog rule, batches, date and rounds. Sign in to see which drives you are eligible for and why.",
+  alternates: { canonical: "/drives" },
+};
 
 const GRID = "grid gap-4 md:grid-cols-2 md:gap-5 lg:grid-cols-3";
 

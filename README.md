@@ -44,6 +44,10 @@ Where the implementation deliberately differs from it, see
 - **Footer:** a short verdict/rumour key, four link columns (Prepare, Contribute, Account, Project), a full-width amber wordmark and the legal line, on every public page.
 - **Discovery pages:** `/drives` (filter bar, open/past groups, eligibility pill per card), `/drives/[id]` (requirements with a per-rule check against your profile, numbered rounds rail, prep-plan card, matched experiences), `/experiences` (company chips, topic bars, verified cards, dashed rumour lane), `/experiences/[id]` (TrustScore broken into its three weighted inputs) and `/rumour-check` (claim form beside the verdict, with the 15% / 50% thresholds marked on the share bar).
 - **UI kit:** `components/ui/` holds the pills, status pills, sample tag, chips, cards, page header, empty state and form controls. The landing page and the discovery pages share it, along with one `DriveCard`.
+- **Student and admin pages:** `/login`, `/onboarding` (profile + delete account), `/experiences/new` (four numbered steps), `/dashboard` (plan cards with progress), `/dashboard/plans/[id]` (per-week progress with start dates and a "This week" marker, export), `/admin` (queue with evidence and verify/reject) and `/admin/drives` (drive table + form).
+- **One frame everywhere:** public, student and admin pages share the nav and footer (`components/SiteChrome.tsx`); signed-in areas add a tab bar. Loading, error and 404 screens are styled.
+- **SEO and AI crawlers:** per-page titles, descriptions and canonicals; Open Graph image; `robots.txt` (AI crawlers explicitly allowed on public pages); `sitemap.xml` with every drive and verified experience; `llms.txt`; JSON-LD (WebSite + breadcrumbs). Signed-in pages are noindex. Set `NEXT_PUBLIC_SITE_URL` if the site moves off its Vercel domain.
+- **Motion:** inner pages rise in once on load (CSS, off under reduced motion); the landing keeps its GSAP scroll motion.
 - **Privacy page:** `/privacy` explains in plain words what is stored, what is public, how evidence is handled and how account deletion works. It mirrors the evidence/PII notes below.
 - **Moves and tests:** `/login` now sits inside the public layout so it gets the nav and footer, and the e2e selectors are scoped for the repeated footer links.
 
@@ -51,20 +55,14 @@ Where the implementation deliberately differs from it, see
 
 **UI design pass (Deepanshu)**
 
-1. **Student flows:** `/login`, `/onboarding`, `/experiences/new`, `/dashboard`, `/dashboard/plans/[id]`.
-2. **Admin and states:**
-   - `/admin` and `/admin/drives`;
-   - the loading, error and not-found screens;
-   - extend `components/ui/` to the admin forms (spec §3.3).
-3. **Pre-merge gate, then PR:**
-   - `supabase db reset`, lint, typecheck, Vitest, RLS, Playwright;
-   - Lighthouse ≥ 90 on `/` and `/drives`, run on a production build.
+1. Lighthouse ≥ 90 on `/` and `/drives` on a production build (see the PR for scores).
+2. Open the PR "Deepanshu: UI design pass" and merge after review; prod updates on merge.
 
 **Gaps against the course brief (backend + pages, after the UI pass)**
 
 - **Preparation timelines (Module 2):** these are only per-experience free text. Add an aggregate view, such as "most seniors started 4–6 weeks before".
 - **Resources (Module 3):** there's no browsable resources page; resources appear only inside plans, rounds and experiences. The base taxonomy has just 6 resources, so many plan items show "No resource linked yet".
-- **Progress tracking (Module 3):** only "n of m done" exists. Per-week progress or history would strengthen it.
+- **Progress tracking (Module 3):** per-week progress now shows on the plan page; a history over time is still missing.
 - **Roles:** there are no dedicated role pages (minor).
 
 **Human tasks**

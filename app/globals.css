@@ -33,6 +33,21 @@
   --nav-h-md: 72px;
 }
 
+/*
+ * The one entrance for inner pages: a short rise, once, on load. It starts at
+ * near-zero (not zero) opacity so the browser still counts the content as
+ * painted for LCP. Applied with motion-safe:, so reduced motion shows it still.
+ */
+@theme {
+  --animate-rise: rise 0.45s var(--ease-out-3) both;
+  @keyframes rise {
+    from {
+      opacity: 0.01;
+      transform: translateY(10px);
+    }
+  }
+}
+
 @theme inline {
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ClaimBar } from "@/components/landing/ClaimBar";
 import { ClaimBarFallback } from "@/components/landing/ClaimBarFallback";
@@ -12,6 +13,8 @@ import { ProblemSection } from "@/components/landing/ProblemSection";
 import { listClaimExamples } from "@/lib/data/claims";
 import { listCompanies, listTopics } from "@/lib/data/taxonomy";
 import { SEED_EXPERIENCES_ARE_SAMPLE } from "@/lib/sample-data";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default function LandingPage() {
   return (

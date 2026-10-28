@@ -1,6 +1,7 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import { cache, Suspense } from "react";
 import { Countdown, STATUS_LABEL } from "@/components/drives/DriveCard";
 import { DriveRequirements } from "@/components/drives/DriveRequirements";
 import { EligibilityBadge } from "@/components/drives/EligibilityBadge";
@@ -13,14 +14,33 @@ import { SampleTag } from "@/components/ui/status";
 import { card, EmptyState, PageSection, pageMain } from "@/components/ui/surface";
 import { getSessionUser } from "@/lib/auth";
 import { cn } from "@/lib/cn";
-import { getDrive } from "@/lib/data/drives";
+import { getDrive as fetchDrive } from "@/lib/data/drives";
 import { listMatchedExperiences } from "@/lib/data/experiences";
 import { getMyPlanIdForDrive } from "@/lib/data/plans";
 import { getMyProfile } from "@/lib/data/profile";
 import { branchCodeMap, listBranches } from "@/lib/data/taxonomy";
 import { evaluateEligibility, explainEligibility } from "@/lib/eligibility";
-import { formatDriveDate } from "@/lib/format";
+import { formatCgpa, formatDriveDate } from "@/lib/format";
+import { breadcrumbs, jsonLd } from "@/lib/json-ld";
+import { absoluteUrl } from "@/lib/site";
 import { SEED_DRIVES_ARE_SAMPLE, SEED_EXPERIENCES_ARE_SAMPLE } from "@/lib/sample-data";
+
+// One fetch per request, shared by the metadata and the page.
+const getDrive = cache(fetchDrive);
+
+export async function generateMetadata({ params }: PageProps<"/drives/[id]">): Promise<Metadata> {
+  const { id } = await params;
+  const drive = await getDrive(id);
+  if (!drive) return { title: "Drive not found", robots: { index: false } };
+  const when = drive.drive_date ? ` on ${formatDriveDate(drive.drive_date)}` : "";
+  const cgpa = drive.eligibility_cgpa != null ? `minimum CGPA ${formatCgpa(drive.eligibility_cgpa)}` : "no CGPA cut-off";
+  return {
+    title: `${drive.title}: eligibility and rounds`,
+    description: `${drive.company.name} ${drive.role.label} drive${when}: ${cgpa}, ${drive.max_backlogs <= 0 ? "no backlogs allowed" : `up to ${drive.max_backlogs} backlogs`}, ${drive.rounds.length} rounds with topics, plus what verified seniors were asked.`,
+    alternates: { canonical: `/drives/${drive.id}` },
+    openGraph: { type: "article", title: drive.title, url: `/drives/${drive.id}` },
+  };
+}
 
 export default function DrivePage({ params }: PageProps<"/drives/[id]">) {
   return (
@@ -66,6 +86,18 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
 
   return (
     <div className="pb-16 md:pb-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: jsonLd(
+            breadcrumbs([
+              ["Home", absoluteUrl("/")],
+              ["Drives", absoluteUrl("/drives")],
+              [drive.title, absoluteUrl(`/drives/${drive.id}`)],
+            ]),
+          ),
+        }}
+      />
       <header className="pt-8 pb-10 md:pt-10 md:pb-14">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <span className="type-label text-ink-muted">{drive.company.name}</span>

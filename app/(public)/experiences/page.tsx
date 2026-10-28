@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { CommunityTipsLane } from "@/components/experiences/CommunityTipsLane";
@@ -11,6 +12,13 @@ import { isUuid } from "@/lib/data/drives";
 import { listCommunityTips, listVerifiedExperiences } from "@/lib/data/experiences";
 import { type Company, listCompanies } from "@/lib/data/taxonomy";
 import { SEED_EXPERIENCES_ARE_SAMPLE } from "@/lib/sample-data";
+
+export const metadata: Metadata = {
+  title: "Verified interview experiences",
+  description:
+    "What placed seniors were actually asked, round by round, with a TrustScore for each write-up and the most-asked topics per company. Unverified tips are labelled as rumours.",
+  alternates: { canonical: "/experiences" },
+};
 
 // §3.2: verified experiences (with TrustScore) and the quarantined
 // community-tips lane, visually separate sections.

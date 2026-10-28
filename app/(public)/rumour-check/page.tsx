@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { checkClaim } from "@/app/_actions/rumour";
 import { SampleTag } from "@/components/ui/status";
@@ -7,6 +8,13 @@ import { ClaimForm } from "@/components/rumour/ClaimForm";
 import { listCompanies, listTopics } from "@/lib/data/taxonomy";
 import { SEED_EXPERIENCES_ARE_SAMPLE } from "@/lib/sample-data";
 import { claimSchema } from "@/lib/schemas";
+
+export const metadata: Metadata = {
+  title: "Rumour check: does a company really ask that topic?",
+  description:
+    "Check a placement rumour like \u201cTCS heavily asks DP\u201d against verified senior experiences. A fixed rule gives Supported, Mixed evidence or Not supported, and cites every experience it counted.",
+  alternates: { canonical: "/rumour-check" },
+};
 
 export default function RumourCheckPage({ searchParams }: PageProps<"/rumour-check">) {
   return (

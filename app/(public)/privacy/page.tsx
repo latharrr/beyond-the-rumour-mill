@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { pageMain } from "@/components/ui/surface";
 
 export const metadata: Metadata = {
-  title: "Privacy · Beyond the Rumour Mill",
-  description: "What the site stores about you, who can see it, and how to delete it.",
+  title: "Privacy",
+  description: "What Beyond the Rumour Mill stores about you, what is public, how evidence files are handled, and how to delete your account.",
+  alternates: { canonical: "/privacy" },
 };
 
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
@@ -23,7 +25,7 @@ const LIST = "flex list-disc flex-col gap-2 pl-5 marker:text-ink-dim";
 // Mirrors the README's "Evidence: PII and retention" notes; keep the two in step.
 export default function PrivacyPage() {
   return (
-    <main className="container-page pt-12 md:pt-20">
+    <main className={`${pageMain} pb-8`}>
       <header className="pb-10 md:pb-14">
         <p className="type-label text-ink-dim">Privacy</p>
         <h1 className="mt-4 max-w-[14ch] type-section text-ink">What we keep, and who sees it</h1>

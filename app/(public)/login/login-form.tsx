@@ -4,6 +4,9 @@ import { useActionState, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { signIn, signUp, type AuthState } from "@/app/_actions/auth";
 import { z } from "zod";
+import { FieldError, FormMessage, input, label } from "@/components/ui/field";
+import { Button } from "@/components/ui/pill";
+import { cn } from "@/lib/cn";
 import { credentialsSchema } from "@/lib/schemas";
 
 type Mode = "signin" | "signup";
@@ -34,30 +37,70 @@ export function LoginForm() {
   }
 
   return (
-    <form action={mode === "signin" ? signInAction : signUpAction} onSubmit={validate} noValidate>
+    <form action={mode === "signin" ? signInAction : signUpAction} onSubmit={validate} noValidate className="grid gap-5">
+      <div>
+        <h2 className="type-title text-ink">{mode === "signin" ? "Welcome back" : "Create your account"}</h2>
+        <p className="mt-1 type-small text-ink-muted">
+          {mode === "signin" ? "Use the email you signed up with." : "We'll send a confirmation link to your email."}
+        </p>
+      </div>
       <input type="hidden" name="next" value={next} />
 
-      <label htmlFor="email">Email</label>
-      <input id="email" name="email" type="email" autoComplete="email" defaultValue={state.email} required
-        aria-invalid={!!fieldErrors?.email} aria-describedby="email-error" />
-      {fieldErrors?.email && <p id="email-error" role="alert">{fieldErrors.email[0]}</p>}
+      <div>
+        <label htmlFor="email" className={label}>
+          Email
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          defaultValue={state.email}
+          required
+          aria-invalid={!!fieldErrors?.email}
+          aria-describedby="email-error"
+          className={cn(input, "mt-2")}
+        />
+        <FieldError id="email-error">{fieldErrors?.email?.[0]}</FieldError>
+      </div>
 
-      <label htmlFor="password">Password</label>
-      <input id="password" name="password" type="password" required
-        autoComplete={mode === "signin" ? "current-password" : "new-password"}
-        aria-invalid={!!fieldErrors?.password} aria-describedby="password-error" />
-      {fieldErrors?.password && <p id="password-error" role="alert">{fieldErrors.password[0]}</p>}
+      <div>
+        <label htmlFor="password" className={label}>
+          Password
+        </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          required
+          autoComplete={mode === "signin" ? "current-password" : "new-password"}
+          aria-invalid={!!fieldErrors?.password}
+          aria-describedby="password-error"
+          className={cn(input, "mt-2")}
+        />
+        <FieldError id="password-error">{fieldErrors?.password?.[0]}</FieldError>
+      </div>
 
-      {linkError && !state.error && <p role="alert">{linkError}</p>}
-      {state.error && <p role="alert">{state.error}</p>}
-      {state.message && <p role="status">{state.message}</p>}
+      {linkError && !state.error && <FormMessage ok={false}>{linkError}</FormMessage>}
+      {state.error && <FormMessage ok={false}>{state.error}</FormMessage>}
+      {state.message && <FormMessage ok>{state.message}</FormMessage>}
 
-      <button type="submit" disabled={pending}>
+      <Button type="submit" disabled={pending} className="w-full">
         {pending ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
-      </button>
-      <button type="button" onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setClientErrors(undefined); }}>
-        {mode === "signin" ? "New here? Create an account" : "Have an account? Sign in"}
-      </button>
+      </Button>
+      <p className="border-t border-line pt-5 text-center type-small text-ink-muted">
+        <button
+          type="button"
+          onClick={() => {
+            setMode(mode === "signin" ? "signup" : "signin");
+            setClientErrors(undefined);
+          }}
+          className="hit-44 font-medium text-ink underline decoration-ink-dim underline-offset-4 hover:decoration-ink"
+        >
+          {mode === "signin" ? "New here? Create an account" : "Have an account? Sign in"}
+        </button>
+      </p>
     </form>
   );
 }
