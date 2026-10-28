@@ -1,3 +1,4 @@
+import { CompanyCards } from "@/components/research/CompanyCards";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -28,10 +29,11 @@ export default function DrivesPage({ searchParams }: PageProps<"/drives">) {
   return (
     <main className={pageMain}>
       <PageHeader
-        label="Official drives"
+        label="Campus drives & public opportunities"
         title="Drives"
-        lede="Eligibility rules and rounds for every campus drive, as published by the placement cell. Sign in and each drive is checked against your profile."
+        lede="Browse source-linked public opportunities below. Campus drives are a separate lane; only explicitly published campus rules are checked against your profile."
       />
+      <CompanyCards compact />
       <Suspense fallback={<DriveResultsFallback />}>
         <DriveResults searchParams={searchParams} />
       </Suspense>
@@ -110,7 +112,7 @@ async function DriveResults({ searchParams }: Pick<PageProps<"/drives">, "search
         <div className="mt-4">
           <EmptyState title={drives.length === 0 ? "No drives have been published yet." : "No drives match these filters."}>
             {drives.length === 0
-              ? "Drives appear here with their eligibility rules and rounds as soon as the placement cell announces them."
+              ? "Drives appear here with their eligibility rules and rounds when a project admin publishes a campus announcement."
               : "Try a shorter search, another company, or clear the filters."}
           </EmptyState>
         </div>

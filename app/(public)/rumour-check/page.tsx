@@ -1,3 +1,4 @@
+import { CompanyCards } from "@/components/research/CompanyCards";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { checkClaim } from "@/app/_actions/rumour";
@@ -34,6 +35,7 @@ export default function RumourCheckPage({ searchParams }: PageProps<"/rumour-che
           </>
         }
       />
+      <CompanyCards compact />
       <Suspense fallback={<div role="status" aria-label="Loading" className={cn(card, "h-[520px] lg:w-5/12")} />}>
         <Claim searchParams={searchParams} />
       </Suspense>

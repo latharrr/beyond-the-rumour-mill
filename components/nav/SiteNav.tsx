@@ -10,6 +10,7 @@ import { Tone } from "./Tone";
 
 const LINKS = [
   { href: "/drives", label: "Drives" },
+  { href: "/companies", label: "Companies" },
   { href: "/experiences", label: "Experiences" },
   { href: "/rumour-check", label: "Rumour check" },
 ] as const;
@@ -63,7 +64,7 @@ export function SiteNav({ account }: { account: ReactNode }) {
             </Link>
           </div>
 
-          <ul data-group="links" className="hidden items-center gap-7 md:col-start-2 md:flex">
+          <ul data-group="links" className="hidden items-center gap-5 md:col-start-2 md:flex">
             {LINKS.map((l) => (
               <li key={l.href}>
                 <Link prefetch={true} href={l.href} className="group hit-44 inline-flex text-[15px]">

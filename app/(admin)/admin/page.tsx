@@ -1,3 +1,4 @@
+import { AdminOverview } from "@/components/admin/AdminOverview";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { EvidenceButton } from "@/components/admin/EvidenceButton";
@@ -18,6 +19,7 @@ export default function AdminPage() {
         title="Verification queue"
         lede="Check each submission against its evidence. Verified experiences start counting in topic bars, verdicts and plans; rejected ones never appear publicly."
       />
+      <Suspense fallback={<p role="status">Loading overview...</p>}><AdminOverview /></Suspense>
       <Suspense
         fallback={
           <div role="status" aria-label="Loading queue" className="grid gap-4">

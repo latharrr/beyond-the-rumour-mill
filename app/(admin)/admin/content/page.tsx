@@ -1,0 +1,11 @@
+import { Suspense } from 'react';
+import Link from 'next/link';
+import { adminSubmissions } from '@/lib/data/admin-overview';
+import { companyResearch,researchChecked,researchStatus } from '@/lib/company-research';
+import { PageHeader,pageMain,card } from '@/components/ui/surface';
+export default function ContentPage() {
+ return <main className={`${pageMain} pb-20`}><PageHeader title="Content & sources" lede="Review submission state and public-source freshness without mixing public interview reports into verified student evidence."/>
+ <section><h2 className="type-section">Public research catalog</h2><p className="mt-3 type-small text-ink-muted">{companyResearch.length} companies · checked {researchChecked} · versioned in data/company-research.json</p><ul className="mt-5 grid gap-3 md:grid-cols-2">{companyResearch.map(c=><li key={c.slug} className={`${card} p-4`}><Link className="type-title text-amber" href={`/companies/${c.slug}`}>{c.name}</Link><p className="mt-2 type-small text-ink-muted">{researchStatus(c)} · {c.experiences.length} historical report</p></li>)}</ul><p className="mt-4 type-small text-ink-dim">Update source URLs, facts and checked dates together in the catalog. Closed cycles stay closed. Public reports are excluded from evidence counts and plan generation.</p></section>
+ <section className="mt-10"><h2 className="type-section">Recent submissions</h2><Suspense fallback={<p role="status">Loading submissions...</p>}><Submissions/></Suspense></section></main>;
+}
+async function Submissions(){const rows=await adminSubmissions();return <><p className="mt-3 type-small text-ink-dim">Latest 100 · evidence remains private. Pending items can be reviewed in the verification queue.</p><ul className="mt-5 grid gap-3">{rows.map(e=><li key={e.id} className={`${card} flex flex-wrap justify-between gap-4 p-4`}><span>{e.company?.name} · {e.role?.label}</span><span className="type-small text-ink-muted">{e.status} · {e.created_at?.slice(0,10)}</span>{e.status==='pending'?<Link className="text-amber" href="/admin">Review queue</Link>:e.status==='verified'?<Link className="text-amber" href={`/experiences/${e.id}`}>Public experience</Link>:null}</li>)}</ul>{!rows.length&&<p className="mt-5 type-body text-ink-muted">No submissions yet.</p>}</>}

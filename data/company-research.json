@@ -1,0 +1,582 @@
+{
+  "checked": "2026-10-28",
+  "note": "Official requirements come only from the listed official URLs. Experiences are candidate-written third-party posts, paraphrased, with source links. Statuses were read on the check date; third-party hiring-news sites were used for leads only. Nothing here is LPU-specific.",
+  "companies": [
+    {
+      "slug": "tcs",
+      "name": "TCS",
+      "segment": "IT services",
+      "roles": [
+        "Prime",
+        "Digital (via TCS NQT)"
+      ],
+      "official_requirements": {
+        "source_url": "https://www.tcs.com/careers/india/tcs-all-india-nqt-hiring",
+        "facts": [
+          "Batches 2024, 2025, 2026 with B.E/B.Tech/M.E/M.Tech/MCA/M.Sc/M.S from AICTE/UGC recognised institutions",
+          "Minimum 60% aggregate (or equivalent CGPA) across class 10, 12, diploma if any, graduation and PG if any",
+          "No pending backlog when appearing for selection",
+          "Up to 2 years work experience allowed",
+          "Test: 190 min integrated NQT. Part A Foundation 75 min (numerical 25, verbal 25, reasoning 25). Part B Advanced 115 min (advanced quant and reasoning 25, advanced coding 90). In-centre mode at TCS iON centre",
+          "Listed CTC ranges: Prime 9.09-9.30 LPA (UG, 0-1 yr), Digital 7.09-7.30 LPA; actual pay depends on experience and location (as stated by TCS)"
+        ]
+      },
+      "status": "closed",
+      "status_note": "Official page says registration is closed. Historical 2024-2026 graduate cycle, not an open drive.",
+      "opening": {
+        "label": "TCS NQT 2026 cycle",
+        "status": "closed",
+        "url": "https://www.tcs.com/careers/india/tcs-all-india-nqt-hiring"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/tcs-nqt-interview-experience-for-tcs-prime-on-campus/",
+          "source_title": "TCS NQT Interview Experience For TCS Prime (On-Campus)",
+          "published": "2024-05-28",
+          "role": "Prime",
+          "type": "on-campus",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Three interview rounds (technical, managerial, HR) as described by the candidate, about 40-45 min total"
+          ],
+          "questions": [
+            "Four pillars of OOP and abstract class vs interface",
+            "C++ virtual keyword, dynamic memory, constructors vs destructors, operator overloading",
+            "React state management, JSX, performance optimisation",
+            "HTML tables, block vs inline, JS var/let/const, async handling, DOM, closures, == vs ===",
+            "SQL join types and normalisation",
+            "Questions on own projects, then HR questions"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "Aptitude and reasoning speed",
+        "Advanced coding in 90 min",
+        "OOP, SQL, web basics, project depth"
+      ]
+    },
+    {
+      "slug": "infosys",
+      "name": "Infosys",
+      "segment": "IT services",
+      "roles": [
+        "Systems Engineer",
+        "Specialist Programmer",
+        "Digital Specialist Engineer"
+      ],
+      "official_requirements": {
+        "source_url": "https://www.infosys.com/careers/graduates.html",
+        "facts": [
+          "Official graduates page lists programs (InfyTQ, internships, Ingenious contest) but gives no current eligibility or open drive details in the fetched text"
+        ]
+      },
+      "status": "unverified",
+      "status_note": "No official open drive confirmed. Third-party sites reported SP/DSE 2026 hiring announced Nov 2025 (not verified against an Infosys page). Treat as not confirmed open.",
+      "opening": {
+        "label": "Infosys graduate hiring",
+        "status": "unverified",
+        "url": "https://www.infosys.com/careers/graduates.html"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/infosys-interview-experience-for-systems-engineer-trainee/",
+          "source_title": "Infosys Interview Experience for Systems Engineer (Trainee)",
+          "published": "2025-11-20",
+          "role": "Systems Engineer (off-campus, women-only drive)",
+          "type": "off-campus",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Online assessment 120 min via TASK: logical, technical, verbal, pseudocode, puzzles, grammar, writing; reported 70% sectional cut-off",
+            "Single-panel interview (technical + HR mix)"
+          ],
+          "questions": [
+            "Introduce yourself and explain your project",
+            "Why Infosys",
+            "Biggest challenge faced",
+            "Academic background and drives attended",
+            "Willingness for higher studies",
+            "Any questions for the panel"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "Aptitude plus pseudocode",
+        "Verbal and writing",
+        "Project explanation and HR basics"
+      ]
+    },
+    {
+      "slug": "wipro",
+      "name": "Wipro",
+      "segment": "IT services",
+      "roles": [
+        "Project Engineer / Graduate Engineer Trainee (Elite)",
+        "Turbo (46 premier institutes)"
+      ],
+      "official_requirements": {
+        "source_url": "https://careers.wipro.com/content/Early-Careers/",
+        "facts": [
+          "Early Careers page lists Elite (technical graduate hiring) and Turbo (46 premier institutes incl. IIITs, NITs, select private colleges)",
+          "Current posting: Graduate Engineer Trainee, Gurugram, B.Tech/BE (CS, IT, ECE) or MCA, day shift, work from office, 12-month service agreement, GATE assessment before interview (per posting)"
+        ]
+      },
+      "status": "open_posting",
+      "status_note": "Wipro careers posting started 10/23/26. Single role (manual testing/TBA configuration, Gurugram), not a general campus drive. Eligibility by batch/percentage not stated in fetched text.",
+      "opening": {
+        "label": "Graduate Engineer Trainee, Gurugram (posted 23 Oct 2026)",
+        "status": "listed",
+        "url": "https://careers.wipro.com/job/Graduate-Engineer-Trainee/212634-en_US/"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/wipro-elite-interview-experience-on-campus/",
+          "source_title": "Wipro Elite Interview Experience (On Campus)",
+          "published": "2025-07-11",
+          "role": "Project Engineer",
+          "type": "on-campus",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Written test on AMCAT: English, logical, quant, essay (20 min), coding (2 questions)",
+            "Technical interview",
+            "HR interview (telephonic)"
+          ],
+          "questions": [
+            "Transpose a matrix; check balanced parentheses (coding)",
+            "Linked list vs array; storage classes in C; paging in OS; sizeof a structure; structure vs union",
+            "HR: introduce yourself, co-curriculars, relocation, why Wipro, skills to improve"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "Aptitude and essay writing",
+        "Basic coding",
+        "C and OS fundamentals"
+      ]
+    },
+    {
+      "slug": "cognizant",
+      "name": "Cognizant",
+      "segment": "IT services",
+      "roles": [
+        "GenC / Analyst Trainee"
+      ],
+      "official_requirements": {
+        "source_url": "https://careers.cognizant.com/india-en/pathways-to-cognizant/genc-program/",
+        "facts": [
+          "Official page states Analyst Trainee eligibility for 2024, 2025, 2026 graduating batches with 3-year full-time degrees (BCA, BSc, BA, BCom, etc.). Engineering GenC criteria are not stated in the fetched text",
+          "Process: application, assessment(s), interview(s), result; campus hiring goes via placement officer; off-campus drives are stream/role/batch specific",
+          "No service bond stated by Cognizant"
+        ]
+      },
+      "status": "unverified",
+      "status_note": "Page describes ongoing program but names no dated open drive; apply via campus placement officer or listed positions.",
+      "opening": {
+        "label": "GenC program page",
+        "status": "unverified",
+        "url": "https://careers.cognizant.com/india-en/pathways-to-cognizant/genc-program/"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/cognizant-genc-2024-interview-experience/",
+          "source_title": "Cognizant GenC 2024 Interview Experience",
+          "published": "2024-06-19",
+          "role": "GenC",
+          "type": "campus/migrated phase",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Aptitude and communication",
+            "Technical plus basic coding and SQL",
+            "Technical + HR (about 50 min)"
+          ],
+          "questions": [
+            "Remove duplicates from array and list; reverse a string in one line",
+            "SQL joins, self join, subqueries, DDL vs DML, ACID, DELETE vs TRUNCATE, COMMIT",
+            "Python: set vs tuple, lists, dictionaries, __init__, inheritance, pass, *args",
+            "HR: shifts, strengths and weaknesses, relocation"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "SQL",
+        "Python or Java basics",
+        "Communication"
+      ]
+    },
+    {
+      "slug": "capgemini",
+      "name": "Capgemini",
+      "segment": "IT services",
+      "roles": [
+        "Software Engineer (Exceller)"
+      ],
+      "official_requirements": {
+        "source_url": "https://www.capgemini.com/in-en/careers/career-paths/students-and-graduates/technical-graduates/",
+        "facts": [
+          "Exceller is the technical graduate program; Capgemini says to contact your college placement team to join the hiring process. No eligibility numbers on the official page"
+        ]
+      },
+      "status": "unverified",
+      "status_note": "Official page gives no open drive or dates. Campus only via placement team.",
+      "opening": {
+        "label": "Exceller program",
+        "status": "unverified",
+        "url": "https://www.capgemini.com/in-en/careers/career-paths/students-and-graduates/technical-graduates/"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/capgemini-interview-experience-exceller-2023-2024/",
+          "source_title": "Capgemini Interview Experience | Exceller 2023-2024",
+          "published": "2024-09-04",
+          "role": "Software Engineer (Exceller)",
+          "type": "off-campus via Superset",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Round 1: technical MCQ (40 q, 40 min), English test (30 q, 30 min), game-based test",
+            "Round 2: spoken English test (SVAR)",
+            "Round 3: technical + HR interview"
+          ],
+          "questions": [
+            "Introduce yourself, projects and internship role",
+            "Difference between = and ==, prime number code",
+            "Willingness to relocate"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "Pseudocode MCQs",
+        "English communication",
+        "Project explanation"
+      ]
+    },
+    {
+      "slug": "hcltech",
+      "name": "HCLTech",
+      "segment": "IT services",
+      "roles": [
+        "Graduate Engineer Trainee (AMP: Ascend, Momentum, Polaris)"
+      ],
+      "official_requirements": {
+        "source_url": "https://www.hcltech.com/en-us/careers/campus-hiring",
+        "facts": [
+          "Engineering graduates, B.E/B.Tech/M.E/M.Tech, any branch (AMP)",
+          "Minimum 70% throughout academics (class 10, 12, graduation); 65% for Lucknow, Nagpur, Vijayawada, Madurai postings",
+          "Ascend test: cognitive (~90 min), coding/technical (60-90 min), Versant English (score 46-56 to qualify); then technical and HR interviews",
+          "Pay as stated by HCLTech: Ascend INR 4.5 LPA (3.75 LPA at New Vistas locations); top 10% can upgrade to Momentum 6.0 LPA or Polaris 10.0 LPA",
+          "Off-campus fresh engineering graduates also eligible per HCLTech FAQ"
+        ]
+      },
+      "status": "ongoing_program",
+      "status_note": "Official campus hiring page shows the AMP program and an Elite Engineers banner dated Oct 2026; no application deadline or batch year seen. Confirm batch eligibility on the page.",
+      "opening": {
+        "label": "HCLTech campus hiring (AMP)",
+        "status": "listed",
+        "url": "https://www.hcltech.com/en-us/careers/campus-hiring"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/hcltech-interview-experience-graduate-engineer-trainee-get-on-campus-full-time/",
+          "source_title": "HCLTech Interview Experience | Graduate Engineer Trainee (GET) | On-Campus",
+          "published": "2025-01-15",
+          "role": "GET",
+          "type": "on-campus",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Online test 75 q in 90 min (coding, DBMS/OOPS/CN/OS, aptitude)",
+            "Document check (70% criterion)",
+            "Technical interview",
+            "HR interview"
+          ],
+          "questions": [
+            "JS: string interpolation, rest vs spread, arrow functions, hoisting, IIFE, promises vs callbacks, DOM selectors, innerText vs innerHTML-style differences",
+            "React virtual DOM",
+            "OOP pillars, normalisation",
+            "HR: conflict resolution in a team, PAN India relocation, hobbies"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "Maintain 70% and no backlog documents",
+        "Coding plus core CS MCQs",
+        "Versant spoken English"
+      ]
+    },
+    {
+      "slug": "accenture",
+      "name": "Accenture",
+      "segment": "IT services / consulting",
+      "roles": [
+        "Associate Software Engineer"
+      ],
+      "official_requirements": {
+        "source_url": "https://www.accenture.com/in-en/careers/life-at-accenture/entry-level",
+        "facts": [
+          "Official early-careers page states applications for Graduate and Post-Graduate roles are currently closed"
+        ]
+      },
+      "status": "closed",
+      "status_note": "Official Accenture India early-career page says graduate roles currently closed (checked 2026-10-28).",
+      "opening": {
+        "label": "Graduate roles",
+        "status": "closed",
+        "url": "https://www.accenture.com/in-en/careers/life-at-accenture/entry-level"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/accenture-interview-experience-for-associate-software-engineer-on-campus-2025/",
+          "source_title": "Accenture Interview Experience for associate software engineer (on campus 2025)",
+          "published": "2025-08-14",
+          "role": "ASE",
+          "type": "on-campus",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Online assessment: reasoning, MS Excel/Word, networking, 2 easy coding questions",
+            "Communication assessment (non-elimination per candidate)",
+            "Short interview 10-15 min"
+          ],
+          "questions": [
+            "Major and minor project",
+            "Accenture CEO and global/India headquarters",
+            "Self introduction"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "Cognitive and basic coding",
+        "Spoken English",
+        "Know your project well"
+      ]
+    },
+    {
+      "slug": "amazon",
+      "name": "Amazon",
+      "segment": "Product",
+      "roles": [
+        "SDE I (University Talent Acquisition)"
+      ],
+      "official_requirements": {
+        "source_url": "https://www.amazon.jobs/en/jobs/10453457/software-dev-engineer-i-amazon-university-talent-acquisition",
+        "facts": [
+          "Posting says intended for 2026 and 2025 graduates only",
+          "Bachelor's or above in CS, computer engineering or related field; CS fundamentals (OOD, algorithms, data structures, complexity); one of C/C++, Python, Java or Perl",
+          "Locations listed: Bengaluru, Hyderabad, Chennai, Delhi",
+          "Applications reviewed on a rolling basis (per Amazon)",
+          "A second SDE I posting (10454438) lists 2026 graduates, Bengaluru/Hyderabad/Chennai"
+        ]
+      },
+      "status": "listed_unverified",
+      "status_note": "Amazon.jobs pages loaded, but live apply state and posting date were not visible in the fetched text. Batch limited to 2025/2026 graduates, so check the user's batch.",
+      "opening": {
+        "label": "SDE I, University Talent Acquisition",
+        "status": "listed",
+        "url": "https://www.amazon.jobs/en/jobs/10453457/software-dev-engineer-i-amazon-university-talent-acquisition"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/amazon-interview-experience-for-sde-1on-campus-2/",
+          "source_title": "Amazon Interview Experience for SDE-1 (On-Campus)",
+          "published": "2022-09-06",
+          "role": "SDE-1",
+          "type": "on-campus (2022, older process)",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Online assessment: 2 coding questions, work simulation, behavioural work-style section",
+            "Three interview rounds with DSA coding, project discussion and leadership-principle questions"
+          ],
+          "questions": [
+            "Minimum platforms; next larger node in BST; reverse words in a string; add 1 to a number held as linked list; delete a node in BST; snake and ladder",
+            "Array vs linked list, tree vs graph",
+            "Leadership: extra work beyond role, tight deadline, efficiency trade-offs"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "DSA: arrays, linked lists, trees, graphs",
+        "Leadership principles stories",
+        "Think aloud and give time/space complexity"
+      ]
+    },
+    {
+      "slug": "google",
+      "name": "Google",
+      "segment": "Product",
+      "roles": [
+        "Software Engineer, University Graduate"
+      ],
+      "official_requirements": {
+        "source_url": "https://www.google.com/about/careers/applications/jobs/results/111007517923779270-software-engineer-university-graduate-2026",
+        "facts": [
+          "Fetched page shows generic search results and the note 'This job may have been taken down'; no requirements readable"
+        ]
+      },
+      "status": "unverified_possibly_closed",
+      "status_note": "The 2026 university graduate posting appears taken down. Do not list as open.",
+      "opening": {
+        "label": "Software Engineer, University Graduate 2026",
+        "status": "closed_or_unverified",
+        "url": "https://www.google.com/about/careers/applications/jobs/results/111007517923779270-software-engineer-university-graduate-2026"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/google-interview-experience-software-engineer-university-graduate-2025/",
+          "source_title": "Google Interview Experience | Software Engineer University Graduate 2025",
+          "published": "2024-12-30",
+          "role": "SWE University Graduate 2025",
+          "type": "hiring-cycle report",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Virtual briefing, then four technical rounds focused on problem solving and coding (per candidate)"
+          ],
+          "questions": [
+            "Array and interval problems with two approaches and complexity analysis",
+            "Preparation reported: LeetCode Blind 75, graphs and trees"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "DSA depth",
+        "Explain trade-offs",
+        "Complexity analysis"
+      ]
+    },
+    {
+      "slug": "microsoft",
+      "name": "Microsoft",
+      "segment": "Product",
+      "roles": [
+        "Software Engineer (early career)"
+      ],
+      "official_requirements": {
+        "source_url": "https://careers.microsoft.com/v2/global/en/recentgraduate",
+        "facts": [
+          "Recent graduate page lists early-career roles and the Aspire onboarding program; a Software Engineer role description is on the page",
+          "India (Bangalore) listings appear on the page but none was confirmed as a campus SWE role for this batch"
+        ]
+      },
+      "status": "unverified",
+      "status_note": "No specific India SWE campus drive with dates confirmed.",
+      "opening": {
+        "label": "Recent graduate opportunities",
+        "status": "unverified",
+        "url": "https://careers.microsoft.com/v2/global/en/recentgraduate"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/microsoft-interview-experience-for-sde-on-campus-3/",
+          "source_title": "Microsoft Interview Experience for SDE (On-Campus)",
+          "published": "2023-05-15",
+          "role": "SDE",
+          "type": "on-campus",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Online assessment",
+            "Technical interview",
+            "Behavioural interview",
+            "Managerial interview"
+          ],
+          "questions": [
+            "Coding with algorithms and data structures fundamentals (specific questions not listed by candidate)",
+            "Behavioural: past work, problem-solving approach, teamwork"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "DSA",
+        "Behavioural stories"
+      ]
+    },
+    {
+      "slug": "ibm",
+      "name": "IBM",
+      "segment": "IT services / consulting",
+      "roles": [
+        "Associate Systems Engineer"
+      ],
+      "official_requirements": {
+        "source_url": "https://www.ibm.com/in-en/careers/career-opportunities",
+        "facts": [
+          "Official entry-level page lists programs and internships; no eligibility or open drive in fetched text"
+        ]
+      },
+      "status": "unverified",
+      "status_note": "No dated open drive confirmed.",
+      "opening": {
+        "label": "IBM entry-level careers",
+        "status": "unverified",
+        "url": "https://www.ibm.com/in-en/careers/career-opportunities"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/ibm-interview-experience-for-associate-systems-engineer/",
+          "source_title": "IBM Interview Experience for Associate Systems Engineer",
+          "published": "2025-07-23",
+          "role": "Associate Systems Engineer",
+          "type": "hiring report",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Coding test (1 question, 1 hour)",
+            "Cognitive assessment (6 logic and maths games, 30 min)",
+            "English assessment (10 min, negative marking)",
+            "Final interview 30 min"
+          ],
+          "questions": [
+            "Valid password checker (coding)",
+            "Self introduction, project and difficulties, training taken, hobbies"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "Cognitive games",
+        "English assessment",
+        "Basic coding"
+      ]
+    },
+    {
+      "slug": "zoho",
+      "name": "Zoho",
+      "segment": "Product",
+      "roles": [
+        "Software Developer"
+      ],
+      "official_requirements": {
+        "source_url": "https://www.zoho.com/careers/",
+        "facts": [
+          "Careers page states Zoho hires on skills over credentials; no campus eligibility or dates in fetched text"
+        ]
+      },
+      "status": "unverified",
+      "status_note": "No official campus drive dates confirmed.",
+      "opening": {
+        "label": "Zoho careers",
+        "status": "unverified",
+        "url": "https://www.zoho.com/careers/"
+      },
+      "experiences": [
+        {
+          "source_url": "https://www.geeksforgeeks.org/interview-experiences/zoho-interview-experience-for-software-developer-on-campus-2024/",
+          "source_title": "ZOHO Interview Experience for Software Developer (On-Campus) 2024",
+          "published": "2025-07-23",
+          "role": "Software Developer",
+          "type": "on-campus",
+          "attribution": "Candidate-written, self-reported on GeeksforGeeks; not verified by GeeksforGeeks or this app. Paraphrased.",
+          "rounds": [
+            "Round 1 aptitude with C output questions (fill in blanks)",
+            "Round 2 programming, 5 problems with approach explanation",
+            "Round 3 console application build",
+            "Round 4 technical HR",
+            "Round 5 general HR"
+          ],
+          "questions": [
+            "Group anagrams; reverse substrings between parentheses; IPO; interleaving string; Pacific Atlantic water flow",
+            "Build a console social app with friends, auth, followers, posts",
+            "Multithreading, Java core, DSA, SQL"
+          ]
+        }
+      ],
+      "prep_focus": [
+        "C output questions",
+        "Medium/hard DSA with explanation",
+        "Build a small app from spec"
+      ]
+    }
+  ]
+}

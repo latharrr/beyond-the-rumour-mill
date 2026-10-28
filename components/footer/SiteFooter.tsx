@@ -103,6 +103,7 @@ export function SiteFooter() {
           </div>
           <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
             <Column title="Prepare">
+              <FooterLink href="/companies">Company research</FooterLink>
               <FooterLink href="/drives">Drives</FooterLink>
               <FooterLink href="/experiences">Experiences</FooterLink>
               <FooterLink href="/rumour-check">Rumour check</FooterLink>
