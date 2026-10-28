@@ -52,7 +52,7 @@ export default function PrivacyPage() {
             evidence file (an offer letter or similar).
           </li>
         </ul>
-        <p>Email confirmation, recovery and sign-in codes are sent through Resend. Sign-in codes expire, are single-use, and should never be shared. Google sign-in is optional; email/password remains available.</p>
+        <p>Email confirmation, recovery and sign-in codes are sent through Resend. Sign-in codes expire, are single-use, and should never be shared. Google sign-in is optional; email/password remains available. Current sign-in emails include Resend open/click tracking: an image can record an open, and email links may pass through a tracking redirect. Do not forward sign-in emails.</p>
         <p>No analytics, no advertising trackers. The only cookies are the ones that keep you signed in.</p>
       </Section>
 

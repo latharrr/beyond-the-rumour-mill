@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 
 type Item = { href: string; label: string; exact?: boolean };
 
-/** Section tabs for the signed-in areas (student, admin). Scrolls sideways on narrow screens. */
+/** Section tabs for the signed-in areas (student, admin). Wraps on narrow screens. */
 export function AreaNav(props: { label: string; items: Item[] }) {
   // usePathname can suspend under cacheComponents; the fallback is the same tabs, none marked.
   return (
@@ -24,7 +24,7 @@ function WithPath(props: { label: string; items: Item[] }) {
 function Tabs({ label, items, path }: { label: string; items: Item[]; path: string | null }) {
   return (
     <nav aria-label={label} className="container-page pt-6 md:pt-8">
-      <ul className="-mx-1 flex gap-1 overflow-x-auto border-b border-line px-1 [scrollbar-width:none]">
+      <ul className="-mx-1 flex flex-wrap gap-1 border-b border-line px-1">
         {items.map((it) => {
           const active = path !== null && (it.exact ? path === it.href : path === it.href || path.startsWith(`${it.href}/`));
           return (
