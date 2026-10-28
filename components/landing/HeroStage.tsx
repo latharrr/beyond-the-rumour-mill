@@ -34,7 +34,7 @@ export function HeroStage({ children }: { children: ReactNode }) {
           return;
         }
         gsap.set(lines, { yPercent: 110 });
-        gsap.set(rise, { opacity: 0, y: 16 });
+        gsap.set(rise, { opacity: 0.01, y: 16 });
         html.dataset.motion = "ready";
         gsap
           .timeline({ defaults: { ease: "power3.out" } })

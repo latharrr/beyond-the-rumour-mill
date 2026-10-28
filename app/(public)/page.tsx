@@ -32,7 +32,8 @@ export default function LandingPage() {
             </span>
           </span>
         </h1>
-        <p data-reveal="rise" className="mt-6 max-w-[38ch] type-body text-ink md:mt-7 md:max-w-none">
+        {/* Not animated: it is the page's LCP element, so it paints with the first frame. */}
+        <p className="mt-6 max-w-[38ch] type-body text-ink md:mt-7 md:max-w-none">
           Check what you&rsquo;ve heard against what verified seniors were actually asked.
         </p>
         <div id={CLAIM_ANCHOR} data-reveal="rise" className="mt-9 w-full md:mt-10">

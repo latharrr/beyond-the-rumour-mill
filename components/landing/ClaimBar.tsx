@@ -168,7 +168,8 @@ export function ClaimBar({
         data-surface="paper"
         className="mx-auto flex w-full max-w-[920px] flex-col gap-3 rounded-[var(--radius-bar)] bg-paper p-3 text-paper-ink shadow-bar md:h-[88px] md:flex-row md:items-center md:gap-4 md:py-0 md:pr-[22px] md:pl-4"
       >
-        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-1 gap-y-0.5 text-[20px] md:flex-nowrap md:text-[22px]">
+        {/* Two lines reserved on phones: the typed claims wrap, and the bar must not grow as they do. */}
+        <div className="flex min-h-[98px] min-w-0 flex-1 flex-wrap content-center items-center gap-x-1 gap-y-0.5 text-[20px] md:min-h-0 md:flex-nowrap md:text-[22px]">
           <ClaimSelect
             id="hero-company"
             name="company_id"

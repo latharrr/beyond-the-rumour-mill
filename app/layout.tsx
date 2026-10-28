@@ -17,9 +17,11 @@ const geist = Geist({
   variable: "--font-geist",
 });
 
+// Numbers only, never the LCP text: not preloaded, so it doesn't compete with Geist.
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   display: "swap",
+  preload: false,
   variable: "--font-geist-mono",
 });
 

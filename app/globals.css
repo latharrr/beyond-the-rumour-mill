@@ -304,8 +304,9 @@
     transform: translateY(110%);
     animation: reveal-failsafe 1ms linear 2.4s forwards;
   }
+  /* 0.01, not 0: still invisible, but painted, so LCP is timed at first paint, not after hydration. */
   html[data-motion="pending"] [data-reveal="rise"] {
-    opacity: 0;
+    opacity: 0.01;
     transform: translateY(16px);
     animation: reveal-failsafe 1ms linear 2.4s forwards;
   }

@@ -55,7 +55,17 @@ Where the implementation deliberately differs from it, see
 
 **UI design pass (Deepanshu)**
 
-1. Lighthouse ≥ 90 on `/` and `/drives` on a production build (see the PR for scores).
+1. ~~Lighthouse ≥ 90 on `/` and `/drives`~~ Done. Lighthouse 12, mobile, local production build (2026-10-28):
+
+   | Page | Performance | Accessibility | Best practices | SEO |
+   |---|---|---|---|---|
+   | `/` | 92 | 100 | 100 | 100 |
+   | `/drives` | 91 | 100 | 100 | 100 |
+   | `/experiences` | 92 | 100 | 100 | 100 |
+   | `/rumour-check` | 95 | 100 | 100 | 100 |
+   | `/privacy` | 92 | 100 | 100 | 100 |
+
+   `/login` and signed-in pages are noindex on purpose, so their SEO score is lower by design.
 2. Open the PR "Deepanshu: UI design pass" and merge after review; prod updates on merge.
 
 **Gaps against the course brief (backend + pages, after the UI pass)**
