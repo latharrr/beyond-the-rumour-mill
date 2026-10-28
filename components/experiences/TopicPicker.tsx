@@ -70,7 +70,7 @@ export function TopicPicker({ topics, name, multiple = false, defaultSelected = 
       {results.length === 0 ? (
         <p className="mt-3 type-small text-ink-muted">No topics match &ldquo;{query}&rdquo;.</p>
       ) : (
-        <ul data-lenis-prevent className="mt-3 max-h-60 overflow-y-auto overscroll-contain rounded-[10px] border border-line bg-ground/40 p-1">
+        <ul className="mt-3 max-h-60 overflow-y-auto overscroll-contain rounded-[10px] border border-line bg-ground/40 p-1">
           {results.slice(0, 40).map((t) => {
             const on = selected.includes(t.id);
             return (

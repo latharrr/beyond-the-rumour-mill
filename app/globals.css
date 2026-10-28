@@ -280,21 +280,6 @@
     visibility: hidden;
   }
 
-  /* Lenis */
-  html.lenis,
-  html.lenis body {
-    height: auto;
-  }
-  .lenis:not(.lenis-autoToggle).lenis-stopped {
-    overflow: clip;
-  }
-  .lenis [data-lenis-prevent] {
-    overscroll-behavior: contain;
-  }
-  .lenis.lenis-smooth iframe {
-    pointer-events: none;
-  }
-
   /*
    * Load-in gate. The root layout marks <html data-motion="pending"> before first
    * paint only when JS runs and motion is allowed, so without JS everything is
@@ -338,3 +323,6 @@
 
 
 
+
+/* Keep in-page jumps below the fixed nav, without animated scrolling. */
+html { scroll-behavior: auto; scroll-padding-top: 112px; }

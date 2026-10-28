@@ -73,8 +73,8 @@ The frozen build spec is [`docs/placement-prep-plan-v5.md`](docs/placement-prep-
   - [Handshake](https://joinhandshake.com)'s homepage is the bar; [`docs/design/bar.md`](docs/design/bar.md) records the 7 mechanisms taken from it.
   - The design system is [`docs/design/design-system.md`](docs/design/design-system.md), and product truth is [`PRODUCT.md`](PRODUCT.md).
 - **Method:** every piece is built, then judged by three independent critics (brief, design system, and a blind comparison with Handshake) until they pass.
-- **Foundation:** design tokens and fonts (Archivo condensed, Geist, Geist Mono), and the motion stack (GSAP + ScrollTrigger + Lenis on one RAF, framer-motion for hover).
-- **Nav:** morphs from a full-width bar into a floating pill on scroll, with a mobile menu.
+- **Foundation:** design tokens and fonts (Archivo condensed, Geist, Geist Mono), and native scrolling, GSAP for hero load-in, and framer-motion for hover.
+- **Nav:** stays a fixed full-width bar without a scroll morph, with a mobile menu.
 - **Landing page, with live data tagged "Sample data" while the seed is synthetic:**
   - Hero: a poster-scale headline and a working rumour-check bar with typed example claims and real verdicts.
   - Body: the problem, then Module 1 drive cards, then Module 2 (topic bars, a verified card, a quarantined rumour card), then Module 3 (a real plan preview from the engine), then the integration strip, then a closing CTA.
@@ -84,7 +84,7 @@ The frozen build spec is [`docs/placement-prep-plan-v5.md`](docs/placement-prep-
 - **Student and admin pages:** `/login`, `/onboarding` (profile + delete account), `/experiences/new` (four numbered steps), `/dashboard` (plan cards with progress), `/dashboard/plans/[id]` (per-week progress with start dates and a "This week" marker, export), `/admin` (queue with evidence and verify/reject) and `/admin/drives` (drive table + form).
 - **One frame everywhere:** public, student and admin pages share the nav and footer (`components/SiteChrome.tsx`); signed-in areas add a tab bar. Loading, error and 404 screens are styled.
 - **SEO and AI crawlers:** per-page titles, descriptions and canonicals; Open Graph image; `robots.txt` (AI crawlers explicitly allowed on public pages); `sitemap.xml` with every drive and verified experience; `llms.txt`; JSON-LD (WebSite + breadcrumbs). Signed-in pages are noindex. Set `NEXT_PUBLIC_SITE_URL` if the site moves off its Vercel domain.
-- **Motion:** inner pages rise in once on load (CSS, off under reduced motion); the landing keeps its GSAP scroll motion.
+- **Motion:** inner pages rise in once on load (CSS, off under reduced motion); landing sections are visible immediately without scroll reveals.
 - **Privacy page:** `/privacy` explains in plain words what is stored, what is public, how evidence is handled and how account deletion works. It mirrors the evidence/PII notes below.
 - **Moves and tests:** `/login` now sits inside the public layout so it gets the nav and footer, and the e2e selectors are scoped for the repeated footer links.
 

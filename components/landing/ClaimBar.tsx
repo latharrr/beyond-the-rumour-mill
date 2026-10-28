@@ -3,7 +3,6 @@
 import { useGSAP } from "@gsap/react";
 import { AnimatePresence, m } from "framer-motion";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { type ReactNode, type Ref, useActionState, useMemo, useRef, useState } from "react";
 import { checkClaim, type ClaimCheck } from "@/app/_actions/rumour";
 import { ChevronDownIcon } from "@/components/icons";
@@ -119,16 +118,15 @@ export function ClaimBar({
         }
 
         // Only run while the bar is on screen.
-        const visibility = ScrollTrigger.create({
-          trigger: root,
-          start: "top bottom",
-          end: "bottom top",
-          onToggle: (self) => (self.isActive ? tl.resume() : tl.pause()),
+        const visibility = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) tl.resume();
+          else tl.pause();
         });
+        visibility.observe(root);
 
         stopDemo.current = () => {
           tl.kill();
-          visibility.kill();
+          visibility.disconnect();
           gsap.set([companyCaret, topicCaret], { opacity: 0 });
           setTyping(false);
           setChipShown(true);
@@ -137,7 +135,7 @@ export function ClaimBar({
 
         return () => {
           tl.kill();
-          visibility.kill();
+          visibility.disconnect();
         };
       });
     },

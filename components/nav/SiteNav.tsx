@@ -1,9 +1,6 @@
 "use client";
 
-import { useGSAP } from "@gsap/react";
 import { AnimatePresence, m } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Link from "next/link";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { CloseIcon, MenuIcon } from "@/components/icons";
@@ -16,143 +13,15 @@ const LINKS = [
   { href: "/rumour-check", label: "Rumour check" },
 ] as const;
 
-const PILL_MIN_WIDTH = 560;
-const PILL_PAD_LEFT = 10;
-const PILL_PAD_RIGHT = 6;
-const PILL_EDGE_MOBILE = 8;
-const MIN_SCROLL_TO_PILL = 80;
-
-/**
- * Site nav. At the top it is a transparent full-width bar; once the page's
- * first heading reaches it, it morphs into a centred floating paper pill.
- * The morph is one GSAP timeline, played and reversed by a ScrollTrigger, and
- * only moves transforms and opacity: the groups slide on x, the pill surface
- * fades and settles in, and each label crossfades between its two tones via
- * the nav's `--pill` progress. Streamed account content is never styled
- * inline, so it hydrates cleanly whatever the scroll position.
- */
+/** Fixed navigation without a scroll-driven morph. */
 export function SiteNav({ account }: { account: ReactNode }) {
   const navRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
 
-  useGSAP(
-    () => {
-      const nav = navRef.current;
-      if (!nav) return;
-      const mm = gsap.matchMedia();
-
-      mm.add({ reduce: "(prefers-reduced-motion: reduce)", ok: "(prefers-reduced-motion: no-preference)" }, (ctx) => {
-        const reduce = Boolean(ctx.conditions?.reduce);
-        const q = gsap.utils.selector(nav);
-        let tl: gsap.core.Timeline | null = null;
-        let isPill = false;
-
-        const build = () => {
-          tl?.kill();
-          const surface = q("[data-pill-surface]")[0] as HTMLElement;
-          const left = q("[data-group=left]")[0] as HTMLElement;
-          const mark = q("[data-mark]")[0] as HTMLElement;
-          const links = q("[data-group=links]")[0] as HTMLElement;
-          const right = q("[data-group=right]")[0] as HTMLElement;
-          gsap.set([left, links, right], { x: 0 });
-
-          const navBox = nav.getBoundingClientRect();
-          const markBox = mark.getBoundingClientRect();
-          const rightBox = right.getBoundingClientRect();
-          const linksBox = links.getBoundingClientRect();
-          const hasLinks = linksBox.width > 0;
-          const visibleRight = Array.from(right.children).filter(
-            (el) => !el.hasAttribute("data-pill-hide") && (el as HTMLElement).offsetWidth > 0,
-          );
-          const visibleRightLeft = Math.min(...visibleRight.map((el) => el.getBoundingClientRect().left), rightBox.right);
-          const visibleRightWidth = rightBox.right - visibleRightLeft;
-
-          const centre = navBox.left + navBox.width / 2;
-          const contentWidth = PILL_PAD_LEFT + markBox.width + visibleRightWidth + PILL_PAD_RIGHT + (hasLinks ? linksBox.width + 56 : 0);
-          const width = hasLinks
-            ? Math.min(Math.max(PILL_MIN_WIDTH, contentWidth), navBox.width)
-            : navBox.width - PILL_EDGE_MOBILE * 2;
-          const pillLeft = centre - width / 2;
-          const pillRight = centre + width / 2;
-
-          const markTo = pillLeft + PILL_PAD_LEFT;
-          const rightTo = pillRight - PILL_PAD_RIGHT;
-          const linksCentreTo = (markTo + markBox.width + (rightTo - visibleRightWidth)) / 2;
-
-          gsap.set(surface, { left: pillLeft - navBox.left, width });
-
-          tl = gsap.timeline({ paused: true, defaults: { duration: 0.38, ease: "power3.out" } });
-          tl.fromTo(surface, { opacity: 0, scale: 1.04, y: -6 }, { opacity: 1, scale: 1, y: 0, immediateRender: false }, 0)
-            .fromTo(left, { x: 0 }, { x: markTo - markBox.left, immediateRender: false }, 0)
-            .fromTo(right, { x: 0 }, { x: rightTo - rightBox.right, immediateRender: false }, 0)
-            .fromTo(nav.parentElement ?? nav, { "--pill": 0 }, { "--pill": 1, immediateRender: false }, 0);
-          tl.eventCallback("onComplete", () => {
-            nav.dataset.settled = "pill";
-          });
-          if (hasLinks) {
-            tl.fromTo(links, { x: 0 }, { x: linksCentreTo - (linksBox.left + linksBox.width / 2), immediateRender: false }, 0);
-          }
-          return tl;
-        };
-
-        const toPill = () => {
-          isPill = true;
-          const t = build();
-          if (reduce) t.progress(1);
-          else t.play(0);
-        };
-        const toBar = () => {
-          isPill = false;
-          delete nav.dataset.settled;
-          if (!tl) return;
-          if (reduce) tl.progress(0);
-          else tl.reverse();
-        };
-
-        // Morph when the page's first heading would slide under the bar, and
-        // never before the reader has scrolled a little (pages whose h1 sits
-        // right under the nav start as a bar too). The nav outlives client
-        // navigation, so the heading is looked up on every refresh.
-        const start = () => {
-          const heading = document.querySelector("main h1");
-          const top = heading ? heading.getBoundingClientRect().top + window.scrollY : 0;
-          return Math.max(top - nav.offsetHeight - 8, MIN_SCROLL_TO_PILL);
-        };
-        const trigger = ScrollTrigger.create({
-          start,
-          // Short pages that can't scroll that far simply stay a bar.
-          end: () => Math.max(ScrollTrigger.maxScroll(window), start() + 1),
-          onEnter: toPill,
-          onLeaveBack: toBar,
-          onRefresh: (self) => {
-            // Layout changed (resize, fonts, streamed account area): re-measure in place.
-            if (self.scroll() > self.start) {
-              isPill = true;
-              build().progress(1);
-            } else if (isPill) {
-              isPill = false;
-              delete nav.dataset.settled;
-              tl?.progress(0);
-            }
-          },
-        });
-
-        return () => {
-          trigger.kill();
-          tl?.kill();
-        };
-      });
-    },
-    { scope: navRef },
-  );
-
-  // Inner pages: once content scrolls under the transparent bar, give the bar a
-  // ground backdrop (it fades out again as the pill takes over). The landing
-  // keeps its bare bar over the hero glow.
   useEffect(() => {
     const update = () => {
-      headerRef.current?.setAttribute("data-scrolled", String(window.location.pathname !== "/" && window.scrollY > 4));
+      headerRef.current?.setAttribute("data-scrolled", String(window.scrollY > 4));
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -175,7 +44,7 @@ export function SiteNav({ account }: { account: ReactNode }) {
       <div
         data-bar-backdrop
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[var(--nav-h)] border-b border-line bg-ground/85 opacity-0 backdrop-blur-md transition-opacity duration-200 group-data-[scrolled=true]/header:opacity-[calc(1-var(--pill,0))] md:h-[var(--nav-h-md)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[var(--nav-h)] border-b border-line bg-ground/85 opacity-0 backdrop-blur-md group-data-[scrolled=true]/header:opacity-[calc(1-var(--pill,0))] md:h-[var(--nav-h-md)]"
       />
       <nav ref={navRef} aria-label="Main" className="relative mx-auto h-[var(--nav-h)] max-w-[1200px] px-4 md:h-[var(--nav-h-md)] md:px-6">
         <div
