@@ -40,7 +40,7 @@ export default function LoginPage() {
         </div>
         <div className={cn(card, "p-5 sm:p-8")}>
           <Suspense fallback={<div aria-hidden="true" className="h-[340px]" />}>
-            <LoginForm googleReady={process.env.GOOGLE_SIGNIN_PUBLIC_READY === "true"} />
+            <LoginForm googleReady={true} />
           </Suspense>
         </div>
       </div>

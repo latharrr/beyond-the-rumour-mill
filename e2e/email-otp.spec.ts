@@ -4,7 +4,7 @@ test('email-code request submits and mobile whole-code paste keeps leading zeros
  const user=await createE2EUser('otp-mobile');
  try{
  await page.setViewportSize({width:390,height:844});await page.goto('/login');
- await page.getByRole('button',{name:'Sign in with an email code',exact:true}).click();
+ await expect(page.getByRole('heading',{name:'Sign in with an email code',exact:true})).toBeVisible();
  await page.getByLabel('Email for sign-in code').fill(user.email);
  const request=page.getByRole('button',{name:'Email me a code',exact:true});await expect(request).toHaveAttribute('type','submit');await request.click();
  const code=page.getByLabel('6-digit email code');await expect(code).toBeVisible();await expect(code).toHaveAttribute('autocomplete','one-time-code');await expect(code).toHaveAttribute('inputmode','numeric');

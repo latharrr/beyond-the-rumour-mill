@@ -109,7 +109,7 @@ export default function PrivacyPage() {
           >
             GitHub<span className="sr-only"> (opens in a new tab)</span>
           </a>{" "}
-          for anything about your data.
+          for technical bugs only. Do not post personal information, email addresses, grades or evidence files in a public issue. To remove your account, use the profile-page deletion control described above.
         </p>
       </Section>
     </main>

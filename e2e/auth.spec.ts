@@ -5,6 +5,7 @@ const PASSWORD = "password123";
 
 async function signIn(page: Page, email: string, next?: string) {
   await page.goto(next ? `/login?next=${encodeURIComponent(next)}` : "/login");
+  await page.getByRole("button", { name: "Use email and password", exact: true }).click();
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Password").fill(PASSWORD);
   await page.getByRole("button", { name: "Sign in" }).click();
@@ -27,6 +28,7 @@ test("public routes are reachable without a session", async ({ page }) => {
 
 test("login form shows validation and wrong-password errors", async ({ page }) => {
   await page.goto("/login");
+  await page.getByRole("button", { name: "Use email and password", exact: true }).click();
   await page.getByLabel("Email").fill("not-an-email");
   await page.getByLabel("Password").fill("short");
   await page.getByRole("button", { name: "Sign in" }).click();
