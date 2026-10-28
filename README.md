@@ -38,7 +38,7 @@ Email confirmation stays on. Token-hash email links enter `/auth/confirm`; recov
 
 ## Data and trust
 
-- `/drives`: admin-published campus drives plus a separate source-linked public opportunity catalog.
+- `/drives`: admin-published campus drives plus a separate source-linked public opportunity catalog. Listings with `source_kind = 'public_hiring'` (internships and early-career roles read from employer pages, see `data/public-opportunities.json`) are labelled "Public hiring, not an LPU drive", show the official source, apply link, check date and any deadline note, and are never run through the campus eligibility checker. `scripts/seed-public-opportunities.mjs` upserts them (needs `SUPABASE_URL` and `SUPABASE_SECRET_KEY`); re-read each source and bump `checked` before re-running. Campus drives stay `campus` and only come from an admin.
 - `/companies`: 12 company research pages. `data/company-research.json` records official requirements, source links, historical candidate reports and check date. Unknown requirements are unknown, not automatic eligibility. Closed cycles remain closed. Update facts, links and check date together.
 - `/experiences`: only reviewed student experiences affect verified topic counts and rumour verdicts. Public candidate reports are labelled separately and never become fake student accounts or verification events.
 - `/dashboard`: profile and saved prep plans. Plan changes show pending/saved/error states; failed changes roll back and can be retried. Markdown exports use persisted plan state.

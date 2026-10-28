@@ -17,6 +17,8 @@ export const STATUS_LABEL: Record<DriveStatus, string> = {
   cancelled: "Cancelled",
 };
 
+export const KIND_LABEL = { campus: "LPU campus drive", public_hiring: "Public hiring, not an LPU drive" } as const;
+
 /** "In 12 days" / "Today" / "Date passed" next to a drive date. */
 export function Countdown({ date, now }: { date: string; now: Date }) {
   const days = daysUntil(date, now);
@@ -51,6 +53,11 @@ export function DriveCard({
         <span className="type-label text-ink-muted">{d.company.name}</span>
         <span className="type-label text-ink-dim">{STATUS_LABEL[d.status]}</span>
       </div>
+      {d.source_kind === "public_hiring" && (
+        <p data-kind="public_hiring" className="mt-3 type-label text-ink-dim">
+          {KIND_LABEL.public_hiring}
+        </p>
+      )}
 
       <H id={titleId} className="mt-5 type-title text-ink">
         {/* The whole card is this link's hit area. */}
@@ -64,7 +71,18 @@ export function DriveCard({
       </p>
 
       <p className="mt-5 flex items-baseline gap-2.5">
-        {d.drive_date ? (
+        {d.source_kind === "public_hiring" ? (
+          d.application_deadline ? (
+            <>
+              <span className="type-small text-ink-muted">Apply by</span>
+              <time dateTime={d.application_deadline} className="type-data text-[17px] text-ink">
+                {formatDriveDate(d.application_deadline)}
+              </time>
+            </>
+          ) : (
+            <span className="type-small text-ink-muted">No deadline on the official page</span>
+          )
+        ) : d.drive_date ? (
           <>
             <time dateTime={d.drive_date} className="type-data text-[17px] text-ink">
               {formatDriveDate(d.drive_date)}
@@ -80,13 +98,18 @@ export function DriveCard({
         )}
       </p>
 
-      {eligibility && (
+      {eligibility && d.source_kind !== "public_hiring" && (
         <div className="mt-4">
           <EligibilityBadge eligibility={eligibility} />
         </div>
       )}
 
       <div className="mt-auto pt-5" />
+      {d.source_kind === "public_hiring" ? (
+        <p className="border-t border-line pt-4 type-small text-ink-muted">
+          {d.eligibility_note ?? "Check the official listing for eligibility."}
+        </p>
+      ) : (
       <dl className="grid grid-cols-3 gap-3 border-t border-line pt-4">
         <Spec label="CGPA" value={d.eligibility_cgpa === null ? "Any" : `${formatCgpa(d.eligibility_cgpa)}+`} numeric={d.eligibility_cgpa !== null} />
         <Spec
@@ -103,6 +126,7 @@ export function DriveCard({
         />
         <Spec label="Rounds" value={String(d.round_count)} numeric />
       </dl>
+      )}
     </article>
   );
 }

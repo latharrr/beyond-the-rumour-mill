@@ -94,3 +94,41 @@ test("admin creates and edits a drive through the form", async ({ page }) => {
     await deleteE2EUser(admin.id);
   }
 });
+
+test("public hiring listings are labelled, source-linked and never eligibility-checked", async ({ page }) => {
+  const svc = serviceClient();
+  const title = `E2E public listing ${Date.now()}`;
+  const [{ data: company }, { data: role }] = await Promise.all([
+    svc.from("companies").select("id").eq("name", "Amazon").single(),
+    svc.from("roles").select("id").eq("label", "Data Analyst").single(),
+  ]);
+  const { data: row, error } = await svc
+    .from("drives")
+    .insert({
+      company_id: company!.id,
+      role_id: role!.id,
+      title,
+      source_kind: "public_hiring",
+      source_url: "https://example.com/e2e-listing",
+      apply_url: "https://example.com/e2e-listing",
+      verified_on: "2026-10-29",
+      eligibility_note: "Enrolled bachelor's students.",
+      deadline_note: "Anticipated, not guaranteed.",
+    })
+    .select("id")
+    .single();
+  expect(error).toBeNull();
+  try {
+    await page.goto(`/drives?q=${encodeURIComponent(title)}`);
+    await expect(page.getByRole("link", { name: title })).toBeVisible();
+    await expect(page.getByText("Public hiring, not an LPU drive").first()).toBeVisible();
+    await expect(page.getByText("No deadline on the official page").first()).toBeVisible();
+    await page.getByRole("link", { name: title }).click();
+    await expect(page.getByRole("heading", { name: "Official source" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Open the employer listing" })).toHaveAttribute("href", "https://example.com/e2e-listing");
+    await expect(page.getByText("not a confirmed LPU campus drive")).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Requirements" })).toHaveCount(0);
+  } finally {
+    await svc.from("drives").delete().eq("id", row!.id);
+  }
+});

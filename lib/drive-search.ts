@@ -9,6 +9,8 @@ import {
 } from "@/lib/eligibility";
 
 export type SearchableDrive = EligibilityDrive & {
+  /** Public hiring listings have no campus rules to check; undefined means campus. */
+  source_kind?: "campus" | "public_hiring";
   id: string;
   title: string;
   company: { id: string; name: string };
@@ -42,6 +44,6 @@ export function filterDrives<D extends SearchableDrive>(
   return drives
     .filter((d) => matchesQuery(d, filters.q))
     .filter((d) => !filters.company || d.company.id === filters.company)
-    .map((d) => ({ drive: d, eligibility: profile ? evaluateEligibility(profile, d, branchLabels) : null }))
+    .map((d) => ({ drive: d, eligibility: profile && d.source_kind !== "public_hiring" ? evaluateEligibility(profile, d, branchLabels) : null }))
     .filter((m) => !filters.eligibleOnly || (m.eligibility?.eligible ?? false));
 }

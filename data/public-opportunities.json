@@ -1,0 +1,54 @@
+{
+  "checked": "2026-10-29",
+  "note": "Public hiring listings read from the employer's own page on the check date. They are not confirmed LPU campus drives. Statuses and deadlines can change; the employer page wins.",
+  "opportunities": [
+    {
+      "company": "Amazon",
+      "role": "Software Engineer Intern",
+      "title": "Amazon SDE I Intern 2027 (6-month internship)",
+      "location": "Bengaluru, Chennai, Hyderabad, Delhi, Mumbai, Pune",
+      "grad_years": [2027],
+      "source_url": "https://www.amazon.jobs/en/jobs/10541345/sde-i-intern-amazon-university-talent-acquisition",
+      "apply_url": "https://www.amazon.jobs/en/jobs/10541345/sde-i-intern-amazon-university-talent-acquisition",
+      "application_deadline": null,
+      "deadline_note": "The page shows no closing date. Start dates run January to June 2027, full time for 24 to 26 weeks.",
+      "eligibility_note": "Enrolled in a Bachelor's or Master's in CS, Computer Engineering or a related field; graduation year 2027; CS fundamentals and one of C/C++, Python, Java or Perl (Amazon, Job ID 10541345)."
+    },
+    {
+      "company": "Amazon",
+      "role": "Systems Development Engineer Intern",
+      "title": "Amazon Systems Development Engineer Intern 2027",
+      "location": "Bengaluru, Hyderabad, Chennai",
+      "grad_years": [],
+      "source_url": "https://www.amazon.jobs/en/jobs/10498161/systems-development-engineer-intern-2027",
+      "apply_url": "https://www.amazon.jobs/en/jobs/10498161/systems-development-engineer-intern-2027",
+      "application_deadline": null,
+      "deadline_note": "The page shows no closing date.",
+      "eligibility_note": "Basic qualification on the page: enrolled in a Bachelor's degree. No graduation year is stated there (Amazon, Job ID 10498161)."
+    },
+    {
+      "company": "Google",
+      "role": "Software Engineer Intern",
+      "title": "Google Software Engineering Intern, Summer 2027",
+      "location": null,
+      "grad_years": [],
+      "source_url": "https://www.google.com/about/careers/applications/jobs/results/109864326646375110-software-engineering-intern-summer-2027",
+      "apply_url": "https://www.google.com/about/careers/applications/jobs/results/109864326646375110-software-engineering-intern-summer-2027",
+      "application_deadline": null,
+      "deadline_note": "Google says the anticipated application window is open until November 15 and may close earlier if projects fill. Reviewed on a rolling basis, so this is not a guaranteed deadline.",
+      "eligibility_note": "Currently enrolled in a Bachelor's or Master's in CS or a related field, in the penultimate academic year, with coding experience in one general-purpose language; 10 to 12 weeks in summer 2027; English transcript and resume required (Google). Office locations are chosen in the application; confirm there."
+    },
+    {
+      "company": "Microsoft",
+      "role": "Explore Microsoft Intern",
+      "title": "Explore Microsoft (India, 8-week summer internship)",
+      "location": "Microsoft India campuses",
+      "grad_years": [],
+      "source_url": "https://careers.microsoft.com/v2/global/en/exploremicrosoft",
+      "apply_url": "https://careers.microsoft.com/v2/global/en/exploremicrosoft",
+      "application_deadline": null,
+      "deadline_note": "The program page shows no application dates; check it for the current window.",
+      "eligibility_note": "For second-year bachelor's students in India (the second-year application). Needs an intro CS course and one semester of calculus or equivalent (Microsoft)."
+    }
+  ]
+}
