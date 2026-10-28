@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import "server-only";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { cacheLife, cacheTag } from "next/cache";
@@ -19,7 +20,7 @@ export type Branch = { id: string; code: string; label: string };
 export type Topic = { id: string; label: string; category: string; aliases: string[] };
 export type Resource = { id: string; title: string; url: string; type: string; topic_id: string | null; company_id: string | null };
 
-export async function listCompanies(): Promise<Company[]> {
+async function cachedListCompanies(): Promise<Company[]> {
   "use cache";
   cacheLife({ stale: 300, revalidate: 300, expire: 3600 });
   cacheTag("taxonomy");
@@ -29,7 +30,7 @@ export async function listCompanies(): Promise<Company[]> {
   return data;
 }
 
-export async function listRoles(): Promise<Role[]> {
+async function cachedListRoles(): Promise<Role[]> {
   "use cache";
   cacheLife({ stale: 300, revalidate: 300, expire: 3600 });
   cacheTag("taxonomy");
@@ -39,7 +40,7 @@ export async function listRoles(): Promise<Role[]> {
   return data;
 }
 
-export async function listBranches(): Promise<Branch[]> {
+async function cachedListBranches(): Promise<Branch[]> {
   "use cache";
   cacheLife({ stale: 300, revalidate: 300, expire: 3600 });
   cacheTag("taxonomy");
@@ -49,7 +50,7 @@ export async function listBranches(): Promise<Branch[]> {
   return data;
 }
 
-export async function listTopics(): Promise<Topic[]> {
+async function cachedListTopics(): Promise<Topic[]> {
   "use cache";
   cacheLife({ stale: 300, revalidate: 300, expire: 3600 });
   cacheTag("taxonomy");
@@ -59,7 +60,7 @@ export async function listTopics(): Promise<Topic[]> {
   return data;
 }
 
-export async function listResources(): Promise<Resource[]> {
+async function cachedListResources(): Promise<Resource[]> {
   "use cache";
   cacheLife({ stale: 300, revalidate: 300, expire: 3600 });
   cacheTag("taxonomy");
@@ -71,3 +72,28 @@ export async function listResources(): Promise<Resource[]> {
 
 /** Branch id → code, for eligibility reasons ("Open to CSE, IT only"). */
 export const branchCodeMap = (branches: Branch[]) => Object.fromEntries(branches.map((b) => [b.id, b.code]));
+
+export async function listCompanies() {
+  await connection();
+  return cachedListCompanies();
+}
+
+export async function listRoles() {
+  await connection();
+  return cachedListRoles();
+}
+
+export async function listBranches() {
+  await connection();
+  return cachedListBranches();
+}
+
+export async function listTopics() {
+  await connection();
+  return cachedListTopics();
+}
+
+export async function listResources() {
+  await connection();
+  return cachedListResources();
+}

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { type ReactNode, Suspense } from "react";
 import { Reveal } from "@/components/landing/Reveal";
 import { getSessionUser } from "@/lib/auth";
-import { SEED_DRIVES_ARE_SAMPLE, SEED_EXPERIENCES_ARE_SAMPLE } from "@/lib/sample-data";
 
 const GITHUB = "https://github.com/latharrr/beyond-the-rumour-mill";
 
@@ -73,19 +72,13 @@ function AccountLinksFallback() {
   );
 }
 
-function sampleNote() {
-  if (SEED_DRIVES_ARE_SAMPLE && SEED_EXPERIENCES_ARE_SAMPLE) return "The drives and senior experiences shown are synthetic sample data for now.";
-  if (SEED_DRIVES_ARE_SAMPLE) return "The drives shown are synthetic sample data for now.";
-  if (SEED_EXPERIENCES_ARE_SAMPLE) return "The senior experiences shown are synthetic sample data for now.";
-  return null;
-}
 
 /**
  * The site footer on every public page: link columns, then the brand closing
  * the scroll as a full-width amber wordmark, then the legal line.
  */
 export function SiteFooter() {
-  const note = sampleNote();
+
   return (
     <footer className="mt-20 border-t border-line md:mt-32">
       <div className="container-page pt-12 md:pt-16">
@@ -148,7 +141,7 @@ export function SiteFooter() {
             <a href="https://deepanshulathar.com/labs" className="hover:text-ink">Deepanshu Labs</a> · 2026
           </p>
           <p className="max-w-[72ch] md:text-right">
-            A student course project. Not affiliated with or endorsed by the LPU placement cell.{note && ` ${note}`}
+            A student project by Deepanshu Labs. Not affiliated with or endorsed by the LPU placement cell. Public research is source-linked; student submissions have a separate review process.
           </p>
         </div>
       </div>

@@ -3,9 +3,9 @@ import { companyResearch, researchChecked, researchStatus } from '@/lib/company-
 import { card } from '@/components/ui/surface';
 import { textLink } from '@/components/ui/pill';
 
-export function CompanyCards({ compact = false }: { compact?: boolean }) {
+export function CompanyCards({ compact = false, introduction = true }: { compact?: boolean; introduction?: boolean }) {
   return <section className="my-10" aria-labelledby="public-research">
-    <h2 id="public-research" className="type-section text-ink">Company research & public opportunities</h2>
+    <h2 id="public-research" className={introduction ? "type-section text-ink" : "sr-only"}>Company research & public opportunities</h2>
     <p className="mt-3 max-w-[75ch] type-body text-ink-muted">12 companies, official career requirements and attributed interview reports. Checked {researchChecked}. These are not LPU campus announcements. A career page is not proof of an open role; unknown requirements are not eligibility.</p>
     <ul className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{companyResearch.map(c => <li key={c.slug} className={`${card} p-5`}>
       <p className="type-label text-ink-dim">{researchStatus(c)}</p>

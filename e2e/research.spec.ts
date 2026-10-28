@@ -5,7 +5,8 @@ test('research catalog is linked, sourced and separate from verified evidence',a
  await expect(page.getByRole('heading',{name:'Company research',exact:true})).toBeVisible();
  await expect(page.getByRole('link',{name:'Requirements, rounds & sources'})).toHaveCount(12);
  await page.getByRole('link',{name:'TCS',exact:true}).click();
- await expect(page.getByText('Closed / past cycle',{exact:true})).toBeVisible();
+ await expect(page).toHaveURL(/\/companies\/tcs$/);
+ await expect(page.getByText('Closed / past cycle',{exact:true}).first()).toBeVisible();
  await expect(page.getByRole('heading',{name:'Candidate-reported interviews'})).toBeVisible();
  await expect(page.getByRole('link',{name:'Official source',exact:false})).toHaveAttribute('href',/^https:\/\/www.tcs.com\//);
  await page.goto('/drives');
