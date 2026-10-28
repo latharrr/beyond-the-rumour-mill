@@ -80,6 +80,13 @@ export function LoginForm() {
           className={cn(input, "mt-2")}
         />
         <FieldError id="password-error">{fieldErrors?.password?.[0]}</FieldError>
+        {mode === "signin" && (
+          <p className="mt-2 text-right">
+            <a href="/forgot-password" className="type-small text-ink-muted underline decoration-ink-dim underline-offset-4 hover:text-ink hover:decoration-ink">
+              Forgot password?
+            </a>
+          </p>
+        )}
       </div>
 
       {linkError && !state.error && <FormMessage ok={false}>{linkError}</FormMessage>}

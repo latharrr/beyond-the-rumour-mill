@@ -29,3 +29,18 @@ test("confirm ignores off-site `next` targets", async ({ page }) => {
   await expect(page).toHaveURL("/onboarding");
   await svc.auth.admin.deleteUser(data.user!.id);
 });
+
+test("a recovery link lands on the reset-password page", async ({ page }) => {
+  const svc = serviceClient();
+  const email = `recover-${randomUUID().slice(0, 8)}@e2e.test`;
+  const { data: created, error: createError } = await svc.auth.admin.createUser({ email, password: "password123", email_confirm: true });
+  expect(createError).toBeNull();
+  const { data, error } = await svc.auth.admin.generateLink({ type: "recovery", email });
+  expect(error).toBeNull();
+
+  await page.goto(`/auth/confirm?token_hash=${data.properties!.hashed_token}&type=recovery`);
+  await expect(page).toHaveURL("/reset-password");
+  await expect(page.getByRole("heading", { name: "Choose a new password" })).toBeVisible();
+
+  await svc.auth.admin.deleteUser(created.user!.id);
+});

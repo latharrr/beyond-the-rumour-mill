@@ -59,3 +59,49 @@ export async function signOut() {
   await supabase.auth.signOut();
   redirect("/");
 }
+
+const emailOnlySchema = z.object({ email: credentialsSchema.shape.email });
+const newPasswordSchema = z.object({
+  password: credentialsSchema.shape.password,
+  confirm: z.string(),
+});
+
+// Always the same message either way: no account enumeration.
+export async function requestPasswordReset(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const parsed = emailOnlySchema.safeParse({ email: formData.get("email") });
+  if (!parsed.success) {
+    return { fieldErrors: z.flattenError(parsed.error).fieldErrors, email: String(formData.get("email") ?? "") };
+  }
+
+  const supabase = await createClient();
+  // The email link is fixed by the project template to /auth/confirm
+  // (token_hash flow), which forwards recovery sessions to /reset-password.
+  await supabase.auth.resetPasswordForEmail(parsed.data.email);
+  return { message: "If an account exists for that email, we've sent a reset link.", email: parsed.data.email };
+}
+
+// Completes the recovery flow. Requires the session created by /auth/confirm
+// for type=recovery; without it the link is stale or already used.
+export async function updatePassword(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const parsed = newPasswordSchema.safeParse({
+    password: formData.get("password"),
+    confirm: formData.get("confirm"),
+  });
+  if (!parsed.success) {
+    return { fieldErrors: z.flattenError(parsed.error).fieldErrors };
+  }
+  if (parsed.data.password !== parsed.data.confirm) {
+    return { fieldErrors: { password: ["Passwords do not match."] } };
+  }
+
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getClaims();
+  if (!data?.claims) {
+    return { error: "That reset link is invalid or has expired. Request a new one." };
+  }
+
+  const { error } = await supabase.auth.updateUser({ password: parsed.data.password });
+  if (error) return { error: "Could not update your password. Request a new reset link and try again." };
+
+  redirect("/dashboard");
+}
