@@ -9,7 +9,8 @@ test('admin directory and content pages work; student cannot read either',async(
   await expect(p.getByRole('region',{name:'Admin overview'})).toBeVisible();
   await p.goto('/admin/users');await expect(p.getByRole('heading',{name:'Users',exact:true})).toBeVisible();
   await expect(p.getByText('Read-only by design.',{exact:false}).first()).toBeVisible();
-  for(const width of [390,1280]){await p.setViewportSize({width,height:844});await p.screenshot({path:test.info().outputPath(`admin-users-${width}.png`)});}
+  for(const width of [390,1280]){await p.setViewportSize({width,height:844});const image=await p.screenshot({path:test.info().outputPath(`admin-users-${width}.png`)});
+    if(process.env.CI){const b64=image.toString('base64');for(let offset=0;offset<b64.length;offset+=8000) console.log(`ADMIN_PIXEL_${width}_${offset}=${b64.slice(offset,offset+8000)}`);}}
   await p.goto('/admin/content');await expect(p.getByRole('heading',{name:'Content & sources'})).toBeVisible();
   await expect(p.getByRole('heading',{name:'Public research catalog'})).toBeVisible();
   await p.screenshot({path:test.info().outputPath('admin-content.png')});await p.close();
