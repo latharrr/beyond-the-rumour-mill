@@ -2,6 +2,9 @@
 
 import { useState, useTransition } from "react";
 import { getEvidenceUrl } from "@/app/_actions/experiences";
+import { ExternalIcon } from "@/components/icons";
+import { FormMessage } from "@/components/ui/field";
+import { Button, textLink } from "@/components/ui/pill";
 
 /** Fetches a fresh 60 s signed URL on click and opens it; nothing is cached. */
 export function EvidenceButton({ experienceId }: { experienceId: string }) {
@@ -10,10 +13,11 @@ export function EvidenceButton({ experienceId }: { experienceId: string }) {
   const [url, setUrl] = useState<string | null>(null);
 
   return (
-    <div>
-      <button
-        type="button"
+    <div className="grid gap-2">
+      <Button
+        variant="secondary"
         disabled={pending}
+        className="w-full"
         onClick={() =>
           start(async () => {
             setError(null);
@@ -26,9 +30,14 @@ export function EvidenceButton({ experienceId }: { experienceId: string }) {
         }
       >
         {pending ? "Opening…" : "View evidence"}
-      </button>
-      {url && <p><a href={url} target="_blank" rel="noopener noreferrer">Evidence link (expires in 60 s)</a></p>}
-      {error && <p role="alert">{error}</p>}
+      </Button>
+      {url && (
+        <a href={url} target="_blank" rel="noopener noreferrer" className={`${textLink} inline-flex items-center gap-1.5 type-small`}>
+          Evidence link (expires in 60 s)
+          <ExternalIcon className="size-3.5" />
+        </a>
+      )}
+      {error && <FormMessage ok={false}>{error}</FormMessage>}
     </div>
   );
 }

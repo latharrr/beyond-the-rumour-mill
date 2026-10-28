@@ -51,7 +51,7 @@ test("search and company filters narrow /drives via the URL", async ({ page }) =
   await expect(page.getByRole("link", { name: "TCS NQT 2026 — Ninja & Digital" })).toHaveCount(0);
 
   await page.goto("/drives?q=zzzz");
-  await expect(page.getByText("No drives match these filters.")).toBeVisible();
+  await expect(page.getByRole("main").getByText("No drives match these filters.")).toBeVisible();
 });
 
 test("signed-out drive page invites sign-in instead of guessing eligibility", async ({ page }) => {
@@ -59,7 +59,7 @@ test("signed-out drive page invites sign-in instead of guessing eligibility", as
   await page.getByRole("link", { name: "TCS NQT 2026 — Ninja & Digital" }).click();
   await expect(page.getByRole("heading", { name: "Rounds" })).toBeVisible();
   await expect(page.getByText("NQT Online Test")).toBeVisible();
-  await expect(page.getByRole("link", { name: "Sign in" }).last()).toBeVisible();
+  await expect(page.getByRole("main").getByRole("link", { name: "Sign in" }).last()).toBeVisible();
   await expect(page.getByRole("heading", { name: "Verified experiences" })).toBeVisible();
 
   await page.goto("/drives/not-a-uuid");

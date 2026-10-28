@@ -1,5 +1,5 @@
-import { LoadingState } from "@/components/route-states";
+import { PageLoading } from "@/components/route-states";
 
 export default function Loading() {
-  return <LoadingState label="Loading…" />;
+  return <PageLoading label="Loading…" />;
 }

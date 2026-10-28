@@ -10,5 +10,5 @@ export async function proxy(request: NextRequest) {
 export const config = {
   // Runs on every app route so the session cookie stays fresh on public pages
   // too; the redirect itself applies only to the §2.1 paths (isProtectedPath).
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|llms.txt|opengraph-image|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)"],
 };

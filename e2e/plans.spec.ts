@@ -50,7 +50,7 @@ test("full flow: onboarding to exported prep plan", async ({ page }) => {
 
     await page.goto("/dashboard");
     await expect(page.getByRole("link", { name: "TCS NQT 2026 — Ninja & Digital" })).toBeVisible();
-    await expect(page.getByText(/^1 of \d+ done$/)).toBeVisible();
+    await expect(page.getByRole("main").getByText(/^1 of \d+ done$/)).toBeVisible();
   } finally {
     await deleteE2EUser(user.id);
   }

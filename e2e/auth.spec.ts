@@ -56,11 +56,13 @@ test("admin can open /admin", async ({ page }) => {
 
 test("public nav reflects the session and sign-out clears it", async ({ page }) => {
   await page.goto("/drives");
-  await expect(page.getByRole("link", { name: "Sign in" })).toBeVisible();
+  // The footer repeats the account links; the nav is the one that reflects the session.
+  const nav = page.getByRole("navigation", { name: "Main" });
+  await expect(nav.getByRole("link", { name: "Sign in" })).toBeVisible();
 
   await signIn(page, "student@seed.test", "/drives");
   await expect(page).toHaveURL("/drives");
-  await expect(page.getByRole("link", { name: "Dashboard" })).toBeVisible();
+  await expect(nav.getByRole("link", { name: "Dashboard" })).toBeVisible();
 
   await page.getByRole("button", { name: "Sign out" }).click();
   await expect(page).toHaveURL("/");

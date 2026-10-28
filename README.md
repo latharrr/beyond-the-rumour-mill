@@ -10,8 +10,78 @@ The frozen build spec is [`docs/placement-prep-plan-v5.md`](docs/placement-prep-
 Where the implementation deliberately differs from it, see
 [Spec deviations](#spec-deviations-team-decisions).
 
-> **Status:** Phase 0 (infrastructure). Pages are functional stubs; the UI
-> design pass comes later.
+> **Status (2026-10-27):** Phases 0–2 are done and live. The UI design pass is
+> in progress: the landing page is built, and the other pages are still plain
+> HTML. See [Project status](#project-status).
+
+## Project status
+
+### Done
+
+**Backend and infrastructure (Phases 0–2, PRs #1–#5, merged to `main`)**
+
+| Area | What's built |
+|---|---|
+| Infra | Supabase schema and 14 migrations, RLS on every table, definer views for public reads, CI (lint, typecheck, Vitest, RLS, types drift, Playwright), Vercel auto-deploy from `main` |
+| Module 1: placement information | Drives list with filters, drive detail (rounds, requirements, round topics/resources), eligibility engine with plain-English "why not", admin drive CRUD |
+| Module 2: experience repository | Submit wizard with private evidence upload, admin verification queue (60 s signed evidence links), verified experiences with TrustScore, topic-frequency bars, quarantined community-tips lane |
+| Module 3: student preparation | Plan engine (recency-weighted topics → weekly checklist with resources), optimistic checklist, progress, dashboard, Markdown export |
+| Integration | Drive (company + role) → verified experiences / round topics → resources → dated weekly plan |
+| Extras | Rumour check ("X heavily asks Y" with cited verdicts), CSV import script for senior data, seed with 28 synthetic experiences, demo script and L2/L3 templates |
+| Production | Live at https://beyond-the-rumour-mill.vercel.app with all migrations and the base taxonomy applied |
+
+**UI design pass, branch `deepanshu/ui-design-system` (not yet committed or merged)**
+
+- **Design references:**
+  - [Handshake](https://joinhandshake.com)'s homepage is the bar; [`docs/design/bar.md`](docs/design/bar.md) records the 7 mechanisms taken from it.
+  - The design system is [`docs/design/design-system.md`](docs/design/design-system.md), and product truth is [`PRODUCT.md`](PRODUCT.md).
+- **Method:** every piece is built, then judged by three independent critics (brief, design system, and a blind comparison with Handshake) until they pass.
+- **Foundation:** design tokens and fonts (Archivo condensed, Geist, Geist Mono), and the motion stack (GSAP + ScrollTrigger + Lenis on one RAF, framer-motion for hover).
+- **Nav:** morphs from a full-width bar into a floating pill on scroll, with a mobile menu.
+- **Landing page, with live data tagged "Sample data" while the seed is synthetic:**
+  - Hero: a poster-scale headline and a working rumour-check bar with typed example claims and real verdicts.
+  - Body: the problem, then Module 1 drive cards, then Module 2 (topic bars, a verified card, a quarantined rumour card), then Module 3 (a real plan preview from the engine), then the integration strip, then a closing CTA.
+- **Footer:** a short verdict/rumour key, four link columns (Prepare, Contribute, Account, Project), a full-width amber wordmark and the legal line, on every public page.
+- **Discovery pages:** `/drives` (filter bar, open/past groups, eligibility pill per card), `/drives/[id]` (requirements with a per-rule check against your profile, numbered rounds rail, prep-plan card, matched experiences), `/experiences` (company chips, topic bars, verified cards, dashed rumour lane), `/experiences/[id]` (TrustScore broken into its three weighted inputs) and `/rumour-check` (claim form beside the verdict, with the 15% / 50% thresholds marked on the share bar).
+- **UI kit:** `components/ui/` holds the pills, status pills, sample tag, chips, cards, page header, empty state and form controls. The landing page and the discovery pages share it, along with one `DriveCard`.
+- **Student and admin pages:** `/login`, `/onboarding` (profile + delete account), `/experiences/new` (four numbered steps), `/dashboard` (plan cards with progress), `/dashboard/plans/[id]` (per-week progress with start dates and a "This week" marker, export), `/admin` (queue with evidence and verify/reject) and `/admin/drives` (drive table + form).
+- **One frame everywhere:** public, student and admin pages share the nav and footer (`components/SiteChrome.tsx`); signed-in areas add a tab bar. Loading, error and 404 screens are styled.
+- **SEO and AI crawlers:** per-page titles, descriptions and canonicals; Open Graph image; `robots.txt` (AI crawlers explicitly allowed on public pages); `sitemap.xml` with every drive and verified experience; `llms.txt`; JSON-LD (WebSite + breadcrumbs). Signed-in pages are noindex. Set `NEXT_PUBLIC_SITE_URL` if the site moves off its Vercel domain.
+- **Motion:** inner pages rise in once on load (CSS, off under reduced motion); the landing keeps its GSAP scroll motion.
+- **Privacy page:** `/privacy` explains in plain words what is stored, what is public, how evidence is handled and how account deletion works. It mirrors the evidence/PII notes below.
+- **Moves and tests:** `/login` now sits inside the public layout so it gets the nav and footer, and the e2e selectors are scoped for the repeated footer links.
+
+### Left to do
+
+**UI design pass (Deepanshu)**
+
+1. ~~Lighthouse ≥ 90 on `/` and `/drives`~~ Done. Lighthouse 12, mobile, local production build (2026-10-28):
+
+   | Page | Performance | Accessibility | Best practices | SEO |
+   |---|---|---|---|---|
+   | `/` | 92 | 100 | 100 | 100 |
+   | `/drives` | 91 | 100 | 100 | 100 |
+   | `/experiences` | 92 | 100 | 100 | 100 |
+   | `/rumour-check` | 95 | 100 | 100 | 100 |
+   | `/privacy` | 92 | 100 | 100 | 100 |
+
+   `/login` and signed-in pages are noindex on purpose, so their SEO score is lower by design.
+2. Open the PR "Deepanshu: UI design pass" and merge after review; prod updates on merge.
+
+**Gaps against the course brief (backend + pages, after the UI pass)**
+
+- **Preparation timelines (Module 2):** these are only per-experience free text. Add an aggregate view, such as "most seniors started 4–6 weeks before".
+- **Resources (Module 3):** there's no browsable resources page; resources appear only inside plans, rounds and experiences. The base taxonomy has just 6 resources, so many plan items show "No resource linked yet".
+- **Progress tracking (Module 3):** per-week progress now shows on the plan page; a history over time is still missing.
+- **Roles:** there are no dedicated role pages (minor).
+
+**Human tasks**
+
+- Add `SUPABASE_SECRET_KEY` to the Vercel project environment.
+- Set the production auth Site URL and email confirmation template ([Email confirmation](#email-confirmation)).
+- Promote a production admin ([Admin promotion procedure](#admin-promotion-procedure)).
+- **Phase 3:** collect real senior experiences (25+) to replace the synthetic seed, run the L2 sessions with 8–10 juniors, and get L3 written confirmation from the placement cell.
+- Fill in the [Contribution declarations](#contribution-declarations).
 
 ---
 
