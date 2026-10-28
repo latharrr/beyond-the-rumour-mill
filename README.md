@@ -1,18 +1,55 @@
 # Beyond the Rumour Mill
 
-**P08 · CA2 (INT252 / INT257) · Group 8** — Deepanshu Lathar, Harsh, Sundram Singh
+**Campus placement prep from evidence, not rumours.**
 
-A placement-prep platform where official drive information and verified senior
-experiences feed a personal preparation-plan generator, with the rumour mill
-visibly quarantined behind a verification layer.
+**Live:** <https://beyond-the-rumour-mill.vercel.app> · **P08 · CA2 (INT252 / INT257) · Group 8**: Deepanshu Lathar, Harsh, Sundram Singh
 
-The frozen build spec is [`docs/placement-prep-plan-v5.md`](docs/placement-prep-plan-v5.md).
-Where the implementation deliberately differs from it, see
-[Spec deviations](#spec-deviations-team-decisions).
+Placement season runs on hostel and WhatsApp rumours ("TCS only asks DP"). Beyond the Rumour Mill replaces them with attributable data:
 
-> **Status (2026-10-27):** Phases 0–2 are done and live. The UI design pass is
-> in progress: the landing page is built, and the other pages are still plain
-> HTML. See [Project status](#project-status).
+- **official drive rules** from the placement cell;
+- **senior interview experiences**, counted only after an admin verifies them against evidence;
+- a **personal prep plan** built from both.
+
+Unverified tips stay visible, but they are labelled as rumours and kept out of every count.
+
+![Landing page: "Heard it said? See it counted." with the live rumour-check bar](docs/screenshots/landing.jpg)
+
+## What you can do
+
+| | |
+|---|---|
+| **See if you're eligible, and why.** Every drive lists its CGPA cut-off, branches, backlog rule, 10th/12th minimums, batches and rounds. Sign in and each rule is checked against your profile, with a sentence for every one you miss. | ![Drive page with requirements and rounds](docs/screenshots/drive.jpg) |
+| **Read what seniors were really asked.** Verified write-ups show each round with a **TrustScore** (recency, corroboration, completeness) and the most-asked topics per company. | ![Experiences page with topic bars and verified cards](docs/screenshots/experiences.jpg) |
+| **Check a rumour.** Type "*{company}* heavily asks *{topic}*". A fixed rule answers **Supported** (≥ 50%), **Not supported** (≤ 15%) or **Mixed evidence**, flags a low sample, and cites every experience it counted. | ![Rumour check verdict with cited experiences](docs/screenshots/rumour-check.jpg) |
+| **Get a week-by-week plan.** Topics are weighted by how often verified seniors report them and split into weeks up to the drive date. Resources are attached, progress is shown per week, and the plan exports to Markdown. | ![Prep plan with weekly checklist](docs/screenshots/plan.jpg) |
+
+Placed seniors can **share their experience** (rounds, topics, resources and optional private evidence). Admins **verify or reject** it in a queue and **publish drives**.
+
+<p align="center">
+  <img src="docs/screenshots/mobile-landing.jpg" alt="Landing page on a phone" width="260">
+  &nbsp;
+  <img src="docs/screenshots/mobile-drives.jpg" alt="Drives page on a phone" width="260">
+</p>
+
+## Highlights
+
+- **Privacy by design:**
+  - authors appear only as "Placed senior · Batch of YYYY";
+  - `user_id` and evidence paths never reach a public page;
+  - evidence sits in a private bucket and opens for admins through 60-second signed links;
+  - see [`/privacy`](https://beyond-the-rumour-mill.vercel.app/privacy).
+- **Security:** Postgres RLS on every table, definer views for public reads, and RPC-only writes. A 94-case RLS test suite runs against a real local Supabase.
+- **Fast and findable:**
+  - Lighthouse (mobile) scores 91–95 for performance and 100 for accessibility, best practices and SEO on every public page;
+  - per-page metadata;
+  - `sitemap.xml`, `robots.txt` (AI crawlers allowed on public pages) and [`llms.txt`](https://beyond-the-rumour-mill.vercel.app/llms.txt);
+  - JSON-LD and an Open Graph card.
+- **Accessible:** WCAG 2.2 AA target, visible focus, keyboard operable, status never shown by colour alone, and reduced-motion respected.
+- **Tested:** 111 unit tests, 94 RLS tests and 19 Playwright end-to-end flows.
+
+The frozen build spec is [`docs/placement-prep-plan-v5.md`](docs/placement-prep-plan-v5.md). Where the implementation deliberately differs from it, see [Spec deviations](#spec-deviations-team-decisions). The design system is in [`docs/design/`](docs/design/).
+
+> **Status (2026-10-28):** Phases 0–2 are complete. The UI design pass is done on branch `deepanshu/ui-design-system` and goes to `main` by PR. All seed drives and experiences are **synthetic sample data** until real senior experiences are verified (Phase 3).
 
 ## Project status
 

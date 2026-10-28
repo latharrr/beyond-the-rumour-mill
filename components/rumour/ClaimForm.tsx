@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { startTransition, useActionState } from "react";
 import { checkClaim, type ClaimCheck } from "@/app/_actions/rumour";
 import { TopicPicker } from "@/components/experiences/TopicPicker";
 import { FieldError, FormMessage, label, select } from "@/components/ui/field";
@@ -32,7 +32,17 @@ export function ClaimForm({
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-10">
-      <form action={action} className={cn(card, "grid gap-6 p-5 md:p-6")}>
+      {/* Dispatching from onSubmit skips React's automatic form reset, so the
+          checked company and topic stay in the form next to their verdict. */}
+      <form
+        action={action}
+        onSubmit={(e) => {
+          e.preventDefault();
+          const data = new FormData(e.currentTarget);
+          startTransition(() => action(data));
+        }}
+        className={cn(card, "grid gap-6 p-5 md:p-6")}
+      >
         <p className="type-small text-ink-muted">
           Check the claim: <span className="text-ink">&ldquo;[company] heavily asks [topic]&rdquo;</span>
         </p>
