@@ -112,7 +112,7 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
           {isPublic ? (
             drive.application_deadline ? (
               <span>
-                Apply by{" "}
+                {/anticipated/i.test(drive.deadline_note ?? "") ? "Anticipated close" : "Apply by"}{" "}
                 <time dateTime={drive.application_deadline} className="type-data text-ink">
                   {formatDriveDate(drive.application_deadline)}
                 </time>

@@ -74,7 +74,7 @@ export function DriveCard({
         {d.source_kind === "public_hiring" ? (
           d.application_deadline ? (
             <>
-              <span className="type-small text-ink-muted">Apply by</span>
+              <span className="type-small text-ink-muted">{/anticipated/i.test(d.deadline_note ?? "") ? "Anticipated close" : "Apply by"}</span>
               <time dateTime={d.application_deadline} className="type-data text-[17px] text-ink">
                 {formatDriveDate(d.application_deadline)}
               </time>
