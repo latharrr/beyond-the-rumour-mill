@@ -12,7 +12,7 @@ export default defineConfig({
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
     // CI tests the production build; locally the dev server is faster to iterate.
-    command: process.env.CI ? "npm run build && npm run start" : "npm run dev",
+    command: process.env.CI ? "npm run build && npm run start" : "npm run dev -- --hostname 127.0.0.1",
     url: "http://localhost:3000",
     reuseExistingServer: !process.env.CI,
     timeout: 240_000,

@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
 import type { CommunityTip } from "@/lib/data/experiences";
 import { formatDriveDate } from "@/lib/format";
 
-export const UNVERIFIED_BANNER = "Unverified — treat as rumour until a placement-cell admin verifies it.";
+export const UNVERIFIED_BANNER = "Unverified — treat as rumour until a project admin verifies it.";
 
 /** §3.2: pending submissions, quarantined behind the banner, no author info. */
 export function CommunityTipsLane({ tips }: { tips: CommunityTip[] }) {

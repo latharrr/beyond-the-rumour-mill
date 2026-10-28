@@ -6,7 +6,7 @@ export function VerifiedBadge({ verifiedAt, long = false }: { verifiedAt: string
   return (
     <span data-badge="verified" className="inline-flex">
       <StatusPill tone="verified">
-        {long ? "Verified by placement cell" : "Verified"}
+        {long ? "Verified by project admin" : "Verified"}
         {long && verifiedAt && (
           <>
             {" "}

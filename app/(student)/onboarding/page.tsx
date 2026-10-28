@@ -36,8 +36,7 @@ async function Onboarding({ searchParams }: Pick<PageProps<"/onboarding">, "sear
         <p className="type-label text-ink-dim">{complete ? "Profile" : "Step 1 of 2"}</p>
         <h1 className="mt-4 max-w-[12ch] type-section text-balance text-ink">{complete ? "Your profile" : "Complete your profile"}</h1>
         <p className="mt-5 max-w-[46ch] type-body text-pretty text-ink-muted">
-          Eligibility for every drive is checked against these details. They are visible only to you and the placement
-          cell.
+          Eligibility for every drive is checked against these details. They are visible only to you and authorized project admins.
         </p>
         {!complete && (
           <p className="mt-4 max-w-[46ch] type-small text-ink-dim">

@@ -60,7 +60,7 @@ export async function submitExperience(_prev: ActionState<{ id: string }>, formD
 
   if (error) {
     if (path) await createAdminClient().storage.from("evidence").remove([path]);
-    if (error.code === "P0001") return fail("You already have 5 experiences awaiting verification. Wait for the placement cell to review them.");
+    if (error.code === "P0001") return fail("You already have 5 experiences awaiting verification. Wait for a project admin to review them.");
     if (error.message.includes("does not match")) {
       return fail("Please fix the highlighted fields.", { drive_id: ["That drive is for a different company or role."] });
     }

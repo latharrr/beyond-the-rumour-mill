@@ -37,8 +37,28 @@ test("full flow: onboarding to exported prep plan", async ({ page }) => {
     const first = page.getByRole("checkbox").first();
     await first.check();
     await expect(progress).toHaveText(/^1 of \d+ done$/);
+    await expect(page.getByRole("status").filter({ hasText: /^Progress saved$/ })).toBeVisible();
+    await page.screenshot({path: test.info().outputPath("plan-progress.png"), fullPage: true});
     await page.reload();
     await expect(page.getByRole("checkbox").first()).toBeChecked();
+    // Network failure must roll back the optimistic toggle and allow retry.
+    await page.route('**/dashboard/plans/*', async route => {
+      if (route.request().method() === 'POST') await route.abort('failed');
+      else await route.continue();
+    });
+    await page.getByRole('checkbox').nth(1).check();
+    await expect(page.getByText('Could not save your progress. Check your connection and try again.')).toBeVisible();
+    await expect(page.getByRole('checkbox').nth(1)).not.toBeChecked();
+    await expect(page.getByRole('checkbox').nth(1)).toBeEnabled();
+    await page.unroute('**/dashboard/plans/*');
+    await page.getByRole('checkbox').nth(1).check();
+    await expect(page.getByRole('status').filter({hasText:/^Progress saved$/})).toBeVisible();
+    await expect(progress).toHaveText(/^2 of \d+ done$/);
+    await page.getByRole('checkbox').nth(1).uncheck();
+    await expect(page.getByRole('status').filter({hasText:/^Progress saved$/})).toBeVisible();
+    await page.setViewportSize({width:390,height:844});
+    await page.screenshot({path:test.info().outputPath('plan-mobile.png'),fullPage:true});
+    await page.setViewportSize({width:1280,height:720});
 
     const download = page.waitForEvent("download");
     await page.getByRole("link", { name: "Export as Markdown" }).click();

@@ -1,6 +1,6 @@
 "use client";
 
-import { useOptimistic, useState, useTransition } from "react";
+import { useEffect, useOptimistic, useState, useTransition } from "react";
 import { toggleChecklistItem } from "@/app/_actions/plans";
 import { FormMessage } from "@/components/ui/field";
 import { EmptyState } from "@/components/ui/surface";
@@ -17,23 +17,33 @@ export function Checklist({ items, startedAt, currentWeek }: { items: PlanItem[]
   const [optimistic, setOptimistic] = useOptimistic(items, (state, change: { id: string; done: boolean }) =>
     state.map((i) => (i.id === change.id ? { ...i, done: change.done } : i)),
   );
-  const [, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const done = optimistic.filter((i) => i.done).length;
+  useEffect(() => {
+    if (!isPending) return;
+    const warn = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ""; };
+    window.addEventListener("beforeunload", warn);
+    return () => window.removeEventListener("beforeunload", warn);
+  }, [isPending]);
 
   function toggle(id: string, value: boolean) {
     setError(null);
     startTransition(async () => {
       setOptimistic({ id, done: value });
-      const res = await toggleChecklistItem({ id, done: value });
-      if (!res.ok) setError(res.message);
+      try {
+        const res = await toggleChecklistItem({ id, done: value });
+        if (!res.ok) setError(res.message);
+      } catch {
+        setError("Could not save your progress. Check your connection and try again.");
+      }
     });
   }
 
   if (!items.length) return <EmptyState title="This plan has no items." />;
 
   return (
-    <section aria-labelledby="checklist">
+    <section aria-labelledby="checklist" aria-busy={isPending}>
       <div className="rounded-[var(--radius-card)] border border-line bg-panel p-5 md:p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
           <h2 id="checklist" className="type-title text-ink">
@@ -43,6 +53,7 @@ export function Checklist({ items, startedAt, currentWeek }: { items: PlanItem[]
             {done} of {optimistic.length} done
           </p>
         </div>
+        <p role="status" aria-live="polite" className="mt-2 type-small text-ink-muted">{isPending ? "Saving progress..." : error ? "Progress not saved" : "Progress saved"}</p>
         <ProgressBar value={done} max={optimistic.length} label="Plan progress" className="mt-4" />
         {error && (
           <div className="mt-4">
@@ -55,7 +66,7 @@ export function Checklist({ items, startedAt, currentWeek }: { items: PlanItem[]
           items={optimistic}
           startedAt={startedAt}
           currentWeek={currentWeek}
-          renderItem={(item) => <ChecklistItem key={item.id} item={item} onToggle={(value) => toggle(item.id, value)} />}
+          renderItem={(item) => <ChecklistItem key={item.id} item={item} disabled={isPending} onToggle={(value) => toggle(item.id, value)} />}
         />
       </div>
     </section>

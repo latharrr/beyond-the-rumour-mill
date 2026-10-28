@@ -202,7 +202,7 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
                 title={`No verified experiences for ${drive.company.name} yet.`}
                 action={<PillLink href="/experiences/new">Share yours</PillLink>}
               >
-                Placed at {drive.company.name}? Your write-up counts once a placement-cell admin verifies it.
+                Placed at {drive.company.name}? Your write-up counts once a project admin verifies it.
               </EmptyState>
             ) : (
               <>

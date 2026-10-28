@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { card, pageMain } from "@/components/ui/surface";
 import { PillLink } from "@/components/ui/pill";
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
-export default async function ResetPasswordPage() {
+async function ResetPasswordContent() {
   const user = await getSessionUser();
 
   return (
@@ -43,4 +44,8 @@ export default async function ResetPasswordPage() {
       </div>
     </main>
   );
+}
+
+export default function ResetPasswordPage() {
+  return <Suspense fallback={<main className={cn(pageMain, "pb-20")}><p className="type-small text-ink-muted">Loading account...</p></main>}><ResetPasswordContent /></Suspense>;
 }

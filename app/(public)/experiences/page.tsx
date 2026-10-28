@@ -28,7 +28,7 @@ export default function ExperiencesPage({ searchParams }: PageProps<"/experience
       <PageHeader
         label="Senior experiences"
         title="Experiences"
-        lede="What placed seniors were asked, round by round. Only experiences a placement-cell admin has verified are counted; everything else waits below as a rumour."
+        lede="What placed seniors were asked, round by round. Only experiences a project admin has verified are counted; everything else waits below as a rumour."
         actions={<PillLink href="/experiences/new" variant="primary">Share your experience</PillLink>}
       />
       <Suspense fallback={<ExperiencesFallback />}>
@@ -102,7 +102,7 @@ async function Experiences({ searchParams }: Pick<PageProps<"/experiences">, "se
           {total === 0 ? (
             <div className="mt-5">
               <EmptyState title={`No verified experiences yet${companyName ? ` for ${companyName}` : ""}.`}>
-                Placed seniors can share theirs; it counts once a placement-cell admin verifies it.
+                Placed seniors can share theirs; it counts once a project admin verifies it.
               </EmptyState>
             </div>
           ) : (

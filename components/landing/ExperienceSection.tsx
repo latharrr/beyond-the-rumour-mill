@@ -19,7 +19,7 @@ function Copy() {
     <div className="max-w-[640px] text-pretty lg:pt-4">
       <SectionHeading id={HEADING_ID}>What seniors were actually asked.</SectionHeading>
       <p data-rise className="mt-5 type-body text-ink-muted md:mt-6">
-        Placed seniors&rsquo; write-ups, counted only once a placement-cell admin verifies them.
+        Placed seniors&rsquo; write-ups, counted only once a project admin verifies them.
       </p>
       <div data-rise className="mt-7">
         <ArrowLink href="/experiences">Read the verified experiences</ArrowLink>
@@ -81,7 +81,7 @@ function TopicsCard({ snapshot: { total, topTopics } }: { snapshot: ExperienceSn
         <div className="mt-5 rounded-lg border border-paper-ink/15 px-4 py-6">
           <p className="text-[15px] font-medium">No verified experiences yet.</p>
           <p className="mt-1 type-small text-paper-ink/65">
-            Topic counts appear here once a placement-cell admin verifies the first senior write-up.
+            Topic counts appear here once a project admin verifies the first senior write-up.
           </p>
         </div>
       ) : (
@@ -160,7 +160,7 @@ function TipCard({ snapshot: { tip } }: { snapshot: ExperienceSnapshot }) {
             {tip.company} · {tip.role}
           </p>
           <blockquote className="mt-1.5 text-[17px] leading-snug text-ink">&ldquo;{tip.rounds_summary?.trim()}&rdquo;</blockquote>
-          <p className="mt-auto pt-4 type-small text-ink-dim">Left out of every count until a placement-cell admin verifies it.</p>
+          <p className="mt-auto pt-4 type-small text-ink-dim">Left out of every count until a project admin verifies it.</p>
         </>
       ) : (
         <p className="mt-4 type-small text-ink-muted">

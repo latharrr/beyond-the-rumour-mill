@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 const NOTES = [
   ["Anonymous", "Shown only as “Placed senior · Batch of <year>”. Your name and email never appear."],
-  ["Verified first", "A placement-cell admin checks it before it counts anywhere. Until then it sits in the rumour lane."],
+  ["Verified first", "A project admin checks it before it counts anywhere. Until then it sits in the rumour lane."],
   ["Deletable", "Delete your account any time; your write-up stays, unlinked from you, as “Former student”."],
 ] as const;
 

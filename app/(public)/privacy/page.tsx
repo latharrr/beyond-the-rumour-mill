@@ -61,8 +61,7 @@ export default function PrivacyPage() {
           Your account id, email, grades and evidence file are never part of a public page or a public query.
         </p>
         <p>
-          Your profile and plans are visible only to you. Admins can read profiles and pending submissions to
-          verify them.
+          Your plans are visible only to you. Your profile is visible to you and authorized project admins. Admins can read pending submissions and evidence to verify them.
         </p>
       </Section>
 

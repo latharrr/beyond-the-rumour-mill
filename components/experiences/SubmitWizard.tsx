@@ -59,7 +59,7 @@ export function SubmitWizard({ companies, roles, drives, topics, resources }: Pr
         </h2>
         <p className="mt-4 type-body text-ink">{state.message}</p>
         <p className="mt-3 max-w-[60ch] type-body text-pretty text-ink-muted">
-          A placement-cell admin will check it against your evidence. Until then it appears in the{" "}
+          A project admin will check it against your evidence. Until then it appears in the{" "}
           <Link href="/experiences#community-tips" className={textLink}>
             community-tips lane
           </Link>
@@ -192,7 +192,7 @@ export function SubmitWizard({ companies, roles, drives, topics, resources }: Pr
             className="mt-2 block w-full rounded-[10px] border border-dashed border-line bg-ground/40 p-3 text-[14px] text-ink-muted file:mr-4 file:h-9 file:rounded-full file:border-0 file:bg-panel-2 file:px-4 file:text-[14px] file:font-medium file:text-ink hover:file:bg-white/10"
           />
           <p id="evidence-help" className={hint}>
-            Only placement-cell admins can open it, for 60 seconds at a time. It is never shown publicly.
+            Only project admins can open it, for 60 seconds at a time. It is never shown publicly.
           </p>
           <FieldError id="evidence-error">{err("evidence")}</FieldError>
         </div>

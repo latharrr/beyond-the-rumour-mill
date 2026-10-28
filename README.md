@@ -405,3 +405,28 @@ CI (`.github/workflows/ci.yml`) runs lint, typecheck, unit tests and a build. It
 ## Contribution declarations
 
 _To be completed per §3.5 ownership at submission._
+
+## Auth repair and verification (28 Oct 2026)
+
+Production uses token-hash confirmation/recovery emails at `/auth/confirm`.
+Redirects use `NEXT_PUBLIC_SITE_URL`, not the internal reverse-proxy origin.
+Recovery is `/forgot-password` -> email -> `/reset-password` -> dashboard.
+Keep email confirmation enabled in production.
+
+The checklist distinguishes optimistic progress from a confirmed save, reports
+network failures, rolls back failed toggles, permits retry, and warns before
+leaving while a save is pending. Wait for "Progress saved" before refreshing.
+
+Validation: 122 unit tests and 94 real local Supabase RLS/action tests passed.
+Browser coverage includes profile/eligibility, admin drive editing, evidence
+upload and admin verification, rumour citations, plan generation/progress/export,
+and cross-user access denial. Fixtures and test mail never enter production.
+
+For the real signup-mail-confirmation browser test, enable confirmations in the
+isolated local auth service and set `TEST_CONFIRMATION_MAILBOX` to the local
+mail catcher origin (normally `http://127.0.0.1:54324`). Without this explicit
+setting, `fresh-signup.spec.ts` is skipped. The older confirm tests intentionally
+exercise admin-generated tokens, not actual signup email delivery.
+
+When running local Supabase on a remote host, publish its ports on 127.0.0.1
+only BEFORE starting containers. Never expose its demo credentials publicly.
