@@ -1,6 +1,5 @@
 "use client";
 
-import { OtpForm } from "./otp-form";
 import { useActionState, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { signIn, signUp, type AuthState } from "@/app/_actions/auth";
@@ -8,16 +7,15 @@ import { z } from "zod";
 import { FieldError, FormMessage, input, label } from "@/components/ui/field";
 import { Button } from "@/components/ui/pill";
 import { cn } from "@/lib/cn";
-import { credentialsSchema } from "@/lib/schemas";
+import { credentialsSchema } from "@/lib/validation";
 
 type Mode = "signin" | "signup";
 
-export function LoginForm({ googleReady = false }: { googleReady?: boolean }) {
+export function LoginForm() {
   const params = useSearchParams();
   const next = params.get("next") ?? "";
-  const linkError = params.get("error") === "oauth" ? "Google sign-in could not finish. Please try again or use your email." : params.get("error") === "confirm" ? "That confirmation link is invalid or has expired. Sign in, or sign up again." : null;
-  const [useOtp, setUseOtp] = useState(true);
-  const [mode, setMode] = useState<Mode>("signin");
+  const linkError = params.get("error") === "confirm" ? "That confirmation link is invalid or has expired. Sign in, or sign up again." : null;
+  const [mode, setMode] = useState<Mode>(params.get("mode") === "signup" ? "signup" : "signin");
   const [signInState, signInAction, signingIn] = useActionState(signIn, {} as AuthState);
   const [signUpState, signUpAction, signingUp] = useActionState(signUp, {} as AuthState);
   const [clientErrors, setClientErrors] = useState<AuthState["fieldErrors"]>();
@@ -38,8 +36,6 @@ export function LoginForm({ googleReady = false }: { googleReady?: boolean }) {
     }
   }
 
-  if (useOtp) return <div className="grid gap-5"><h2 className="type-title text-ink">Sign in with an email code</h2>{linkError && <FormMessage ok={false}>{linkError}</FormMessage>}<OtpForm />{googleReady && <a href={`/auth/google?next=${encodeURIComponent(next || "/dashboard")}`} className="inline-flex min-h-11 items-center justify-center rounded-full border border-line px-4 type-small text-ink">Continue with Google</a>}<button type="button" onClick={() => setUseOtp(false)} className="min-h-11 type-small text-amber underline">Use email and password</button><button type="button" onClick={() => {setUseOtp(false);setMode("signup")}} className="min-h-11 type-small text-ink underline">New here? Create an account</button></div>;
-
   return (
     <form action={mode === "signin" ? signInAction : signUpAction} onSubmit={validate} noValidate className="grid gap-5">
       <div>
@@ -48,8 +44,6 @@ export function LoginForm({ googleReady = false }: { googleReady?: boolean }) {
           {mode === "signin" ? "Use the email you signed up with." : "We'll send a confirmation link to your email."}
         </p>
       </div>
-      {googleReady ? <a href={`/auth/google?next=${encodeURIComponent(next || "/dashboard")}`} className="inline-flex min-h-11 items-center justify-center rounded-full border border-line px-4 type-small text-ink hover:bg-panel-2">Continue with Google</a> : <p className="type-small text-ink-dim">Google sign-in is being configured. Email sign-in is available.</p>}
-      <button type="button" onClick={() => setUseOtp(true)} className="min-h-11 rounded-full border border-line px-4 type-small text-ink hover:bg-panel-2">Sign in with an email code</button>
       <input type="hidden" name="next" value={next} />
 
       <div>

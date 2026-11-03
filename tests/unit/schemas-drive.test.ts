@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { driveFiltersSchema, driveSchema, profileSchema } from "@/lib/schemas";
+import { driveFiltersSchema, driveSchema, profileSchema } from "@/lib/validation";
 
 const U = "11111111-1111-4111-8111-111111111111";
 

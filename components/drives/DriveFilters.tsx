@@ -3,8 +3,8 @@ import { Button, textLink } from "@/components/ui/pill";
 import { card } from "@/components/ui/surface";
 import { checkbox, input, label, select } from "@/components/ui/field";
 import { cn } from "@/lib/cn";
-import type { Company } from "@/lib/data/taxonomy";
-import type { DriveFilters as Filters } from "@/lib/schemas";
+import type { Company } from "@/lib/taxonomy";
+import type { DriveFilters as Filters } from "@/lib/validation";
 
 /** Plain GET form: filters live in the URL (searchParams), so results are shareable and server-rendered. */
 export function DriveFilters({ companies, filters, signedIn }: { companies: Company[]; filters: Filters; signedIn: boolean }) {

@@ -2,14 +2,13 @@ import Link from "next/link";
 import { Chip } from "@/components/ui/status";
 import { cardInteractive, stretchedLink } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
-import type { ExperienceView } from "@/lib/data/experiences";
+import type { ExperienceView } from "@/lib/experiences/data";
 import { authorLabel } from "@/lib/format";
-import { TrustScore } from "./TrustScore";
 import { VerifiedBadge } from "./VerifiedBadge";
 
 const MAX_TOPICS = 4;
 
-/** A verified experience in a list: status and TrustScore, who, what happened, topics. */
+/** A verified experience in a list: status, who, what happened, topics. */
 export function ExperienceCard({ experience: e, headingLevel: H = "h3" }: { experience: ExperienceView; headingLevel?: "h2" | "h3" }) {
   const shown = e.topics.slice(0, MAX_TOPICS);
   const more = e.topics.length - shown.length;
@@ -17,7 +16,6 @@ export function ExperienceCard({ experience: e, headingLevel: H = "h3" }: { expe
     <article className={cn(cardInteractive, "flex h-full flex-col p-5 md:p-6")}>
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
         <VerifiedBadge verifiedAt={e.verified_at} />
-        <TrustScore trust={e.trust} />
       </div>
       <H className="mt-4 type-title text-ink">
         <Link href={`/experiences/${e.id}`} className={stretchedLink}>

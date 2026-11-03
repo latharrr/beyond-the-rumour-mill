@@ -14,16 +14,12 @@
     "db:start": "supabase start",
     "db:reset": "supabase db reset",
     "db:stop": "supabase stop",
-    "db:types": "supabase gen types typescript --local > lib/supabase/database.types.ts",
-    "import:experiences": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/import-experiences.ts"
+    "db:types": "supabase gen types typescript --local > lib/db/database.types.ts"
   },
   "dependencies": {
-    "@gsap/react": "^2.1.2",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0",
     "clsx": "^2.1.1",
-    "framer-motion": "^14.7.1",
-    "gsap": "^3.15.0",
     "next": "16.4.3",
     "react": "19.3.0",
     "react-dom": "19.3.0",

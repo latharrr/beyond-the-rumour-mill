@@ -1,8 +1,8 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { type NextRequest, NextResponse } from "next/server";
-import { safeNextPath } from "@/lib/schemas";
+import { safeNextPath } from "@/lib/validation";
 import { SITE_URL } from "@/lib/site";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/db/server";
 
 const OTP_TYPES: EmailOtpType[] = ["signup", "email", "invite", "magiclink", "recovery", "email_change"];
 

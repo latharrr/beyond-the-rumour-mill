@@ -13,7 +13,7 @@ import {
   topTopics,
   weighRoundTopics,
   weighTopics,
-} from "@/lib/plan-engine";
+} from "@/lib/preparation/plan-engine";
 
 const NOW = new Date("2026-10-27T10:00:00Z");
 const daysAgo = (d: number) => new Date(NOW.getTime() - d * 86_400_000).toISOString();

@@ -5,7 +5,7 @@ import { type Tone, StatusDot, StatusPill, TONE_DOT } from "@/components/ui/stat
 import { card } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
 import { formatDriveDate } from "@/lib/format";
-import type { Verdict } from "@/lib/rumour";
+import type { Verdict } from "@/lib/experiences/rumour";
 
 const TONE: Record<Verdict, Tone> = {
   "Supported": "verified",
@@ -14,7 +14,7 @@ const TONE: Record<Verdict, Tone> = {
   "No verified evidence yet": "neutral",
 };
 
-/** Deterministic verdict with the experiences it cites (§2.5). */
+/** Deterministic verdict with the experiences it cites. */
 export function VerdictCard({ result }: { result: ClaimCheck }) {
   const tone = TONE[result.verdict];
   const pct = Math.round(result.frac * 100);

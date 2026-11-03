@@ -1,12 +1,10 @@
 "use client";
 
-import { AnimatePresence, m } from "framer-motion";
 import Link from "next/link";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { CloseIcon, MenuIcon } from "@/components/icons";
 import { NavigationProgress } from "./NavigationProgress";
 import { BrandMark } from "./BrandMark";
-import { Tone } from "./Tone";
 
 const LINKS = [
   { href: "/drives", label: "Drives" },
@@ -15,9 +13,8 @@ const LINKS = [
   { href: "/rumour-check", label: "Rumour check" },
 ] as const;
 
-/** Fixed navigation without a scroll-driven morph. */
+/** Fixed top navigation. Two effects with cleanup: scroll shadow and Escape-to-close. */
 export function SiteNav({ account }: { account: ReactNode }) {
-  const navRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
 
@@ -46,19 +43,14 @@ export function SiteNav({ account }: { account: ReactNode }) {
       <div
         data-bar-backdrop
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[var(--nav-h)] border-b border-line bg-ground/85 opacity-0 backdrop-blur-md group-data-[scrolled=true]/header:opacity-[calc(1-var(--pill,0))] md:h-[var(--nav-h-md)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[var(--nav-h)] border-b border-line bg-ground/85 opacity-0 backdrop-blur-md transition-opacity group-data-[scrolled=true]/header:opacity-100 md:h-[var(--nav-h-md)]"
       />
-      <nav ref={navRef} aria-label="Main" className="relative mx-auto h-[var(--nav-h)] max-w-[1200px] px-4 md:h-[var(--nav-h-md)] md:px-6">
-        <div
-          data-pill-surface
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1 left-0 h-14 rounded-full bg-paper opacity-0 shadow-pill md:top-3 md:h-12"
-        />
+      <nav aria-label="Main" className="relative mx-auto h-[var(--nav-h)] max-w-[1200px] px-4 md:h-[var(--nav-h-md)] md:px-6">
         <div className="relative grid h-full grid-cols-[auto_1fr] items-center gap-3 md:grid-cols-[1fr_auto_1fr] md:gap-4">
           <div data-group="left" className="col-start-1 justify-self-start">
             <Link href="/" aria-label="Beyond the Rumour Mill" className="group flex h-11 items-center gap-2.5 rounded-full">
               <BrandMark />
-              <span data-pill-hide className="block max-w-[84px] text-[13px] leading-[1.1] font-medium tracking-[-0.01em] text-ink sm:max-w-none sm:text-[15px] sm:leading-normal">
+              <span className="block max-w-[84px] text-[13px] leading-[1.1] font-medium tracking-[-0.01em] text-ink sm:max-w-none sm:text-[15px] sm:leading-normal">
                 Beyond the Rumour Mill
               </span>
             </Link>
@@ -68,9 +60,7 @@ export function SiteNav({ account }: { account: ReactNode }) {
             {LINKS.map((l) => (
               <li key={l.href}>
                 <Link prefetch={true} href={l.href} className="group hit-44 inline-flex text-[15px]">
-                  <Tone bar="text-ink-muted group-hover:text-ink group-hover:underline" pill="text-paper-ink/75 group-hover:underline">
-                    {l.label}
-                  </Tone>
+                  <span className="text-ink-muted group-hover:text-ink group-hover:underline">{l.label}</span>
                   <NavigationProgress />
                 </Link>
               </li>
@@ -87,21 +77,15 @@ export function SiteNav({ account }: { account: ReactNode }) {
               onClick={() => setOpen((v) => !v)}
               className="relative grid size-11 place-items-center rounded-full md:hidden"
             >
-              <Tone bar="text-ink" pill="text-paper-ink">
-                {open ? <CloseIcon className="size-5" /> : <MenuIcon className="size-5" />}
-              </Tone>
+              {open ? <CloseIcon className="size-5 text-ink" /> : <MenuIcon className="size-5 text-ink" />}
             </button>
           </div>
         </div>
 
-        <AnimatePresence>
-          {open && (
-            <m.div
+        {open && (
+            <div
               id="site-menu"
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              className="absolute inset-x-4 top-[calc(100%+4px)] rounded-[var(--radius-card)] border border-line bg-panel p-2 shadow-pill md:hidden"
+              className="motion-safe:animate-rise absolute inset-x-4 top-[calc(100%+4px)] rounded-[var(--radius-card)] border border-line bg-panel p-2 shadow-pill md:hidden"
             >
               <ul>
                 {LINKS.map((l) => (
@@ -116,9 +100,8 @@ export function SiteNav({ account }: { account: ReactNode }) {
                   </li>
                 ))}
               </ul>
-            </m.div>
-          )}
-        </AnimatePresence>
+            </div>
+        )}
       </nav>
     </header>
   );

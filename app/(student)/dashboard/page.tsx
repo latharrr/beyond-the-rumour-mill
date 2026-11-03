@@ -6,13 +6,13 @@ import { ArrowLink, PillLink, textLink } from "@/components/ui/pill";
 import { card, EmptyState, Notice, PageHeader, pageMain } from "@/components/ui/surface";
 import { requireUser } from "@/lib/auth";
 import { cn } from "@/lib/cn";
-import { listMyPlans } from "@/lib/data/plans";
-import { getMyProfile } from "@/lib/data/profile";
-import { isProfileComplete } from "@/lib/eligibility";
+import { listMyPlans } from "@/lib/preparation/data";
+import { getMyProfile } from "@/lib/placement/data";
+import { isProfileComplete } from "@/lib/placement/eligibility";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
-// §3.4: the dashboard streams its two independent reads through <Suspense>.
+// The dashboard streams its two independent reads through <Suspense>.
 export default function DashboardPage() {
   return (
     <main className={cn(pageMain, "pb-20 md:pb-28")}>

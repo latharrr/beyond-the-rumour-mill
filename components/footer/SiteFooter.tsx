@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { type ReactNode, Suspense } from "react";
-import { Reveal } from "@/components/landing/Reveal";
+import Image from "next/image";
 import { getSessionUser } from "@/lib/auth";
 
 const GITHUB = "https://github.com/latharrr/beyond-the-rumour-mill";
@@ -57,7 +57,7 @@ async function AccountLinks() {
   return (
     <>
       <FooterLink href="/login">Sign in</FooterLink>
-      <FooterLink href="/login">Get started</FooterLink>
+      <FooterLink href="/login?mode=signup">Get started</FooterLink>
     </>
   );
 }
@@ -118,7 +118,7 @@ export function SiteFooter() {
         </div>
 
         {/* The wordmark is a decorative setting of the name; assistive tech reads the plain text. */}
-        <Reveal as="div" variant="wordmark" className="@container mt-16 md:mt-24">
+        <div className="@container mt-16 md:mt-24">
           <p className="text-amber">
             <span className="sr-only">Beyond the Rumour Mill</span>
             <span aria-hidden="true" className="block overflow-hidden pb-[0.04em] type-wordmark [--wm-measure:4.376]">
@@ -132,12 +132,11 @@ export function SiteFooter() {
               </span>
             </span>
           </p>
-        </Reveal>
+        </div>
 
         <div className="mt-8 flex flex-col gap-2 border-t border-line py-6 type-small text-ink-dim md:mt-10 md:flex-row md:justify-between md:gap-10">
           <p className="shrink-0 flex items-center gap-2">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/deepanshu-labs.svg" alt="" width={24} height={24} />
+            <Image src="/deepanshu-labs.svg" alt="" width={24} height={24} />
             <a href="https://deepanshulathar.com/labs" className="hover:text-ink">Deepanshu Labs</a> · 2026
           </p>
           <p className="max-w-[72ch] md:text-right">

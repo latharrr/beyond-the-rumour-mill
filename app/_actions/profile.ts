@@ -4,11 +4,11 @@ import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { type ActionResult, type ActionState, fail, invalid, NOT_SIGNED_IN, ok } from "@/lib/action-result";
 import { getSessionUser } from "@/lib/auth";
-import { profileSchema, safeNextPath } from "@/lib/schemas";
-import { createClient } from "@/lib/supabase/server";
+import { profileSchema, safeNextPath } from "@/lib/validation";
+import { createClient } from "@/lib/db/server";
 
 /**
- * Updates the caller's own profile (§2.2). The schema has no `role`; the DB
+ * Updates the caller's own profile. The schema has no `role`; the DB
  * column grant would reject it anyway. RLS limits the update to own row.
  */
 export async function saveProfile(_prev: ActionState, formData: FormData): Promise<ActionResult> {

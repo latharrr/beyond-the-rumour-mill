@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { companyResearch, researchChecked, researchStatus } from '@/lib/company-research';
+import { companyResearch, researchChecked, researchStatus } from '@/lib/placement/company-research';
 import { card } from '@/components/ui/surface';
 import { textLink } from '@/components/ui/pill';
 

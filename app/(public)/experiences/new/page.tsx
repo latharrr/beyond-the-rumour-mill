@@ -4,8 +4,8 @@ import { SubmitWizard } from "@/components/experiences/SubmitWizard";
 import { LoadingState } from "@/components/route-states";
 import { pageMain } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
-import { listDrives } from "@/lib/data/drives";
-import { listCompanies, listResources, listRoles, listTopics } from "@/lib/data/taxonomy";
+import { listDrives } from "@/lib/placement/data";
+import { listCompanies, listResources, listRoles, listTopics } from "@/lib/taxonomy";
 
 export const metadata: Metadata = {
   title: "Share your experience",

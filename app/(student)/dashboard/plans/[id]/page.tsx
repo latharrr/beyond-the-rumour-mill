@@ -8,8 +8,8 @@ import { BackLink, textLink } from "@/components/ui/pill";
 import { card, pageMain } from "@/components/ui/surface";
 import { requireUser } from "@/lib/auth";
 import { cn } from "@/lib/cn";
-import { isUuid } from "@/lib/data/drives";
-import { getMyPlan } from "@/lib/data/plans";
+import { isUuid } from "@/lib/placement/data";
+import { getMyPlan } from "@/lib/preparation/data";
 import { formatDriveDate } from "@/lib/format";
 import { DownloadIcon } from "@/components/icons";
 

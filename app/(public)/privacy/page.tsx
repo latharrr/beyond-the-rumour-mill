@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { pageMain } from "@/components/ui/surface";
 
 export const metadata: Metadata = {
   title: "Privacy",
-  description: "What Beyond the Rumour Mill stores about you, what is public, how evidence files are handled, and how to delete your account.",
+  description: "What Beyond the Rumour Mill stores about you, what is public, how evidence files are handled, and how to have your account deleted.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -38,7 +37,7 @@ export default function PrivacyPage() {
       <Section id="privacy-collect" title="What we store">
         <ul className={LIST}>
           <li>
-            <span className="text-ink">Your account:</span> email and sign-in credentials, handled by Supabase Auth. Passwords are not shown to project admins. If you choose Google sign-in, Google shares your email and basic profile (such as name and profile picture) with Supabase Auth. We request no access to your Gmail messages or Drive files.
+            <span className="text-ink">Your account:</span> email and sign-in credentials, handled by Supabase Auth. Passwords are not shown to project admins.
           </li>
           <li>
             <span className="text-ink">Your profile:</span> branch, CGPA, backlogs, 10th and 12th percentages and graduation
@@ -52,7 +51,7 @@ export default function PrivacyPage() {
             evidence file (an offer letter or similar).
           </li>
         </ul>
-        <p>Email confirmation, recovery and sign-in codes are sent through Resend. Sign-in codes expire, are single-use, and should never be shared. Google sign-in is optional; email/password remains available. Current sign-in emails include Resend open/click tracking: an image can record an open, and email links may pass through a tracking redirect. Do not forward sign-in emails.</p>
+        <p>Email confirmation and password-reset links are sent through Resend. These emails include Resend open/click tracking: an image can record an open, and email links may pass through a tracking redirect. Do not forward sign-in emails.</p>
         <p>No analytics, no advertising trackers. The only cookies are the ones that keep you signed in.</p>
       </Section>
 
@@ -81,15 +80,9 @@ export default function PrivacyPage() {
       </Section>
 
       <Section id="privacy-delete" title="Deleting your account">
-        <p>
-          On your{" "}
-          <Link href="/onboarding" className="text-ink underline underline-offset-4 decoration-ink-dim hover:decoration-ink">
-            profile page
-          </Link>
-          , type DELETE to confirm. In one step:
-        </p>
+        <p>Ask a project admin (Group 8) to delete your account. When they do:</p>
         <ol className="flex list-decimal flex-col gap-2 pl-5 marker:text-ink-dim">
-          <li>every evidence file you uploaded is deleted;</li>
+          <li>every evidence file you uploaded is removed;</li>
           <li>your account, profile and prep plans are deleted;</li>
           <li>
             experiences you shared stay so juniors keep the data, but they are unlinked from you and shown as
@@ -109,7 +102,7 @@ export default function PrivacyPage() {
           >
             GitHub<span className="sr-only"> (opens in a new tab)</span>
           </a>{" "}
-          for technical bugs only. Do not post personal information, email addresses, grades or evidence files in a public issue. To remove your account, use the profile-page deletion control described above.
+          for technical bugs only. Do not post personal information, email addresses, grades or evidence files in a public issue. To remove your account, ask a project admin as described above.
         </p>
       </Section>
     </main>

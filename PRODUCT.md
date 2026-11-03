@@ -32,7 +32,6 @@ The product replaces placement rumours with attributable data. Every claim the p
 - A drive has a company, a role, a date, eligibility rules (CGPA, branch, backlogs, 10th/12th %, graduation year) and ordered rounds with topics.
 - **Plan generation:** topics are weighted by how often verified experiences mention them, with recency decay. The weighted topics are chunked into weeks until the drive date, with resources attached. The plan exports to Markdown.
 - **Rumour check:** one fixed claim type, "{company} heavily asks {topic}". The verdict is Supported (≥ 50% of experiences mention it), Not supported (≤ 15%) or Mixed evidence, plus a "Low sample" flag when n < 3, with the cited experiences listed.
-- **TrustScore:** 0–100 per experience, made of recency (40%), corroboration (40%) and completeness (20%).
 
 ## Capabilities and Constraints
 
@@ -54,7 +53,7 @@ The product replaces placement rumours with attributable data. Every claim the p
 
 ## Evidence on Hand
 
-- Local seed data (`supabase/seed.sql`): 3 companies (TCS, Infosys, Amazon), 3 drives and 28 experiences (24 verified, 3 pending, 1 rejected). It also has 30 topics with real-looking frequency, trust scores and rumour verdicts. **All seed experiences are synthetic** and must be labelled as sample data wherever a visitor could take them as real.
+- Local seed data (`supabase/seed.sql`): 3 companies (TCS, Infosys, Amazon), 3 drives and 28 experiences (24 verified, 3 pending, 1 rejected). It also has 30 topics with real-looking frequency and rumour verdicts. **All seed experiences are synthetic** and must be labelled as sample data wherever a visitor could take them as real.
 - Production has the taxonomy (companies, topics, resources) but no real senior experiences yet.
 - There are no testimonials, user counts, placement-cell endorsements or press. Never invent them.
 

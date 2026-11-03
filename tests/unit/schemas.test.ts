@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { credentialsSchema, safeNextPath } from "@/lib/schemas";
-import { isProtectedPath } from "@/lib/supabase/proxy";
+import { credentialsSchema, safeNextPath } from "@/lib/validation";
+import { isProtectedPath } from "@/lib/db/proxy";
 
 describe("credentialsSchema", () => {
   it("accepts and normalises valid credentials", () => {

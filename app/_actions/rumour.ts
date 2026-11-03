@@ -1,9 +1,9 @@
 "use server";
 
 import { type ActionResult, type ActionState, invalid, ok, fail } from "@/lib/action-result";
-import { type ClaimResult, checkClaimVerdict } from "@/lib/rumour";
-import { claimSchema } from "@/lib/schemas";
-import { createClient } from "@/lib/supabase/server";
+import { type ClaimResult, checkClaimVerdict } from "@/lib/experiences/rumour";
+import { claimSchema } from "@/lib/validation";
+import { createClient } from "@/lib/db/server";
 
 export type ClaimCheck = ClaimResult & {
   company: string;
@@ -12,7 +12,7 @@ export type ClaimCheck = ClaimResult & {
 };
 
 /**
- * §2.5 checkClaim — anyone (no sign-in): "<company> heavily asks <topic>".
+ * CheckClaim — anyone (no sign-in): "<company> heavily asks <topic>".
  * Deterministic: share of verified experiences for the company that are
  * tagged with the topic. Reads only the public definer views.
  */

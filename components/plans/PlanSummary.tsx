@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Countdown } from "@/components/drives/DriveCard";
 import { cardInteractive, stretchedLink } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
-import type { PlanSummary as PlanSummaryData } from "@/lib/data/plans";
+import type { PlanSummary as PlanSummaryData } from "@/lib/preparation/data";
 import { formatDriveDate } from "@/lib/format";
 
 /** A native <progress>, styled: a 6px track with an ink fill. */

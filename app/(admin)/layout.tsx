@@ -5,7 +5,7 @@ import { AreaNav } from "@/components/nav/AreaNav";
 import { LoadingState } from "@/components/route-states";
 import { requireAdmin } from "@/lib/auth";
 
-// Server-side role gate (§2.1). The proxy only checks for a session; this
+// Server-side role gate. The proxy only checks for a session; this
 // layout checks is_admin() on every request and redirects non-admins.
 // Under Cache Components the session read must sit inside <Suspense>;
 // nothing admin-specific (the admin tabs included) renders until the gate
@@ -18,8 +18,6 @@ export const metadata: Metadata = { robots: { index: false, follow: false } };
 const ITEMS = [
   { href: "/admin", label: "Verification queue", exact: true },
   { href: "/admin/drives", label: "Drives" },
-  { href: "/admin/users", label: "Users" },
-  { href: "/admin/content", label: "Content & sources" },
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {

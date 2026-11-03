@@ -1,23 +1,22 @@
-import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
-import { weeksOf } from "@/lib/export";
+import { weeksOf } from "@/lib/preparation/export";
 import { formatDriveDate } from "@/lib/format";
+import type { PlanItem } from "@/lib/preparation/data";
+import { ChecklistItem } from "./ChecklistItem";
 
 const DAY_MS = 86_400_000;
 
 /**
- * Groups items into "Week n" sections; the caller renders each item. Each
+ * Groups plan items into "Week n" sections. Each
  * week shows its own progress, and its start date when the plan's start is
  * known (weeks are counted from the day the plan was generated).
  */
-export function WeeklyBuckets<T extends { id: string; week: number; position: number; done: boolean }>({
+export function WeeklyBuckets({
   items,
-  renderItem,
   startedAt,
   currentWeek,
 }: {
-  items: T[];
-  renderItem: (item: T) => ReactNode;
+  items: PlanItem[];
   startedAt?: string | null;
   currentWeek?: number | null;
 }) {
@@ -53,7 +52,11 @@ export function WeeklyBuckets<T extends { id: string; week: number; position: nu
                 done
               </span>
             </div>
-            <ul className="divide-y divide-line">{inWeek.map(renderItem)}</ul>
+            <ul className="divide-y divide-line">
+              {inWeek.map((item) => (
+                <ChecklistItem key={item.id} item={item} />
+              ))}
+            </ul>
           </section>
         );
       })}

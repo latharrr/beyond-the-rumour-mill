@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
-import { listDrives } from "@/lib/data/drives";
-import { listVerifiedExperiences } from "@/lib/data/experiences";
+import { listDrives } from "@/lib/placement/data";
+import { listVerifiedExperiences } from "@/lib/experiences/data";
 import { absoluteUrl } from "@/lib/site";
 
 // Public pages plus every drive and verified experience. Reads go through the

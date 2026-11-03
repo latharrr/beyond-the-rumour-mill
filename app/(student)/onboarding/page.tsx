@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { DeleteAccountForm } from "@/components/account/delete-account-form";
 import { ProfileForm } from "@/components/profile/ProfileForm";
 import { LoadingState } from "@/components/route-states";
 import { card, pageMain } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
-import { getMyProfile } from "@/lib/data/profile";
-import { listBranches } from "@/lib/data/taxonomy";
-import { isProfileComplete } from "@/lib/eligibility";
-import { safeNextPath } from "@/lib/schemas";
+import { getMyProfile } from "@/lib/placement/data";
+import { listBranches } from "@/lib/taxonomy";
+import { isProfileComplete } from "@/lib/placement/eligibility";
+import { safeNextPath } from "@/lib/validation";
 
 export const metadata: Metadata = { title: "Your profile" };
 
@@ -29,7 +28,8 @@ async function Onboarding({ searchParams }: Pick<PageProps<"/onboarding">, "sear
   if (!profile) redirect("/login?next=/onboarding");
 
   const complete = isProfileComplete(profile);
-  const safeNext = typeof next === "string" ? safeNextPath(next, "") || undefined : undefined;
+  // First-time setup continues to step 2 (eligible drives) after saving.
+  const safeNext = typeof next === "string" ? safeNextPath(next, "") || undefined : complete ? undefined : "/drives?eligibleOnly=1";
   return (
     <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-start lg:gap-14">
       <div className="lg:sticky lg:top-24">
@@ -48,7 +48,6 @@ async function Onboarding({ searchParams }: Pick<PageProps<"/onboarding">, "sear
         <div className={cn(card, "p-5 md:p-8")}>
           <ProfileForm profile={profile} branches={branches} next={safeNext} />
         </div>
-        <DeleteAccountForm />
       </div>
     </div>
   );

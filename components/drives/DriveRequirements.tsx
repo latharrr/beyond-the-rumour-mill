@@ -1,6 +1,6 @@
 import { CheckIcon, CloseIcon } from "@/components/icons";
-import type { DriveSummary } from "@/lib/data/drives";
-import type { EligibilityResult, PredicateKey, PredicateResult } from "@/lib/eligibility";
+import type { DriveSummary } from "@/lib/placement/data";
+import type { EligibilityResult, PredicateKey, PredicateResult } from "@/lib/placement/eligibility";
 import { formatCgpa } from "@/lib/format";
 import type { ReactNode } from "react";
 

@@ -1,84 +1,128 @@
-import Link from "next/link";
-import { CompanyCards } from "@/components/research/CompanyCards";
-import { companyResearch } from "@/lib/company-research";
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { ClaimBar } from "@/components/landing/ClaimBar";
-import { ClaimBarFallback } from "@/components/landing/ClaimBarFallback";
-import { CLAIM_ANCHOR } from "@/components/landing/anchors";
-import { ClosingCta } from "@/components/landing/ClosingCta";
-import { DrivesSection, DrivesSectionFallback } from "@/components/landing/DrivesSection";
-import { ExperienceSection, ExperienceSectionFallback } from "@/components/landing/ExperienceSection";
-import { HeroStage } from "@/components/landing/HeroStage";
-import { IntegrationStrip, IntegrationStripFallback } from "@/components/landing/IntegrationStrip";
-import { PlanSection, PlanSectionFallback } from "@/components/landing/PlanSection";
-import { ProblemSection } from "@/components/landing/ProblemSection";
-import { listClaimExamples } from "@/lib/data/claims";
-import { listCompanies, listTopics } from "@/lib/data/taxonomy";
-import { SEED_EXPERIENCES_ARE_SAMPLE } from "@/lib/sample-data";
+import { DRIVE_CARD, DriveCard } from "@/components/drives/DriveCard";
+import { ArrowLink, PillLink } from "@/components/ui/pill";
+import { SampleTag } from "@/components/ui/status";
+import { card } from "@/components/ui/surface";
+import { cn } from "@/lib/cn";
+import { listDrives, withRoundCounts } from "@/lib/placement/data";
+import { SEED_DRIVES_ARE_SAMPLE } from "@/lib/sample-data";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
-export default function LandingPage() {
-  return (
-    <main>
-      <HeroStage>
-        <h1 id="hero-title" className="type-hero text-ink">
-          <span className="block overflow-hidden pb-[0.04em]">
-            <span data-reveal="line" className="block">
-              Heard it said?
-            </span>
-          </span>
-          <span className="block overflow-hidden pb-[0.04em]">
-            <span data-reveal="line" className="block">
-              See it counted.
-            </span>
-          </span>
-        </h1>
-        {/* Not animated: it is the page's LCP element, so it paints with the first frame. */}
-        <p className="mt-6 max-w-[38ch] type-body text-ink md:mt-7 md:max-w-none">
-          Check what you&rsquo;ve heard against what verified seniors were actually asked.
-        </p>
-        <div id={CLAIM_ANCHOR} data-reveal="rise" className="mt-9 w-full md:mt-10">
-          <Suspense fallback={<ClaimBarFallback />}>
-            <HeroClaim />
-          </Suspense>
-        </div>
-      </HeroStage>
+// The three P08 modules, rendered from data with .map() (one reusable card shape).
+const MODULES = [
+  {
+    step: "1",
+    title: "Placement information",
+    body: "Every campus drive with its eligibility rules, role, date and rounds. Sign in and each drive tells you whether you qualify, and why not.",
+    href: "/drives",
+    link: "Browse drives",
+  },
+  {
+    step: "2",
+    title: "Experience repository",
+    body: "Interview experiences from placed seniors. Only ones a placement-cell admin has verified count; unverified tips stay labelled as rumours.",
+    href: "/experiences",
+    link: "Read experiences",
+  },
+  {
+    step: "3",
+    title: "Your preparation plan",
+    body: "Pick a drive and get a week-by-week checklist built from what verified seniors were asked, with resources. Tick items off and track progress.",
+    href: "/dashboard",
+    link: "Open your dashboard",
+  },
+] as const;
 
-      <section className="container-page -mt-10 pb-12 text-center" aria-label="12 researched companies">
-        <Link href="/companies" className="type-title text-amber hover:underline">Research all 12 companies: requirements, questions & opportunities</Link>
-        <p className="mx-auto mt-3 max-w-[70ch] type-small text-ink-muted">The claim checker above counts verified student evidence only. The source-linked research below is separate, including historical interviews and clearly labelled public hiring status.</p>
-        <ul className="mt-5 flex flex-wrap justify-center gap-2">{companyResearch.map(c => <li key={c.slug}><Link href={`/companies/${c.slug}`} className="inline-flex min-h-11 items-center rounded-full border border-line px-4 type-small text-ink hover:bg-panel">{c.name}</Link></li>)}</ul>
+export default function HomePage() {
+  return (
+    <main className="container-page pb-20 md:pb-28">
+      <section aria-labelledby="hero-title" className="pt-12 pb-14 md:pt-20 md:pb-20">
+        <p className="type-label text-ink-dim">Placement prep for LPU students</p>
+        <h1 id="hero-title" className="mt-5 max-w-[16ch] type-section text-balance text-ink md:text-[64px] md:leading-[1.05]">
+          Prepare from evidence, not hostel rumours.
+        </h1>
+        <p className="mt-6 max-w-[60ch] type-body text-pretty text-ink-muted">
+          Students without senior contacts prepare blind. This puts the drive rules, verified senior experiences and a dated prep plan in one
+          place, for everyone.
+        </p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <PillLink href="/drives" variant="primary">
+            See upcoming drives
+          </PillLink>
+          <PillLink href="/rumour-check">Check a rumour</PillLink>
+        </div>
       </section>
-      <div className="container-page"><CompanyCards compact /></div>
-      <ProblemSection />
-      <Suspense fallback={<DrivesSectionFallback />}>
-        <DrivesSection />
-      </Suspense>
-      <Suspense fallback={<ExperienceSectionFallback />}>
-        <ExperienceSection />
-      </Suspense>
-      <Suspense fallback={<PlanSectionFallback />}>
-        <PlanSection />
-      </Suspense>
-      <Suspense fallback={<IntegrationStripFallback />}>
-        <IntegrationStrip />
-      </Suspense>
-      <ClosingCta />
+
+      <section aria-labelledby="modules-title">
+        <h2 id="modules-title" className="type-title text-ink">
+          How it works
+        </h2>
+        <p className="mt-2 max-w-[60ch] type-small text-ink-muted">
+          A drive&rsquo;s requirements lead to the experiences for that company, which become your plan.
+        </p>
+        <ol className="mt-6 grid gap-4 md:grid-cols-3">
+          {MODULES.map((m) => (
+            <li key={m.step} className={cn(card, "flex flex-col p-6")}>
+              <span className="type-data text-ink-dim">{m.step}</span>
+              <h3 className="mt-3 type-title text-ink">{m.title}</h3>
+              <p className="mt-2 type-small text-ink-muted">{m.body}</p>
+              <ArrowLink href={m.href} className="mt-auto pt-5">
+                {m.link}
+              </ArrowLink>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section aria-labelledby="drives-title" className="mt-16 md:mt-24">
+        <div className="flex flex-wrap items-baseline justify-between gap-3">
+          <h2 id="drives-title" className="type-title text-ink">
+            Upcoming drives
+          </h2>
+          <ArrowLink href="/drives">All drives</ArrowLink>
+        </div>
+        <Suspense fallback={<DrivesFallback />}>
+          <UpcomingDrives />
+        </Suspense>
+      </section>
     </main>
   );
 }
 
-async function HeroClaim() {
-  const [companies, topics] = await Promise.all([listCompanies(), listTopics()]);
-  const examples = await listClaimExamples(companies, topics);
+/** Server Component: fetches on the server and streams in behind the Suspense fallback. */
+async function UpcomingDrives() {
+  const open = (await listDrives()).filter((d) => d.status === "upcoming" || d.status === "ongoing").slice(0, 3);
+  if (open.length === 0) {
+    return <p className="mt-6 type-body text-ink-muted">No upcoming drives are listed yet. Past drives stay on the drives page.</p>;
+  }
+  const drives = await withRoundCounts(open);
+  const now = new Date();
   return (
-    <ClaimBar
-      companies={companies.map((c) => ({ id: c.id, name: c.name }))}
-      topics={topics.map((t) => ({ id: t.id, label: t.label, category: t.category }))}
-      examples={examples}
-      sample={SEED_EXPERIENCES_ARE_SAMPLE}
-    />
+    <>
+      {SEED_DRIVES_ARE_SAMPLE && (
+        <div className="mt-4">
+          <SampleTag />
+        </div>
+      )}
+      <ul className="mt-4 grid gap-4 lg:grid-cols-3">
+        {drives.map((d) => (
+          <li key={d.id}>
+            <DriveCard drive={d} now={now} />
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
+
+function DrivesFallback() {
+  return (
+    <ul aria-hidden="true" className="mt-4 grid gap-4 lg:grid-cols-3">
+      {[0, 1, 2].map((i) => (
+        <li key={i} className={cn(DRIVE_CARD, "animate-pulse")} />
+      ))}
+    </ul>
   );
 }

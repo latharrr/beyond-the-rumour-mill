@@ -11,9 +11,9 @@ import { card } from "@/components/ui/surface";
 import type { SearchableTopic } from "@/hooks/useTopicSearch";
 import type { ActionState, FieldErrors } from "@/lib/action-result";
 import { cn } from "@/lib/cn";
-import type { DriveSummary } from "@/lib/data/drives";
-import type { Company, Resource, Role } from "@/lib/data/taxonomy";
-import { evidenceFileSchema, experienceSchema } from "@/lib/schemas";
+import type { DriveSummary } from "@/lib/placement/data";
+import type { Company, Resource, Role } from "@/lib/taxonomy";
+import { evidenceFileSchema, experienceSchema } from "@/lib/validation";
 import { RoleSelect } from "./RoleSelect";
 import { TopicPicker } from "./TopicPicker";
 

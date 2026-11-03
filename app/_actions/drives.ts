@@ -3,8 +3,8 @@
 import { revalidatePath, updateTag } from "next/cache";
 import { type ActionResult, type ActionState, fail, invalid, NOT_AUTHORISED, ok } from "@/lib/action-result";
 import { isAdmin } from "@/lib/auth";
-import { type DriveInput, driveSchema } from "@/lib/schemas";
-import { createClient } from "@/lib/supabase/server";
+import { type DriveInput, driveSchema } from "@/lib/validation";
+import { createClient } from "@/lib/db/server";
 
 type Saved = { id: string };
 

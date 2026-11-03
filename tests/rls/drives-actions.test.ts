@@ -3,7 +3,7 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vites
 import { createAdmin, createUser, deleteUsers, lookupId, serviceClient, type TestUser } from "./helpers";
 import { session } from "./mocks/server";
 
-vi.mock("@/lib/supabase/server", () => import("./mocks/server"));
+vi.mock("@/lib/db/server", () => import("./mocks/server"));
 vi.mock("next/navigation", () => import("./mocks/navigation"));
 vi.mock("next/cache", () => import("./mocks/cache"));
 
