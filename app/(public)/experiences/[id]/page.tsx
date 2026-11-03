@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache, Suspense, type ReactNode } from "react";
-import { TrustScore } from "@/components/experiences/TrustScore";
 import { VerifiedBadge } from "@/components/experiences/VerifiedBadge";
 import { BackLink, ResourceLink } from "@/components/ui/pill";
 import { Chip, SampleTag } from "@/components/ui/status";
 import { card, pageMain } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
-import { isUuid } from "@/lib/data/drives";
-import { getVerifiedExperience } from "@/lib/data/experiences";
+import { isUuid } from "@/lib/placement/data";
+import { getVerifiedExperience } from "@/lib/experiences/data";
 import { breadcrumbs, jsonLd } from "@/lib/json-ld";
 import { absoluteUrl } from "@/lib/site";
 import { authorLabel } from "@/lib/format";
 import { SEED_EXPERIENCES_ARE_SAMPLE } from "@/lib/sample-data";
-import { COMPLETENESS_FIELDS } from "@/lib/trust";
 
 // Verified experiences only: pending/rejected ids 404 here (they are only
 // visible, anonymously, in the community-tips lane).
@@ -27,7 +25,7 @@ export async function generateMetadata({ params }: PageProps<"/experiences/[id]"
   const topics = e.topics.slice(0, 5).map((t) => t.label).join(", ");
   return {
     title: `${e.company} ${e.role} interview experience`,
-    description: `A verified ${e.company} ${e.role} placement experience (${authorLabel(e.author_role, e.grad_year)}): rounds, preparation${topics ? ` and topics asked, including ${topics}` : ""}. TrustScore ${e.trust.score}/100.`,
+    description: `A verified ${e.company} ${e.role} placement experience (${authorLabel(e.author_role, e.grad_year)}): rounds, preparation${topics ? ` and topics asked, including ${topics}` : ""}.`,
     alternates: { canonical: `/experiences/${e.id}` },
     openGraph: { type: "article", url: `/experiences/${e.id}` },
   };
@@ -63,30 +61,6 @@ async function Experience({ params }: Pick<PageProps<"/experiences/[id]">, "para
   const e = await getExperience(id);
   if (!e) notFound();
 
-  const filled = Math.round(e.trust.completeness * COMPLETENESS_FIELDS);
-  const factors: { label: string; weight: string; value: number; note: ReactNode }[] = [
-    { label: "Recency", weight: "40%", value: e.trust.recency, note: "Fades over the year after it was submitted." },
-    {
-      label: "Corroboration",
-      weight: "40%",
-      value: e.trust.corroboration,
-      note: `Share of the other verified ${e.company} experiences that report at least one of the same topics.`,
-    },
-    {
-      label: "Completeness",
-      weight: "20%",
-      value: e.trust.completeness,
-      note: (
-        <>
-          <span className="type-data">
-            {filled} of {COMPLETENESS_FIELDS}
-          </span>{" "}
-          filled in: rounds, preparation, two or more topics, a resource, evidence{e.has_evidence ? " (on file, never public)" : ""}.
-        </>
-      ),
-    },
-  ];
-
   return (
     <article className="pb-16 md:pb-24">
       <script
@@ -112,7 +86,7 @@ async function Experience({ params }: Pick<PageProps<"/experiences/[id]">, "para
         <p className="mt-4 type-body text-ink-muted">{authorLabel(e.author_role, e.grad_year)}</p>
       </header>
 
-      <div className="grid gap-10 lg:grid-cols-[minmax(0,8fr)_minmax(0,4fr)] lg:gap-14">
+      <div>
         <div>
           <Block id="rounds" title="Rounds">
             {e.rounds_summary ? <p className={prose}>{e.rounds_summary}</p> : <p className={missing}>Not provided.</p>}
@@ -148,32 +122,6 @@ async function Experience({ params }: Pick<PageProps<"/experiences/[id]">, "para
           </Block>
         </div>
 
-        <aside aria-labelledby="trust" className="lg:pt-8">
-          <section className={cn(card, "p-5 md:p-6 lg:sticky lg:top-24")}>
-            <h2 id="trust" className="type-label text-ink-dim">
-              Why this TrustScore
-            </h2>
-            <p className="mt-4">
-              <TrustScore trust={e.trust} className="text-[15px]" />
-            </p>
-            <dl className="mt-6 grid gap-5">
-              {factors.map((f) => (
-                <div key={f.label}>
-                  <div className="flex items-baseline justify-between gap-4">
-                    <dt className="text-[15px] text-ink">
-                      {f.label} <span className="type-small text-ink-dim">· weight <span className="type-data">{f.weight}</span></span>
-                    </dt>
-                    <dd className="type-data text-[15px] text-ink">{Math.round(f.value * 100)}%</dd>
-                  </div>
-                  <div aria-hidden="true" className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
-                    <div className="h-full rounded-full bg-ink" style={{ width: `${Math.max(2, Math.round(f.value * 100))}%` }} />
-                  </div>
-                  <p className="mt-1.5 type-small text-ink-dim">{f.note}</p>
-                </div>
-              ))}
-            </dl>
-          </section>
-        </aside>
       </div>
     </article>
   );

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { filterDrives, matchesQuery, type SearchableDrive } from "@/lib/drive-search";
-import type { EligibilityProfile } from "@/lib/eligibility";
+import { filterDrives, matchesQuery, type SearchableDrive } from "@/lib/placement/drive-search";
+import type { EligibilityProfile } from "@/lib/placement/eligibility";
 
 const drive = (id: string, over: Partial<SearchableDrive> = {}): SearchableDrive => ({
   id, title: `Drive ${id}`, company: { id: "c-tcs", name: "TCS" }, role: { label: "Software Engineer", aliases: ["SDE"] },
@@ -36,11 +36,5 @@ describe("filterDrives", () => {
   it("eligibleOnly keeps only eligible drives, and none without a profile", () => {
     expect(filterDrives(drives, { eligibleOnly: true }, profile).map((m) => m.drive.id)).toEqual(["1"]);
     expect(filterDrives(drives, { eligibleOnly: true }, null)).toEqual([]);
-  });
-  it("never evaluates campus rules for public hiring listings", () => {
-    const mixed = [...drives, drive("3", { source_kind: "public_hiring", eligibility_cgpa: null })];
-    const all = filterDrives(mixed, { eligibleOnly: false }, profile);
-    expect(all.find((m) => m.drive.id === "3")?.eligibility).toBeNull();
-    expect(filterDrives(mixed, { eligibleOnly: true }, profile).map((m) => m.drive.id)).toEqual(["1"]);
   });
 });

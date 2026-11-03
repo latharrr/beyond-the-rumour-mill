@@ -2,8 +2,8 @@
 
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { credentialsSchema, safeNextPath } from "@/lib/schemas";
-import { createClient } from "@/lib/supabase/server";
+import { credentialsSchema, safeNextPath } from "@/lib/validation";
+import { createClient } from "@/lib/db/server";
 
 export type AuthState = {
   error?: string;

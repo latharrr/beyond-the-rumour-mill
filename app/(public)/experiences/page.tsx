@@ -9,19 +9,19 @@ import { PillLink } from "@/components/ui/pill";
 import { SampleTag } from "@/components/ui/status";
 import { card, EmptyState, PageHeader, pageMain } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
-import { isUuid } from "@/lib/data/drives";
-import { listCommunityTips, listVerifiedExperiences } from "@/lib/data/experiences";
-import { type Company, listCompanies } from "@/lib/data/taxonomy";
+import { isUuid } from "@/lib/placement/data";
+import { listCommunityTips, listVerifiedExperiences } from "@/lib/experiences/data";
+import { type Company, listCompanies } from "@/lib/taxonomy";
 import { SEED_EXPERIENCES_ARE_SAMPLE } from "@/lib/sample-data";
 
 export const metadata: Metadata = {
   title: "Verified interview experiences",
   description:
-    "What placed seniors were actually asked, round by round, with a TrustScore for each write-up and the most-asked topics per company. Unverified tips are labelled as rumours.",
+    "What placed seniors were actually asked, round by round, with the most-asked topics per company. Unverified tips are labelled as rumours.",
   alternates: { canonical: "/experiences" },
 };
 
-// §3.2: verified experiences (with TrustScore) and the quarantined
+// Verified experiences and the quarantined
 // community-tips lane, visually separate sections.
 export default function ExperiencesPage({ searchParams }: PageProps<"/experiences">) {
   return (

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache, Suspense } from "react";
-import { APPLICATION_STATUS_LABEL, Countdown, KIND_LABEL, STATUS_LABEL } from "@/components/drives/DriveCard";
+import { Countdown, STATUS_LABEL } from "@/components/drives/DriveCard";
 import { DriveRequirements } from "@/components/drives/DriveRequirements";
 import { EligibilityBadge } from "@/components/drives/EligibilityBadge";
 import { IneligibilityExplainer } from "@/components/drives/IneligibilityExplainer";
@@ -14,12 +14,12 @@ import { SampleTag } from "@/components/ui/status";
 import { card, EmptyState, PageSection, pageMain } from "@/components/ui/surface";
 import { getSessionUser } from "@/lib/auth";
 import { cn } from "@/lib/cn";
-import { getDrive as fetchDrive } from "@/lib/data/drives";
-import { listMatchedExperiences } from "@/lib/data/experiences";
-import { getMyPlanIdForDrive } from "@/lib/data/plans";
-import { getMyProfile } from "@/lib/data/profile";
-import { branchCodeMap, listBranches } from "@/lib/data/taxonomy";
-import { evaluateEligibility, explainEligibility } from "@/lib/eligibility";
+import { getDrive as fetchDrive } from "@/lib/placement/data";
+import { listMatchedExperiences } from "@/lib/experiences/data";
+import { getMyPlanIdForDrive } from "@/lib/preparation/data";
+import { getMyProfile } from "@/lib/placement/data";
+import { branchCodeMap, listBranches } from "@/lib/taxonomy";
+import { evaluateEligibility, explainEligibility } from "@/lib/placement/eligibility";
 import { formatCgpa, formatDriveDate } from "@/lib/format";
 import { breadcrumbs, jsonLd } from "@/lib/json-ld";
 import { absoluteUrl } from "@/lib/site";
@@ -79,8 +79,7 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
     user ? getMyPlanIdForDrive(user.id, drive.id) : null,
   ]);
   const codes = branchCodeMap(branches);
-  const isPublic = drive.source_kind === "public_hiring";
-  const eligibility = profile && !isPublic ? evaluateEligibility(profile, drive, codes) : null;
+  const eligibility = profile ? evaluateEligibility(profile, drive, codes) : null;
   const signIn = `/login?next=/drives/${drive.id}`;
   const open = drive.status === "upcoming" || drive.status === "ongoing";
   const now = new Date();
@@ -103,26 +102,13 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <span className="type-label text-ink-muted">{drive.company.name}</span>
           <span className="type-label text-ink-dim">{STATUS_LABEL[drive.status]}</span>
-          {isPublic ? <span className="type-label text-ink-dim">{KIND_LABEL.public_hiring} · {APPLICATION_STATUS_LABEL[drive.application_status]}</span> : SEED_DRIVES_ARE_SAMPLE && <SampleTag />}
+          {SEED_DRIVES_ARE_SAMPLE && <SampleTag />}
         </div>
         <h1 className="mt-5 max-w-[22ch] type-section text-balance text-ink">{drive.title}</h1>
         <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1 type-body text-ink-muted">
           <span className="text-ink">{drive.role.label}</span>
           <span aria-hidden="true">·</span>
-          {isPublic ? (
-            drive.application_deadline ? (
-              <span>
-                {/anticipated/i.test(drive.deadline_note ?? "") ? "Anticipated close" : "Apply by"}{" "}
-                <time dateTime={drive.application_deadline} className="type-data text-ink">
-                  {formatDriveDate(drive.application_deadline)}
-                </time>
-              </span>
-            ) : drive.application_status === "unconfirmed" ? (
-              <span>No application dates on the source page</span>
-            ) : (
-              <span>No deadline on the official page</span>
-            )
-          ) : drive.drive_date ? (
+          {drive.drive_date ? (
             <span>
               <time dateTime={drive.drive_date} className="type-data text-ink">
                 {formatDriveDate(drive.drive_date)}
@@ -147,32 +133,6 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,8fr)_minmax(0,4fr)] lg:items-start lg:gap-14">
         <aside className="grid gap-4 lg:sticky lg:top-24 lg:order-2">
-          {isPublic && (
-            <section aria-labelledby="official-source" className={cn(card, "p-5 md:p-6")}>
-              <h2 id="official-source" className="type-title text-ink">
-                Official source
-              </h2>
-              <p className="mt-2 type-small text-ink-muted">
-                This is a public hiring listing, not a confirmed LPU campus drive. Rules come from the employer&rsquo;s page, read on{" "}
-                {drive.verified_on ? <time dateTime={drive.verified_on}>{formatDriveDate(drive.verified_on)}</time> : "an earlier date"}. Pages change: confirm there before you apply.
-              </p>
-              {drive.eligibility_note && <p className="mt-4 type-small text-ink">{drive.eligibility_note}</p>}
-              {drive.deadline_note && <p className="mt-3 type-small text-ink-muted">{drive.deadline_note}</p>}
-              <div className="mt-5 grid gap-3">
-                {drive.apply_url && (
-                  <a href={drive.apply_url} target="_blank" rel="noopener noreferrer" className={textLink}>
-                    Open the employer listing
-                  </a>
-                )}
-                {drive.source_url && drive.source_url !== drive.apply_url && (
-                  <a href={drive.source_url} target="_blank" rel="noopener noreferrer" className={textLink}>
-                    Source page
-                  </a>
-                )}
-              </div>
-            </section>
-          )}
-          {!isPublic && (
           <section aria-labelledby="requirements" className={cn(card, "p-5 md:p-6")}>
             <div className="flex flex-wrap items-center justify-between gap-3">
               <h2 id="requirements" className="type-title text-ink">
@@ -200,7 +160,6 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
               )}
             </div>
           </section>
-          )}
 
           <section aria-labelledby="prep-plan" className={cn(card, "p-5 md:p-6")}>
             <h2 id="prep-plan" className="type-title text-ink">
@@ -228,17 +187,15 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
         </aside>
 
         <div className="min-w-0 lg:order-1">
-          {!isPublic && (
-            <PageSection id="rounds" title="Rounds" className="border-t-0 pt-0 md:pt-0">
-              <RoundList rounds={drive.rounds} />
-            </PageSection>
-          )}
+          <PageSection id="rounds" title="Rounds" className="border-t-0 pt-0 md:pt-0">
+            <RoundList rounds={drive.rounds} />
+          </PageSection>
 
           <PageSection
             id="experiences"
             title="Verified experiences"
             aside={matched.experiences.length > 0 && SEED_EXPERIENCES_ARE_SAMPLE ? <SampleTag /> : null}
-            className={isPublic ? "border-t-0 pt-0 pb-0 md:pt-0 md:pb-0" : "pb-0 md:pb-0"}
+            className="pb-0 md:pb-0"
           >
             {matched.experiences.length === 0 ? (
               <EmptyState

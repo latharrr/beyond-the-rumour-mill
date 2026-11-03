@@ -3,15 +3,15 @@
 import { revalidatePath, updateTag } from "next/cache";
 import { type ActionResult, type ActionState, fail, invalid, NOT_AUTHORISED, NOT_SIGNED_IN, ok } from "@/lib/action-result";
 import { getSessionUser, isAdmin } from "@/lib/auth";
-import { evidenceObjectPath, fileMatchesType } from "@/lib/evidence";
-import { evidenceFileSchema, type EvidenceType, experienceSchema, rejectSchema, reviewIdSchema } from "@/lib/schemas";
-import { createAdminClient } from "@/lib/supabase/admin";
-import { createClient } from "@/lib/supabase/server";
+import { evidenceObjectPath, fileMatchesType } from "@/lib/experiences/evidence";
+import { evidenceFileSchema, type EvidenceType, experienceSchema, rejectSchema, reviewIdSchema } from "@/lib/validation";
+import { createAdminClient } from "@/lib/db/admin";
+import { createClient } from "@/lib/db/server";
 
-const SIGNED_URL_SECONDS = 60; // §1.6
+const SIGNED_URL_SECONDS = 60;
 
 /**
- * §2.2 submitExperience: validate → upload evidence to {uid}/{uuid}.ext →
+ * submitExperience: validate → upload evidence to {uid}/{uuid}.ext →
  * submit_experience RPC. If the RPC fails, the uploaded object is deleted
  * with the service role (students cannot delete objects themselves).
  */
@@ -74,7 +74,7 @@ export async function submitExperience(_prev: ActionState<{ id: string }>, formD
   return ok({ id: data }, "Thanks! Your experience is in the verification queue.");
 }
 
-/** Admin: mark a pending experience verified (§2.2). */
+/** Admin: mark a pending experience verified. */
 export async function verifyExperience(_prev: ActionState, formData: FormData): Promise<ActionResult> {
   if (!(await isAdmin())) return fail(NOT_AUTHORISED);
   const user = await getSessionUser();

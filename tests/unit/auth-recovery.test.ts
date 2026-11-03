@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 const h=vi.hoisted(()=>({reset:vi.fn(),claims:vi.fn(),update:vi.fn(),verify:vi.fn()}));
-vi.mock('@/lib/supabase/server',()=>({createClient:async()=>({auth:{resetPasswordForEmail:h.reset,getClaims:h.claims,updateUser:h.update,verifyOtp:h.verify}})}));
+vi.mock('@/lib/db/server',()=>({createClient:async()=>({auth:{resetPasswordForEmail:h.reset,getClaims:h.claims,updateUser:h.update,verifyOtp:h.verify}})}));
 vi.mock('next/navigation',()=>({redirect:(url:string)=>{throw new Error('REDIRECT:'+url)}}));
 vi.mock('@/lib/site',()=>({SITE_URL:'https://example.test'}));
 import {requestPasswordReset,updatePassword} from '@/app/_actions/auth';

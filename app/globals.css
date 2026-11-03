@@ -17,10 +17,6 @@
   --color-mixed: #f2c94c;
   --color-rumour: #f07167;
 
-  --glow-1: #ff8a3d;
-  --glow-2: #c2410c;
-  --glow-3: #3b0d1a;
-
   --radius-card: 12px;
   --radius-bar: 20px;
 
@@ -64,25 +60,7 @@
   line-height: 0.84;
   letter-spacing: -0.01em;
 }
-/*
- * Poster headline: the longest line (about 5.8em wide) fills the content width
- * edge to edge on phones and grows to the desktop cap (cap height ≈ 110px).
- */
-@utility type-hero {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-stretch: 62%;
-  font-variation-settings: "wdth" 62;
-  text-transform: uppercase;
-  line-height: 0.84;
-  letter-spacing: -0.01em;
-  font-size: clamp(52px, calc((100vw - 32px) / var(--hero-measure, 5.8)), var(--hero-max, 150px));
-  /* From tablet up the gutter is 24px; 100vw also counts a classic scrollbar, so leave room for one. */
-  @media (width >= 48rem) {
-    font-size: clamp(52px, calc((100vw - 68px) / var(--hero-measure, 5.8)), var(--hero-max, 150px));
-  }
-}
-/* Section openers below the hero: 36px on phones, 56px from tablet up. */
+/* Page headings: 36px on phones, 56px from tablet up. */
 @utility type-section {
   font-family: var(--font-display);
   font-weight: 800;
@@ -103,7 +81,7 @@
  * ("BEYOND THE" 4.375em, "RUMOUR MILL" 4.954em, rounded up), so
  * container width / measure makes that line span the container edge to edge
  * at every width (needs an inline-size container on a parent). Both lines are
- * always larger than the hero headline.
+ * always larger than the page headings.
  */
 @utility type-wordmark {
   font-family: var(--font-display);
@@ -172,33 +150,6 @@
   }
 }
 
-/*
- * The hero's ember field: rust spread across the fold, ember cores rising
- * behind the headline and the claim bar, fading cleanly into the ground.
- */
-@utility glow-field {
-  background:
-    radial-gradient(30% 24% at 50% 34%, color-mix(in oklab, var(--glow-1) 42%, transparent) 0%, color-mix(in oklab, var(--glow-1) 22%, transparent) 50%, transparent 100%),
-    radial-gradient(44% 22% at 50% 70%, color-mix(in oklab, var(--glow-1) 52%, transparent) 0%, color-mix(in oklab, var(--glow-1) 26%, transparent) 50%, transparent 100%),
-    radial-gradient(62% 58% at 50% 50%, color-mix(in oklab, var(--glow-2) 72%, transparent) 0%, color-mix(in oklab, var(--glow-2) 46%, transparent) 45%, color-mix(in oklab, var(--glow-2) 16%, transparent) 75%, transparent 100%);
-  mask-image: radial-gradient(farthest-side at 50% 50%, #000 62%, transparent 100%);
-}
-
-/*
- * Feature-panel frame glow. The glow is the panel's own ground, edge to
- * edge: a deep oxblood and rust field that darkens toward the corners, with
- * one brighter ember pool behind the cards. Kept well below the amber CTA in
- * brightness and saturation. No mask; only the hero field fades to ground.
- * --glow-x / --glow-y place the ember pool so panels differ.
- */
-@utility glow-panel {
-  background-color: var(--glow-3);
-  background-image:
-    radial-gradient(46% 40% at var(--glow-x, 55%) var(--glow-y, 45%), color-mix(in oklab, var(--glow-1) 78%, var(--glow-2)) 0%, color-mix(in oklab, var(--glow-1) 42%, transparent) 40%, color-mix(in oklab, var(--glow-1) 12%, transparent) 72%, transparent 100%),
-    radial-gradient(85% 78% at var(--glow-x, 55%) var(--glow-y, 45%), color-mix(in oklab, var(--glow-2) 92%, transparent) 0%, color-mix(in oklab, var(--glow-2) 58%, transparent) 45%, color-mix(in oklab, var(--glow-2) 18%, transparent) 80%, transparent 100%),
-    radial-gradient(150% 140% at var(--glow-x, 55%) var(--glow-y, 45%), var(--glow-3) 0%, var(--glow-3) 45%, color-mix(in oklab, var(--glow-3) 55%, var(--color-ground)) 100%);
-}
-
 @layer base {
   html {
     color-scheme: dark;
@@ -242,10 +193,6 @@
     outline: 2px solid var(--color-amber);
     outline-offset: 2px;
   }
-  /* On paper surfaces amber is too faint to see; the ring takes the paper ink. */
-  [data-surface="paper"] :focus-visible {
-    outline-color: var(--color-paper-ink);
-  }
 
   a {
     text-underline-offset: 0.2em;
@@ -266,49 +213,7 @@
     cursor: not-allowed;
   }
 
-  /* Nav bar-to-pill morph: GSAP tweens --pill (0 → 1) on the nav's header; labels crossfade from it. */
-  [data-tone="bar"] {
-    opacity: calc(1 - var(--pill, 0));
-  }
-  [data-tone="pill"] {
-    opacity: var(--pill, 0);
-  }
-  [data-pill-hide] {
-    opacity: calc(1 - var(--pill, 0) * 2.5);
-  }
-  [data-settled="pill"] [data-pill-hide] {
-    visibility: hidden;
-  }
-
-
 }
-
-@keyframes reveal-failsafe {
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* Keep in-page jumps below the fixed nav, without animated scrolling. */
 html { scroll-behavior: auto; scroll-padding-top: 112px; }

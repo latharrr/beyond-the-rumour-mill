@@ -46,7 +46,7 @@ For a demo on production (https://beyond-the-rumour-mill.vercel.app), run the sa
 - Repeat with **Pseudocode**: **Supported**, with every cited experience linked.
 
 **5. Quarantine and verification (25 s).**
-- Open `/experiences`. Point at the topic table (real counts from the data), the verified list with TrustScores, and the separate **Community tips** lane under *"Unverified — treat as rumour…"*.
+- Open `/experiences`. Point at the topic table (real counts from the data), the verified list, and the separate **Community tips** lane under *"Unverified — treat as rumour…"*.
 - Window B: sign in as `admin@seed.test`, which opens `/admin`.
 - On the alumni3 submission, click **View evidence**. A 60-second signed URL opens the PDF.
 - Click **Verify**. Back on `/experiences`, it has moved from the tips lane to the verified list.

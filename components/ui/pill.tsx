@@ -1,25 +1,22 @@
 import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { ArrowLeftIcon, ArrowRightIcon, ExternalIcon } from "@/components/icons";
-import { Press } from "@/components/motion/Press";
 import { cn } from "@/lib/cn";
 
 const pill = "inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-medium whitespace-nowrap";
-export const pillPrimary = cn(pill, "bg-amber text-paper-ink disabled:opacity-60");
+export const pillPrimary = cn(pill, "bg-amber text-paper-ink transition-transform hover:scale-[1.03] active:scale-95 disabled:opacity-60");
 export const pillSecondary = cn(pill, "border border-line text-ink transition-colors duration-200 hover:bg-panel disabled:opacity-60");
 
-/** A pill link with framer-motion hover/press on its wrapper. */
+/** A pill-shaped link. Reusable via the `variant` prop. */
 export function PillLink({ href, variant = "secondary", children }: { href: string; variant?: "primary" | "secondary"; children: ReactNode }) {
   return (
-    <Press>
-      <Link href={href} className={variant === "primary" ? pillPrimary : pillSecondary}>
-        {children}
-      </Link>
-    </Press>
+    <Link href={href} className={variant === "primary" ? pillPrimary : pillSecondary}>
+      {children}
+    </Link>
   );
 }
 
-/** A pill <button>. No motion wrapper, so it also works outside the public layout's MotionProvider. */
+/** A pill <button>. */
 export function Button({
   variant = "primary",
   className,

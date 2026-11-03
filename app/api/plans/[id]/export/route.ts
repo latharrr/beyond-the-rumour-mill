@@ -1,10 +1,10 @@
 import type { NextRequest } from "next/server";
 import { getSessionUser } from "@/lib/auth";
-import { isUuid } from "@/lib/data/drives";
-import { getMyPlan } from "@/lib/data/plans";
-import { exportFilename, planToMarkdown } from "@/lib/export";
+import { isUuid } from "@/lib/placement/data";
+import { getMyPlan } from "@/lib/preparation/data";
+import { exportFilename, planToMarkdown } from "@/lib/preparation/export";
 
-// §2.3: ownership check (RLS + explicit user_id filter in getMyPlan), then the
+// Ownership check (RLS + explicit user_id filter in getMyPlan), then the
 // plan as a Markdown download. Mutations stay in Server Actions.
 export async function GET(request: NextRequest, ctx: RouteContext<"/api/plans/[id]/export">) {
   const user = await getSessionUser();

@@ -1,7 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/db/server";
 
 // Data Access Layer for identity and role. Every check reads the verified
 // session server-side; nothing here trusts client input.
@@ -22,7 +22,7 @@ export async function requireUser(next = "/dashboard"): Promise<SessionUser> {
 }
 
 // Fresh is_admin() round-trip on every call: layouts do not protect Server
-// Actions, so admin actions must call this themselves (§2.1).
+// Actions, so admin actions must call this themselves.
 export async function isAdmin(): Promise<boolean> {
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("is_admin");

@@ -7,9 +7,9 @@ import { FieldError, FormMessage, hint, input, label, select } from "@/component
 import { Button } from "@/components/ui/pill";
 import type { ActionState, FieldErrors } from "@/lib/action-result";
 import { cn } from "@/lib/cn";
-import type { MyProfile } from "@/lib/data/profile";
-import type { Branch } from "@/lib/data/taxonomy";
-import { profileSchema } from "@/lib/schemas";
+import type { MyProfile } from "@/lib/placement/data";
+import type { Branch } from "@/lib/taxonomy";
+import { profileSchema } from "@/lib/validation";
 
 type Props = { profile: MyProfile; branches: Branch[]; next?: string };
 

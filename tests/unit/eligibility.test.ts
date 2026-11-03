@@ -12,7 +12,7 @@ import {
   evaluateEligibility,
   explainEligibility,
   isProfileComplete,
-} from "@/lib/eligibility";
+} from "@/lib/placement/eligibility";
 
 const CSE = "b-cse";
 const IT = "b-it";

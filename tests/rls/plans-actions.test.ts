@@ -7,7 +7,7 @@ import { createUser, deleteUsers, driveFor, serviceClient, type TestUser } from 
 import { RedirectError } from "./mocks/navigation";
 import { session } from "./mocks/server";
 
-vi.mock("@/lib/supabase/server", () => import("./mocks/server"));
+vi.mock("@/lib/db/server", () => import("./mocks/server"));
 vi.mock("next/navigation", () => import("./mocks/navigation"));
 vi.mock("next/cache", () => import("./mocks/cache"));
 

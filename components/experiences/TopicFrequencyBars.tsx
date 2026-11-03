@@ -1,4 +1,4 @@
-import type { TopicFrequency } from "@/lib/topic-frequency";
+import type { TopicFrequency } from "@/lib/experiences/topic-frequency";
 
 /** Topic frequency across verified experiences: one bar per topic, count as "n of N". */
 export function TopicFrequencyBars({ frequency, total, limit = 10 }: { frequency: TopicFrequency[]; total: number; limit?: number }) {

@@ -7,13 +7,13 @@ import { FormMessage } from "@/components/ui/field";
 import { ArrowLink, textLink } from "@/components/ui/pill";
 import { card, EmptyState, PageHeader, pageMain } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
-import { getDrive, listDrives } from "@/lib/data/drives";
-import { listBranches, listCompanies, listResources, listRoles, listTopics } from "@/lib/data/taxonomy";
+import { getDrive, listDrives } from "@/lib/placement/data";
+import { listBranches, listCompanies, listResources, listRoles, listTopics } from "@/lib/taxonomy";
 import { formatDriveDate } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Manage drives" };
 
-// Drive CRUD (§3.1). ?edit=<id> switches the form to edit mode.
+// Drive CRUD. ?edit=<id> switches the form to edit mode.
 export default function AdminDrivesPage({ searchParams }: PageProps<"/admin/drives">) {
   return (
     <main className={cn(pageMain, "pb-20 md:pb-28")}>

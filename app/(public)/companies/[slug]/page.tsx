@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BackLink, textLink } from '@/components/ui/pill';
 import { card, PageHeader, pageMain } from '@/components/ui/surface';
-import { companyResearch, getCompanyResearch, researchChecked, researchStatus } from '@/lib/company-research';
+import { companyResearch, getCompanyResearch, researchChecked, researchStatus } from '@/lib/placement/company-research';
 export function generateStaticParams() { return companyResearch.map(c => ({ slug: c.slug })); }
 export async function generateMetadata({params}: PageProps<'/companies/[slug]'>): Promise<Metadata> {
   const c = getCompanyResearch((await params).slug);

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { type ExportPlan, exportFilename, mdEscape, planToMarkdown, weeksOf } from "@/lib/export";
+import { type ExportPlan, exportFilename, mdEscape, planToMarkdown, weeksOf } from "@/lib/preparation/export";
 
 const plan: ExportPlan = {
   created_at: "2026-10-27T10:00:00Z",

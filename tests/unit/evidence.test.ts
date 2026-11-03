@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { evidenceObjectPath, fileMatchesType, sniffMatches } from "@/lib/evidence";
-import { evidenceFileSchema } from "@/lib/schemas";
+import { evidenceObjectPath, fileMatchesType, sniffMatches } from "@/lib/experiences/evidence";
+import { evidenceFileSchema } from "@/lib/validation";
 
 const file = (bytes: number[], type: string, size?: number) => {
   const body = new Uint8Array(size ?? bytes.length);

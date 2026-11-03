@@ -1,10 +1,18 @@
+"use client";
+
+import { memo } from "react";
 import { CheckIcon } from "@/components/icons";
 import { ResourceLink } from "@/components/ui/pill";
 import { cn } from "@/lib/cn";
-import type { PlanItem } from "@/lib/data/plans";
+import type { PlanItem } from "@/lib/preparation/data";
+import { useChecklist } from "./ChecklistContext";
 
-/** One plan item: a checkbox whose state comes from the optimistic list in Checklist. */
-export function ChecklistItem({ item, onToggle, disabled }: { item: PlanItem; onToggle: (done: boolean) => void; disabled?: boolean }) {
+/**
+ * One plan item: a controlled checkbox. React.memo skips re-rendering items
+ * whose `item` object did not change when another item is ticked.
+ */
+export const ChecklistItem = memo(function ChecklistItem({ item }: { item: PlanItem }) {
+  const { toggle, saving } = useChecklist();
   return (
     <li data-done={item.done} className="px-5 py-3 md:px-6">
       <label className="group flex min-h-11 cursor-pointer items-center gap-3.5">
@@ -12,8 +20,8 @@ export function ChecklistItem({ item, onToggle, disabled }: { item: PlanItem; on
           <input
             type="checkbox"
             checked={item.done}
-            disabled={disabled}
-            onChange={(e) => onToggle(e.target.checked)}
+            disabled={saving}
+            onChange={(e) => toggle(item.id, e.target.checked)}
             className="peer size-[22px] cursor-pointer appearance-none rounded-md border border-white/25 transition-[background-color,border-color,transform] duration-200 ease-[var(--ease-out-3)] group-hover:border-white/50 checked:border-verified checked:bg-verified active:scale-90"
           />
           <CheckIcon
@@ -37,4 +45,4 @@ export function ChecklistItem({ item, onToggle, disabled }: { item: PlanItem; on
       )}
     </li>
   );
-}
+});

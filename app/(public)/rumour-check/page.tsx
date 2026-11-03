@@ -5,8 +5,8 @@ import { checkClaim } from "@/app/_actions/rumour";
 import { card, PageHeader, pageMain } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
 import { ClaimForm } from "@/components/rumour/ClaimForm";
-import { listCompanies, listTopics } from "@/lib/data/taxonomy";
-import { claimSchema } from "@/lib/schemas";
+import { listCompanies, listTopics } from "@/lib/taxonomy";
+import { claimSchema } from "@/lib/validation";
 
 export const metadata: Metadata = {
   title: "Rumour check: does a company really ask that topic?",

@@ -1,5 +1,5 @@
 import { StatusPill } from "@/components/ui/status";
-import type { EligibilityResult } from "@/lib/eligibility";
+import type { EligibilityResult } from "@/lib/placement/eligibility";
 
 /** "Eligible" / "Not eligible" / "Complete your profile"; nothing when signed out. */
 export function EligibilityBadge({ eligibility }: { eligibility: EligibilityResult | null }) {

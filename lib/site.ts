@@ -1,4 +1,4 @@
-// Canonical site identity for metadata, sitemap, robots, llms.txt and JSON-LD.
+// Canonical site identity for metadata, sitemap, robots and JSON-LD.
 
 /** Absolute origin: NEXT_PUBLIC_SITE_URL, else Vercel's production domain, else local dev. */
 export const SITE_URL = (

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { topicFrequency } from "@/lib/topic-frequency";
+import { topicFrequency } from "@/lib/experiences/topic-frequency";
 
 const topics = [
   { id: "dp", label: "Dynamic Programming", category: "DSA" },

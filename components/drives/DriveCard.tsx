@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { cardInteractive, stretchedLink } from "@/components/ui/surface";
-import type { DriveStatus, DriveWithRounds } from "@/lib/data/drives";
-import type { EligibilityResult } from "@/lib/eligibility";
+import type { DriveStatus, DriveWithRounds } from "@/lib/placement/data";
+import type { EligibilityResult } from "@/lib/placement/eligibility";
 import { cn } from "@/lib/cn";
 import { daysUntil, formatCgpa, formatDriveDate } from "@/lib/format";
 import { EligibilityBadge } from "./EligibilityBadge";
@@ -16,14 +16,6 @@ export const STATUS_LABEL: Record<DriveStatus, string> = {
   completed: "Completed",
   cancelled: "Cancelled",
 };
-
-export const APPLICATION_STATUS_LABEL = {
-  open_stated: "Open per employer page",
-  posting_live: "Live posting, no window stated",
-  unconfirmed: "Application status unconfirmed",
-} as const;
-
-export const KIND_LABEL = { campus: "LPU campus drive", public_hiring: "Public hiring, not an LPU drive" } as const;
 
 /** "In 12 days" / "Today" / "Date passed" next to a drive date. */
 export function Countdown({ date, now }: { date: string; now: Date }) {
@@ -59,11 +51,6 @@ export function DriveCard({
         <span className="type-label text-ink-muted">{d.company.name}</span>
         <span className="type-label text-ink-dim">{STATUS_LABEL[d.status]}</span>
       </div>
-      {d.source_kind === "public_hiring" && (
-        <p data-kind="public_hiring" className="mt-3 type-label text-ink-dim">
-          {KIND_LABEL.public_hiring} · {APPLICATION_STATUS_LABEL[d.application_status]}
-        </p>
-      )}
 
       <H id={titleId} className="mt-5 type-title text-ink">
         {/* The whole card is this link's hit area. */}
@@ -77,20 +64,7 @@ export function DriveCard({
       </p>
 
       <p className="mt-5 flex items-baseline gap-2.5">
-        {d.source_kind === "public_hiring" ? (
-          d.application_deadline ? (
-            <>
-              <span className="type-small text-ink-muted">{/anticipated/i.test(d.deadline_note ?? "") ? "Anticipated close" : "Apply by"}</span>
-              <time dateTime={d.application_deadline} className="type-data text-[17px] text-ink">
-                {formatDriveDate(d.application_deadline)}
-              </time>
-            </>
-          ) : d.application_status === "unconfirmed" ? (
-            <span className="type-small text-ink-muted">No application dates on the source page</span>
-          ) : (
-            <span className="type-small text-ink-muted">No deadline on the official page</span>
-          )
-        ) : d.drive_date ? (
+        {d.drive_date ? (
           <>
             <time dateTime={d.drive_date} className="type-data text-[17px] text-ink">
               {formatDriveDate(d.drive_date)}
@@ -106,18 +80,13 @@ export function DriveCard({
         )}
       </p>
 
-      {eligibility && d.source_kind !== "public_hiring" && (
+      {eligibility && (
         <div className="mt-4">
           <EligibilityBadge eligibility={eligibility} />
         </div>
       )}
 
       <div className="mt-auto pt-5" />
-      {d.source_kind === "public_hiring" ? (
-        <p className="border-t border-line pt-4 type-small text-ink-muted">
-          {d.eligibility_note ?? "Check the official listing for eligibility."}
-        </p>
-      ) : (
       <dl className="grid grid-cols-3 gap-3 border-t border-line pt-4">
         <Spec label="CGPA" value={d.eligibility_cgpa === null ? "Any" : `${formatCgpa(d.eligibility_cgpa)}+`} numeric={d.eligibility_cgpa !== null} />
         <Spec
@@ -134,7 +103,6 @@ export function DriveCard({
         />
         <Spec label="Rounds" value={String(d.round_count)} numeric />
       </dl>
-      )}
     </article>
   );
 }

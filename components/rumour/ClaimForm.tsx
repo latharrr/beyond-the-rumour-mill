@@ -9,7 +9,7 @@ import { card } from "@/components/ui/surface";
 import type { SearchableTopic } from "@/hooks/useTopicSearch";
 import type { ActionState } from "@/lib/action-result";
 import { cn } from "@/lib/cn";
-import type { Company } from "@/lib/data/taxonomy";
+import type { Company } from "@/lib/taxonomy";
 import { VerdictCard } from "./VerdictCard";
 
 /** Constrained claim input: company dropdown + topic picker, one claim type. */

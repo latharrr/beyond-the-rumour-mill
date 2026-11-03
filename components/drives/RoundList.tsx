@@ -1,6 +1,6 @@
 import { ResourceLink } from "@/components/ui/pill";
 import { Chip } from "@/components/ui/status";
-import type { RoundDetail } from "@/lib/data/drives";
+import type { RoundDetail } from "@/lib/placement/data";
 
 /** The drive's rounds in order: a numbered rail with topics and resources per round. */
 export function RoundList({ rounds }: { rounds: RoundDetail[] }) {

@@ -6,12 +6,12 @@ import { ReviewForms } from "@/components/admin/ReviewForms";
 import { Chip, StatusPill } from "@/components/ui/status";
 import { card, EmptyState, PageHeader, pageMain } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
-import { listVerificationQueue } from "@/lib/data/admin";
+import { listVerificationQueue } from "@/lib/admin";
 import { authorLabel, formatDriveDate } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Verification queue" };
 
-// Verification queue + evidence viewer (§3.1). Oldest first.
+// Verification queue + evidence viewer. Oldest first.
 export default function AdminPage() {
   return (
     <main className={cn(pageMain, "pb-20 md:pb-28")}>

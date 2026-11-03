@@ -7,14 +7,14 @@ import { DriveFilters } from "@/components/drives/DriveFilters";
 import { textLink } from "@/components/ui/pill";
 import { SampleTag } from "@/components/ui/status";
 import { EmptyState, Notice, PageHeader, pageMain } from "@/components/ui/surface";
-import { filterDrives } from "@/lib/drive-search";
-import { type DriveWithRounds, listDrives, withRoundCounts } from "@/lib/data/drives";
-import { getMyProfile } from "@/lib/data/profile";
-import { branchCodeMap, listBranches, listCompanies } from "@/lib/data/taxonomy";
-import type { EligibilityResult } from "@/lib/eligibility";
-import { isProfileComplete } from "@/lib/eligibility";
+import { filterDrives } from "@/lib/placement/drive-search";
+import { type DriveWithRounds, listDrives, withRoundCounts } from "@/lib/placement/data";
+import { getMyProfile } from "@/lib/placement/data";
+import { branchCodeMap, listBranches, listCompanies } from "@/lib/taxonomy";
+import type { EligibilityResult } from "@/lib/placement/eligibility";
+import { isProfileComplete } from "@/lib/placement/eligibility";
 import { SEED_DRIVES_ARE_SAMPLE } from "@/lib/sample-data";
-import { driveFiltersSchema } from "@/lib/schemas";
+import { driveFiltersSchema } from "@/lib/validation";
 
 export const metadata: Metadata = {
   title: "Placement drives: eligibility rules and rounds",
@@ -70,9 +70,7 @@ async function DriveResults({ searchParams }: Pick<PageProps<"/drives">, "search
   ]);
   const matches = filterDrives(drives, filters, profile, branchCodeMap(branches));
   const now = new Date();
-  const isUnconfirmed = (m: Match) => m.drive.source_kind === "public_hiring" && m.drive.application_status === "unconfirmed";
-  const open = matches.filter((m) => (m.drive.status === "upcoming" || m.drive.status === "ongoing") && !isUnconfirmed(m));
-  const watch = matches.filter((m) => (m.drive.status === "upcoming" || m.drive.status === "ongoing") && isUnconfirmed(m));
+  const open = matches.filter((m) => m.drive.status === "upcoming" || m.drive.status === "ongoing");
   const past = matches.filter((m) => m.drive.status === "completed" || m.drive.status === "cancelled");
 
   return (
@@ -107,7 +105,7 @@ async function DriveResults({ searchParams }: Pick<PageProps<"/drives">, "search
           </span>{" "}
           drives
         </p>
-        {SEED_DRIVES_ARE_SAMPLE && drives.some((d) => d.source_kind !== "public_hiring") && <SampleTag />}
+        {SEED_DRIVES_ARE_SAMPLE && drives.length > 0 && <SampleTag />}
       </div>
 
       {matches.length === 0 ? (
@@ -121,7 +119,6 @@ async function DriveResults({ searchParams }: Pick<PageProps<"/drives">, "search
       ) : (
         <>
           <DriveGroup id="open-drives" title="Open" matches={open} now={now} />
-          <DriveGroup id="watch-drives" title="Programs to watch (application status unconfirmed)" matches={watch} now={now} />
           <DriveGroup id="past-drives" title="Past" matches={past} now={now} />
         </>
       )}

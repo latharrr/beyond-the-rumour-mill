@@ -4,14 +4,14 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { type ActionResult, type ActionState, fail, invalid, NOT_SIGNED_IN, ok } from "@/lib/action-result";
 import { getSessionUser } from "@/lib/auth";
-import { getDrive } from "@/lib/data/drives";
-import { loadEngineInput } from "@/lib/data/plans";
-import { buildPlan } from "@/lib/plan-engine";
-import { generatePlanSchema, toggleItemSchema } from "@/lib/schemas";
-import { createClient } from "@/lib/supabase/server";
+import { getDrive } from "@/lib/placement/data";
+import { loadEngineInput } from "@/lib/preparation/data";
+import { buildPlan } from "@/lib/preparation/plan-engine";
+import { generatePlanSchema, toggleItemSchema } from "@/lib/validation";
+import { createClient } from "@/lib/db/server";
 
 /**
- * §2.4: pure engine over verified data, then one atomic save_plan call.
+ * Pure engine over verified data, then one atomic save_plan call.
  * Regenerating replaces the caller's plan for this drive (progress resets).
  */
 export async function generatePlan(_prev: ActionState<{ id: string }>, formData: FormData): Promise<ActionResult<{ id: string }>> {
@@ -41,7 +41,7 @@ export async function generatePlan(_prev: ActionState<{ id: string }>, formData:
 }
 
 /**
- * Single-row update of done/done_at (§2.2), called from a useOptimistic
+ * Single-row update of done/done_at, called from a useOptimistic
  * transition. RLS limits it to the caller's own plan items; the column grant
  * limits it to these two columns.
  */

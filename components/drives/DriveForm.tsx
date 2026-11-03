@@ -8,9 +8,9 @@ import { Button } from "@/components/ui/pill";
 import { card } from "@/components/ui/surface";
 import type { ActionState } from "@/lib/action-result";
 import { cn } from "@/lib/cn";
-import type { DriveDetail } from "@/lib/data/drives";
-import type { Branch, Company, Resource, Role, Topic } from "@/lib/data/taxonomy";
-import { DRIVE_STATUSES } from "@/lib/schemas";
+import type { DriveDetail } from "@/lib/placement/data";
+import type { Branch, Company, Resource, Role, Topic } from "@/lib/taxonomy";
+import { DRIVE_STATUSES } from "@/lib/validation";
 
 type Round = { name: string; description: string; topic_ids: string[]; resource_ids: string[] };
 

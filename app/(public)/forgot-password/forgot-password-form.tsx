@@ -6,7 +6,7 @@ import { requestPasswordReset, type AuthState } from "@/app/_actions/auth";
 import { FieldError, FormMessage, input, label } from "@/components/ui/field";
 import { Button } from "@/components/ui/pill";
 import { cn } from "@/lib/cn";
-import { credentialsSchema } from "@/lib/schemas";
+import { credentialsSchema } from "@/lib/validation";
 
 export function ForgotPasswordForm() {
   const [state, formAction, pending] = useActionState(requestPasswordReset, {} as AuthState);

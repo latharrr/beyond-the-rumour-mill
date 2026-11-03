@@ -1,6 +1,6 @@
 import { FieldError, label, select } from "@/components/ui/field";
 import { cn } from "@/lib/cn";
-import type { Role } from "@/lib/data/taxonomy";
+import type { Role } from "@/lib/taxonomy";
 
 export function RoleSelect({ roles, defaultValue, error }: { roles: Role[]; defaultValue?: string; error?: string }) {
   return (

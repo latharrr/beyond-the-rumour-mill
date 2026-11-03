@@ -48,7 +48,7 @@ jobs:
       - name: Generated DB types are up to date
         run: |
           npm run db:types
-          git diff --exit-code lib/supabase/database.types.ts \
+          git diff --exit-code lib/db/database.types.ts \
             || (echo "::error::Run 'npm run db:types' and commit the result" && exit 1)
       - name: App env from the local stack
         run: |

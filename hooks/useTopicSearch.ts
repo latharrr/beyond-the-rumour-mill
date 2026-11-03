@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 export type SearchableTopic = { id: string; label: string; category: string; aliases: string[] };
 
 /**
- * Client-side search over topics.label + aliases (§2.5) — the only fuzzy
+ * Client-side search over topics.label + aliases — the only fuzzy
  * matching in the system, and it is search, not claim parsing.
  */
 export function searchTopics<T extends SearchableTopic>(topics: T[], query: string): T[] {

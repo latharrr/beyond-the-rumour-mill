@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { textLink } from "@/components/ui/pill";
-import type { Explanation } from "@/lib/eligibility";
+import type { Explanation } from "@/lib/placement/eligibility";
 
-/** Why the student is not eligible: one sentence per failed predicate (§2.7). */
+/** Why the student is not eligible: one sentence per failed predicate. */
 export function IneligibilityExplainer({ explanations, headingLevel: H = "h2" }: { explanations: Explanation[]; headingLevel?: "h2" | "h3" }) {
   if (!explanations.length) return null;
   return (

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkClaimVerdict, MIN_SAMPLE, NOT_SUPPORTED_MAX_FRAC, SUPPORTED_MIN_FRAC } from "@/lib/rumour";
+import { checkClaimVerdict, MIN_SAMPLE, NOT_SUPPORTED_MAX_FRAC, SUPPORTED_MIN_FRAC } from "@/lib/experiences/rumour";
 
 const ids = (n: number) => Array.from({ length: n }, (_, i) => `e${i}`);
 

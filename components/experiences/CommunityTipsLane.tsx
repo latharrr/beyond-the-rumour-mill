@@ -1,12 +1,12 @@
 import { StatusPill } from "@/components/ui/status";
 import { rumourCard } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
-import type { CommunityTip } from "@/lib/data/experiences";
+import type { CommunityTip } from "@/lib/experiences/data";
 import { formatDriveDate } from "@/lib/format";
 
 export const UNVERIFIED_BANNER = "Unverified — treat as rumour until a project admin verifies it.";
 
-/** §3.2: pending submissions, quarantined behind the banner, no author info. */
+/** Pending submissions, quarantined behind the banner, no author info. */
 export function CommunityTipsLane({ tips }: { tips: CommunityTip[] }) {
   return (
     <section aria-labelledby="community-tips" data-lane="unverified" className="border-t border-line pt-8 pb-4 md:pt-10">
