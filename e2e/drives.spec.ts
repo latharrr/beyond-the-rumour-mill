@@ -80,8 +80,12 @@ test("admin creates and edits a drive through the form", async ({ page }) => {
     await expect(page.getByText("Drive created.")).toBeVisible();
     await expect(page.getByRole("link", { name: title })).toBeVisible();
 
+    // Fresh list, then in-app navigation to Edit: the form must load the saved
+    // rounds, not keep the blank "new drive" state (regression for #28).
+    await page.goto("/admin/drives");
     await page.getByRole("row", { name: new RegExp(title) }).getByRole("link", { name: "Edit" }).click();
     await expect(page.getByRole("heading", { name: `Edit: ${title}` })).toBeVisible();
+    await expect(page.getByLabel("Name")).toHaveValue("Aptitude test");
     await page.getByLabel("Location").fill("Main auditorium");
     await page.getByRole("button", { name: "Save changes" }).click();
     await expect(page.getByText("Drive updated.")).toBeVisible();

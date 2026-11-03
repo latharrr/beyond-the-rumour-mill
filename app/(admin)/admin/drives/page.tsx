@@ -91,7 +91,7 @@ async function DriveAdmin({ searchParams }: Pick<PageProps<"/admin/drives">, "se
       <div id="drive-form" className="grid max-w-[860px] min-w-0 scroll-mt-24 gap-4">
         {edit && !editing && <FormMessage ok={false}>That drive no longer exists.</FormMessage>}
         {editing && <ArrowLink href="/admin/drives#drive-form">Create a new drive instead</ArrowLink>}
-        <DriveForm drive={editing ?? undefined} companies={companies} roles={roles} branches={branches} topics={topics} resources={resources} />
+        <DriveForm key={editing?.id ?? "new"} drive={editing ?? undefined} companies={companies} roles={roles} branches={branches} topics={topics} resources={resources} />
       </div>
     </div>
   );

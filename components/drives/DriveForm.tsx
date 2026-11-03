@@ -57,7 +57,7 @@ export function DriveForm({ drive, companies, roles, branches, topics, resources
   const desc = (name: string) => ({ "aria-describedby": `${name}-error`, "aria-invalid": err(name) ? true : undefined });
 
   return (
-    <form action={action} key={drive?.id ?? "new"} className={cn(card, "grid gap-8 p-5 md:p-8")}>
+    <form action={action} className={cn(card, "grid gap-8 p-5 md:p-8")}>
       <h2 className="type-title text-ink">{drive ? `Edit: ${drive.title}` : "New drive"}</h2>
       {drive && <input type="hidden" name="id" value={drive.id} />}
       <input type="hidden" name="rounds" value={JSON.stringify(rounds)} />
