@@ -17,7 +17,7 @@ export function TopicFrequencyBars({ frequency, total, limit = 10 }: { frequency
               </span>
             </span>
           </div>
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/[0.06]" aria-hidden="true">
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-ink/[0.06]" aria-hidden="true">
             <div className="h-full rounded-full bg-ink" style={{ width: `${Math.max(2, Math.round(t.share * 100))}%` }} />
           </div>
         </li>

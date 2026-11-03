@@ -10,6 +10,7 @@ export const metadata: Metadata = { robots: { index: false, follow: false } };
 const ITEMS = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/onboarding", label: "Profile" },
+  { href: "/ask", label: "Ask" },
 ];
 
 export default function StudentLayout({ children }: { children: ReactNode }) {

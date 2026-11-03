@@ -15,7 +15,7 @@ export default async function CompanyPage({params}: PageProps<'/companies/[slug]
   <BackLink href="/companies">All companies</BackLink>
   <PageHeader title={c.name} label={c.segment} lede={c.roles.join(' · ')} />
   <section className={`${card} p-5 md:p-7`}>
-    <p className="type-label text-amber">{researchStatus(c)}</p><h2 className="mt-3 type-title">{c.opening.label}</h2>
+    <p className="type-label text-accent-ink">{researchStatus(c)}</p><h2 className="mt-3 type-title">{c.opening.label}</h2>
     <p className="mt-3 type-body text-ink-muted">{c.status_note}</p>
     <p className="mt-3 type-small text-ink-dim">Checked {researchChecked}. Availability may change. No campus affiliation, application deadline or eligibility is implied where the source does not state it.</p>
     <a className={`${textLink} mt-4 inline-block`} href={c.opening.url} target="_blank" rel="noreferrer">View official opportunity / current status ↗</a>

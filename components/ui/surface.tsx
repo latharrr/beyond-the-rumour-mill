@@ -4,9 +4,9 @@ import { cn } from "@/lib/cn";
 /** Card: panel fill, hairline border, 12px radius. */
 export const card = "rounded-[var(--radius-card)] border border-line bg-panel";
 /** A card whose single link covers it: put `stretchedLink` on that link. */
-export const cardInteractive = cn(card, "relative transition-colors duration-200 has-[a:hover]:border-white/16 has-[a:hover]:bg-panel-2");
+export const cardInteractive = cn(card, "relative transition-colors duration-200 has-[a:hover]:border-ink/16 has-[a:hover]:bg-panel-2");
 export const stretchedLink =
-  "after:absolute after:inset-0 after:rounded-[inherit] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-amber";
+  "after:absolute after:inset-0 after:rounded-[inherit] focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-accent-ink";
 /** Quarantined community tips: the only dashed border on the site. */
 export const rumourCard = "rounded-[var(--radius-card)] border border-dashed border-line bg-panel";
 

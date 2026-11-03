@@ -156,3 +156,8 @@ export const toggleItemSchema = z.object({
   id: z.uuid("Missing checklist item id"),
   done: z.boolean(),
 });
+
+// /ask: one question about the project, sent to POST /api/ask.
+export const askSchema = z.object({
+  question: z.string().trim().min(3, "Type a question (at least 3 characters).").max(1000, "Keep the question under 1000 characters."),
+});

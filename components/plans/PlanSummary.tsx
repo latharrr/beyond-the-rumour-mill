@@ -13,8 +13,8 @@ export function ProgressBar({ value, max, label, className }: { value: number; m
       max={max || 1}
       aria-label={label}
       className={cn(
-        "block h-1.5 w-full appearance-none overflow-hidden rounded-full bg-white/[0.06]",
-        "[&::-webkit-progress-bar]:bg-white/[0.06] [&::-webkit-progress-value]:rounded-full [&::-webkit-progress-value]:bg-ink [&::-webkit-progress-value]:transition-[width] [&::-webkit-progress-value]:duration-500 [&::-moz-progress-bar]:rounded-full [&::-moz-progress-bar]:bg-ink",
+        "block h-1.5 w-full appearance-none overflow-hidden rounded-full bg-ink/[0.06]",
+        "[&::-webkit-progress-bar]:bg-ink/[0.06] [&::-webkit-progress-value]:rounded-full [&::-webkit-progress-value]:bg-ink [&::-webkit-progress-value]:transition-[width] [&::-webkit-progress-value]:duration-500 [&::-moz-progress-bar]:rounded-full [&::-moz-progress-bar]:bg-ink",
         className,
       )}
     />

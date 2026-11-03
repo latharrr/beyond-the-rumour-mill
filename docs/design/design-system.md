@@ -2,7 +2,7 @@
 
 **Idea: "Heat → evidence."** Placement season runs hot on rumours. The site is a warm ember glow cooling into a dark, precise evidence desk. Rumours are shown as rumours, and every claim on screen comes from verified senior experiences.
 
-The landing page structure follows the Handshake bar (`bar.md`), but every colour, word and asset here is ours. Dark only. All values are tokens in `app/globals.css` under `@theme`; components never use raw hex.
+The homepage follows the pudding.cool bar (`bar.md`): a numbered rumour register, not a template, but every colour, word and asset here is ours. Dark and light themes (toggle in the nav; the OS setting is the default). All values are tokens in `app/globals.css` under `@theme`; components never use raw hex.
 
 ## Colour
 
@@ -37,6 +37,8 @@ Rules:
 - No drop shadows except on the floating nav pill (`0 8px 30px rgb(0 0 0 / .35)`) and the hero claim bar.
 
 ## Type
+
+Headings: **Zodiak** (Fontshare serif, 700; italic for quoted rumours). Body and UI: **Switzer** (Fontshare). Numbers: Geist Mono. The footer wordmark alone keeps Archivo condensed. Fonts are self-hosted with `next/font/local` from `app/fonts/`.
 
 - **Display:** Archivo at width 62 (ExtraCondensed), weight 800, ALL CAPS, line-height 0.84 or less, tracking −0.01em, via `next/font/google` with the `wdth` axis. It is used for the hero h1, section openers and the footer wordmark only.
 - **Text:** Geist, weights 400 and 500, via `next/font/google`.

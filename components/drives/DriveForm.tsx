@@ -134,7 +134,7 @@ export function DriveForm({ drive, companies, roles, branches, topics, resources
             {branches.map((b) => (
               <label
                 key={b.id}
-                className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-line px-3.5 text-[14px] text-ink-muted transition-colors duration-150 hover:bg-panel-2 has-[:checked]:border-white/16 has-[:checked]:bg-panel-2 has-[:checked]:text-ink md:min-h-9"
+                className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border border-line px-3.5 text-[14px] text-ink-muted transition-colors duration-150 hover:bg-panel-2 has-[:checked]:border-ink/16 has-[:checked]:bg-panel-2 has-[:checked]:text-ink md:min-h-9"
               >
                 <input type="checkbox" name="branch_ids" value={b.id} defaultChecked={drive?.branch_ids.includes(b.id)} className="size-4 accent-amber" />
                 {b.code}

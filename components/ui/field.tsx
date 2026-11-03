@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
 export const label = "block type-small font-medium text-ink";
 export const hint = "mt-1 type-small text-ink-dim";
 const control =
-  "w-full min-w-0 rounded-[10px] border border-line bg-panel px-3.5 text-[15px] text-ink placeholder:text-ink-dim transition-colors duration-200 hover:border-white/16 aria-[invalid=true]:border-rumour/70 disabled:opacity-60";
+  "w-full min-w-0 rounded-[10px] border border-line bg-panel px-3.5 text-[15px] text-ink placeholder:text-ink-dim transition-colors duration-200 hover:border-ink/16 aria-[invalid=true]:border-rumour/70 disabled:opacity-60";
 export const input = cn(control, "h-11");
 export const select = cn(control, "h-11 pr-9 appearance-none bg-[url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%23A3A0A8%22 stroke-width=%222%22><path d=%22m6 9 6 6 6-6%22/></svg>')] bg-[length:14px] bg-[position:right_14px_center] bg-no-repeat");
 export const textarea = cn(control, "min-h-32 py-3 leading-relaxed");

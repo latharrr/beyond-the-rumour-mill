@@ -11,7 +11,8 @@
   --color-ink-dim: #85828b;
   --color-paper: #fbfaf7;
   --color-paper-ink: #16151a;
-  --color-amber: #ffb547;
+  --color-amber: #ffb547; /* button fill (dark text on top) */
+  --color-accent-ink: #ffb547; /* amber used as text or a focus ring */
 
   --color-verified: #6fd3a0;
   --color-mixed: #f2c94c;
@@ -30,6 +31,34 @@
 }
 
 /*
+ * Light theme. Same token names, light values. Every component uses these
+ * tokens (bg-ground, text-ink, border-line ...), so flipping the values here
+ * re-themes the whole site. <html data-theme="light"> is set by the script in
+ * app/layout.tsx (before first paint) and by components/nav/ThemeToggle.tsx.
+ */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-ground: #f6f4ef;
+  --color-panel: #ffffff;
+  --color-panel-2: #efece6;
+  --color-line: rgb(22 21 26 / 0.12);
+  --color-ink: #16151a;
+  --color-ink-muted: #4f4c56;
+  --color-ink-dim: #6b6873;
+  --color-paper: #ffffff;
+  --color-paper-ink: #16151a;
+  --color-accent-ink: #a35f00; /* darker amber: 4.5:1 on the light ground */
+  --color-verified: #23935f;
+  --color-mixed: #b08400;
+  --color-rumour: #cf4336;
+  --shadow-pill: 0 8px 30px rgb(22 21 26 / 0.12);
+  --shadow-bar: 0 18px 50px rgb(22 21 26 / 0.14);
+}
+
+/* `light:` variant, e.g. light:hidden, for the rare spot that differs per theme. */
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
+/*
  * The one entrance for inner pages: a short rise, once, on load. It starts at
  * near-zero (not zero) opacity so the browser still counts the content as
  * painted for LCP. Applied with motion-safe:, so reduced motion shows it still.
@@ -44,10 +73,41 @@
   }
 }
 
+/* Home page motion, CSS only. Both are switched off under reduced motion via motion-safe: in the markup. */
+@theme {
+  /* The rumour strip: the list is rendered twice, so moving it by -50% loops seamlessly. */
+  --animate-marquee: marquee 45s linear infinite;
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* A rubber stamp landing: starts big and faint, settles at its tilt. */
+@keyframes stamp {
+  from {
+    opacity: 0;
+    transform: scale(1.8) rotate(-14deg);
+  }
+}
+/*
+ * The stamp lands as its card scrolls into view. Browsers with scroll-driven
+ * animations tie it to scroll; others simply play it once on load.
+ */
+@utility stamp-in {
+  animation: stamp 0.5s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+  @supports (animation-timeline: view()) {
+    animation-timeline: view();
+    animation-range: entry 30% cover 40%;
+  }
+}
+
 @theme inline {
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-switzer), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-zodiak), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --font-display: var(--font-archivo), var(--font-geist), sans-serif;
+  --font-display: var(--font-archivo), var(--font-switzer), sans-serif;
 }
 
 /* Type roles */
@@ -62,13 +122,10 @@
 }
 /* Page headings: 36px on phones, 56px from tablet up. */
 @utility type-section {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-stretch: 62%;
-  font-variation-settings: "wdth" 62;
-  text-transform: uppercase;
-  line-height: 0.84;
-  letter-spacing: -0.01em;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
   font-size: 36px;
   text-wrap: balance;
   @media (width >= 48rem) {
@@ -154,12 +211,14 @@
   html {
     color-scheme: dark;
     background: var(--color-ground);
+    transition: background-color 0.2s;
     scrollbar-color: color-mix(in oklab, var(--color-ink) 22%, var(--color-ground)) var(--color-ground);
     -webkit-text-size-adjust: 100%;
   }
 
   body {
     min-height: 100svh;
+    overflow-x: clip; /* full-bleed strips (w-screen) never cause a sideways scrollbar */
     background: var(--color-ground);
     color: var(--color-ink);
     font-family: var(--font-sans);
@@ -190,7 +249,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-amber);
+    outline: 2px solid var(--color-accent-ink);
     outline-offset: 2px;
   }
 
@@ -199,7 +258,7 @@
     text-decoration-thickness: 1px;
   }
 
-  /* Pages not yet designed still get legible controls on the dark ground. */
+  /* Pages not yet designed still get legible controls in either theme. */
   :where(input:not([type="checkbox"], [type="radio"], [type="hidden"]), select, textarea) {
     border: 1px solid var(--color-line);
     border-radius: 8px;

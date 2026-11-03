@@ -168,7 +168,7 @@ export function SubmitWizard({ companies, roles, drives, topics, resources }: Pr
             {resources.map((r) => (
               <label
                 key={r.id}
-                className="flex min-h-11 cursor-pointer items-center gap-3 rounded-[10px] border border-line px-3 text-[14px] text-ink-muted transition-colors duration-150 hover:bg-panel-2 has-[:checked]:border-white/16 has-[:checked]:bg-panel-2 has-[:checked]:text-ink"
+                className="flex min-h-11 cursor-pointer items-center gap-3 rounded-[10px] border border-line px-3 text-[14px] text-ink-muted transition-colors duration-150 hover:bg-panel-2 has-[:checked]:border-ink/16 has-[:checked]:bg-panel-2 has-[:checked]:text-ink"
               >
                 <input type="checkbox" name="resource_ids" value={r.id} className="size-4 shrink-0 accent-amber" />
                 <span className="min-w-0 flex-1 truncate">{r.title}</span>
@@ -189,7 +189,7 @@ export function SubmitWizard({ companies, roles, drives, topics, resources }: Pr
             type="file"
             accept="image/jpeg,image/png,application/pdf"
             aria-describedby="evidence-help evidence-error"
-            className="mt-2 block w-full rounded-[10px] border border-dashed border-line bg-ground/40 p-3 text-[14px] text-ink-muted file:mr-4 file:h-9 file:rounded-full file:border-0 file:bg-panel-2 file:px-4 file:text-[14px] file:font-medium file:text-ink hover:file:bg-white/10"
+            className="mt-2 block w-full rounded-[10px] border border-dashed border-line bg-ground/40 p-3 text-[14px] text-ink-muted file:mr-4 file:h-9 file:rounded-full file:border-0 file:bg-panel-2 file:px-4 file:text-[14px] file:font-medium file:text-ink hover:file:bg-ink/10"
           />
           <p id="evidence-help" className={hint}>
             Only project admins can open it, for 60 seconds at a time. It is never shown publicly.

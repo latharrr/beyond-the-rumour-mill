@@ -1,5 +1,6 @@
 "use client";
 
+import { ThemeToggle } from "@/components/nav/ThemeToggle";
 import Link from "next/link";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { CloseIcon, MenuIcon } from "@/components/icons";
@@ -68,6 +69,10 @@ export function SiteNav({ account }: { account: ReactNode }) {
           </ul>
 
           <div data-group="right" className="col-start-2 flex items-center gap-1.5 justify-self-end md:col-start-3 md:gap-2">
+            {/* On phones the toggle lives in the menu instead, so the bar fits at 390px. */}
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
             {account}
             <button
               type="button"
@@ -100,6 +105,10 @@ export function SiteNav({ account }: { account: ReactNode }) {
                   </li>
                 ))}
               </ul>
+              <div className="mt-1 flex h-12 items-center justify-between border-t border-line pl-3 text-[16px] text-ink">
+                Theme
+                <ThemeToggle />
+              </div>
             </div>
         )}
       </nav>

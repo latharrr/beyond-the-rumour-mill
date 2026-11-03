@@ -17,6 +17,7 @@
     "db:types": "supabase gen types typescript --local > lib/db/database.types.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.4.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0",
     "clsx": "^2.1.1",
