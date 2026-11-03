@@ -22,7 +22,7 @@ export const ChecklistItem = memo(function ChecklistItem({ item }: { item: PlanI
             checked={item.done}
             disabled={saving}
             onChange={(e) => toggle(item.id, e.target.checked)}
-            className="peer size-[22px] cursor-pointer appearance-none rounded-md border border-white/25 transition-[background-color,border-color,transform] duration-200 ease-[var(--ease-out-3)] group-hover:border-white/50 checked:border-verified checked:bg-verified active:scale-90"
+            className="peer size-[22px] cursor-pointer appearance-none rounded-md border border-ink/25 transition-[background-color,border-color,transform] duration-200 ease-[var(--ease-out-3)] group-hover:border-ink/50 checked:border-verified checked:bg-verified active:scale-90"
           />
           <CheckIcon
             aria-hidden="true"

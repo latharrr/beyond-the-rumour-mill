@@ -29,9 +29,9 @@ export default function DrivesPage({ searchParams }: PageProps<"/drives">) {
   return (
     <main className={pageMain}>
       <PageHeader
-        label="Campus drives & public opportunities"
+        label="Campus drives"
         title="Drives"
-        lede="Browse source-linked public opportunities below. Campus drives are a separate lane; only explicitly published campus rules are checked against your profile."
+        lede="Every campus drive the placement cell has published, with its eligibility rules, date and rounds. Sign in to see which ones you qualify for, and why not."
       />
       <Suspense fallback={<DriveResultsFallback />}>
         <DriveResults searchParams={searchParams} />

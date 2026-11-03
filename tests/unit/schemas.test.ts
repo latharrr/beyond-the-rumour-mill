@@ -35,6 +35,8 @@ describe("isProtectedPath (§2.1 matcher)", () => {
     ["/onboarding", true],
     ["/experiences/new", true],
     ["/api/plans/abc/export", true],
+    ["/ask", true],
+    ["/asking", false],
     ["/", false],
     ["/drives", false],
     ["/experiences", false],

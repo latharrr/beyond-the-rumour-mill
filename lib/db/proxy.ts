@@ -4,9 +4,9 @@ import { supabasePublishableKey, supabaseUrl } from "./env";
 
 // Protected paths: no session → /login. Mirrors the spec matcher
 // ['/admin/:path*', '/dashboard/:path*', '/onboarding', '/experiences/new',
-//  '/api/plans/:path*']. Roles are not checked here.
+//  '/api/plans/:path*', '/ask']. Roles are not checked here.
 const PREFIXES = ["/admin", "/dashboard", "/api/plans"];
-const EXACT = ["/onboarding", "/experiences/new"];
+const EXACT = ["/onboarding", "/experiences/new", "/ask"];
 
 export function isProtectedPath(pathname: string) {
   return (

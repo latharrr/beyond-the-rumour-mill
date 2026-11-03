@@ -119,7 +119,7 @@ export function SiteFooter() {
 
         {/* The wordmark is a decorative setting of the name; assistive tech reads the plain text. */}
         <div className="@container mt-16 md:mt-24">
-          <p className="text-amber">
+          <p className="text-accent-ink">
             <span className="sr-only">Beyond the Rumour Mill</span>
             <span aria-hidden="true" className="block overflow-hidden pb-[0.04em] type-wordmark [--wm-measure:4.376]">
               <span data-line className="block">

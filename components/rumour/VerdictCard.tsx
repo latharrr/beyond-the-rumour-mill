@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 import { formatDriveDate } from "@/lib/format";
 import type { Verdict } from "@/lib/experiences/rumour";
 
-const TONE: Record<Verdict, Tone> = {
+export const VERDICT_TONE: Record<Verdict, Tone> = {
   "Supported": "verified",
   "Mixed evidence": "mixed",
   "Not supported": "rumour",
@@ -16,7 +16,7 @@ const TONE: Record<Verdict, Tone> = {
 
 /** Deterministic verdict with the experiences it cites. */
 export function VerdictCard({ result }: { result: ClaimCheck }) {
-  const tone = TONE[result.verdict];
+  const tone = VERDICT_TONE[result.verdict];
   const pct = Math.round(result.frac * 100);
   return (
     <section aria-labelledby="verdict" data-verdict={result.verdict} className={cn(card, "p-5 md:p-8")}>
@@ -42,7 +42,7 @@ export function VerdictCard({ result }: { result: ClaimCheck }) {
 
       {result.total > 0 && (
         <div className="mt-6" aria-hidden="true">
-          <div className="relative h-2 overflow-hidden rounded-full bg-white/[0.06]">
+          <div className="relative h-2 overflow-hidden rounded-full bg-ink/[0.06]">
             <div className="h-full rounded-full bg-ink" style={{ width: `${Math.max(1, pct)}%` }} />
           </div>
           {/* The rule's two thresholds, so the verdict can be read off the bar. */}

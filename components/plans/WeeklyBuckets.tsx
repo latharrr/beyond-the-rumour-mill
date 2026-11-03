@@ -31,7 +31,7 @@ export function WeeklyBuckets({
           <section
             key={week}
             aria-labelledby={`week-${week}`}
-            className={cn("rounded-[var(--radius-card)] border bg-panel", now ? "border-white/16" : "border-line")}
+            className={cn("rounded-[var(--radius-card)] border bg-panel", now ? "border-ink/16" : "border-line")}
           >
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-line px-5 py-4 md:px-6">
               <div className="flex items-baseline gap-3">
