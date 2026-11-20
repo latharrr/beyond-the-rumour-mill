@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { type ReactNode, Suspense } from "react";
 import { DriveCard } from "@/components/drives/DriveCard";
+import { HeroChecker } from "@/components/rumour/HeroChecker";
 import { RuleLab } from "@/components/rumour/RuleLab";
 import { RumourRegister, RumourRegisterFallback } from "@/components/rumour/RumourRegister";
 import { RumourTicker } from "@/components/rumour/RumourTicker";
 import { ArrowLink, PillLink } from "@/components/ui/pill";
 import { SampleTag } from "@/components/ui/status";
+import { listCompanies, listTopics } from "@/lib/taxonomy";
 import { listDrives, withRoundCounts } from "@/lib/placement/data";
 import { SEED_DRIVES_ARE_SAMPLE } from "@/lib/sample-data";
 
@@ -36,21 +38,26 @@ const MODULES = [
 export default function HomePage() {
   return (
     <main className="container-page pb-24 md:pb-32">
-      <section aria-labelledby="hero-title" className="pt-14 md:pt-24">
-        <h1 id="hero-title" className="font-serif text-[44px] leading-[1] font-bold tracking-[-0.035em] text-balance text-ink sm:text-[64px] lg:text-[100px] lg:leading-[0.96] lg:text-wrap">
-          Prepare from evidence, <span className="font-normal text-ink-muted italic lg:block">not hostel rumours.</span>
-        </h1>
-        <div className="mt-10 flex flex-wrap items-end justify-between gap-x-10 gap-y-6 border-t border-line pt-6 md:mt-14">
-          <p className="max-w-[52ch] type-body text-pretty text-ink-muted">
-            Hostel rumours, checked against interview experiences from placed seniors that the placement cell has verified. No senior contacts
-            needed.
-          </p>
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-            <PillLink href="/drives" variant="primary">
-              See upcoming drives
-            </PillLink>
-            <ArrowLink href="/experiences/new">Share your experience</ArrowLink>
+      <section aria-labelledby="hero-title" className="pt-14 md:pt-20">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14">
+          <div>
+            <h1 id="hero-title" className="font-serif text-[44px] leading-[1] font-bold tracking-[-0.035em] text-balance text-ink sm:text-[64px] lg:text-[76px] lg:leading-[0.98]">
+              Prepare from evidence, <span className="font-normal text-ink-muted italic">not hostel rumours.</span>
+            </h1>
+            <p className="mt-8 max-w-[46ch] type-body text-pretty text-ink-muted">
+              Hostel rumours, checked against interview experiences from placed seniors that the placement cell has verified. No senior contacts
+              needed.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <PillLink href="/drives" variant="primary">
+                See upcoming drives
+              </PillLink>
+              <ArrowLink href="/experiences/new">Share your experience</ArrowLink>
+            </div>
           </div>
+          <Suspense fallback={<div role="status" aria-label="Loading" className="h-[460px] rounded-[var(--radius-card)] border border-line bg-panel" />}>
+            <HeroCheckerLoader />
+          </Suspense>
         </div>
       </section>
 
@@ -97,6 +104,12 @@ export default function HomePage() {
       </Suspense>
     </main>
   );
+}
+
+/** Server Component: loads the company and topic lists for the hero checker. */
+async function HeroCheckerLoader() {
+  const [companies, topics] = await Promise.all([listCompanies(), listTopics()]);
+  return <HeroChecker companies={companies} topics={topics} />;
 }
 
 /** One numbered step of the home page; every section shares this header so the page reads as one path. */
