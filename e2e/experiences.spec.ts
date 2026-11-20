@@ -73,7 +73,7 @@ test("rumour check returns a cited verdict", async ({ page }) => {
 
   await page.getByLabel("Company", { exact: true }).selectOption({ label: "TCS" });
   await page.getByLabel("Search topics").fill("pseudo");
-  await page.getByRole("radio", { name: /Pseudocode/ }).check();
+  await page.getByRole("checkbox", { name: /Pseudocode/ }).check();
   await page.getByRole("button", { name: "Check claim" }).click();
 
   const verdict = page.getByRole("region", { name: /Supported|Mixed|Not supported/ });
