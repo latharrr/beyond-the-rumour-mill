@@ -17,6 +17,7 @@ A rumour only becomes advice when verified experiences back it.
 |---|---|
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | System diagram, **database architecture** (ER diagram, security layers), data flow, **UI architecture** (every page and component), what we used and why |
 | [`SYLLABUS.md`](SYLLABUS.md) | Every INT252 / INT257 topic → the exact file that uses it, and what we deliberately left out |
+| [`docs/VIVA-GUIDE.md`](docs/VIVA-GUIDE.md) | One-page route through the code for an oral exam |
 | [`docs/demo-script.md`](docs/demo-script.md) | Step-by-step demo for the viva |
 | [`docs/design/design-system.md`](docs/design/design-system.md) | Colours, type, themes, motion |
 
