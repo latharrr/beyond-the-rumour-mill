@@ -153,7 +153,7 @@ export async function CompanyBrief({ drive, moreDrives }: { drive: DriveSummary;
       {rumour && rumourResult && rumourTopic && (
         <section aria-labelledby="rumour-title" className="mt-6 border-t border-dashed border-line pt-5">
           <h3 id="rumour-title" className="type-label text-ink-muted">
-            Heard in the hostel
+            Heard in the hostel, checked by mentions
           </h3>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
             <p className="font-serif text-[19px] text-ink">&ldquo;{rumour.quote}&rdquo;</p>
@@ -163,7 +163,7 @@ export async function CompanyBrief({ drive, moreDrives }: { drive: DriveSummary;
             {rumourResult.total === 0
               ? "No verified experiences to check it against."
               : `${rumourResult.cites.length} of ${rumourResult.total} verified experience${rumourResult.total === 1 ? "" : "s"} mention${rumourResult.total === 1 ? "s" : ""} ${rumour.topic}.`}
-            {rumourResult.lowSample && rumourResult.total > 0 ? ` Low sample (n = ${rumourResult.total}).` : ""}{" "}
+            {rumourResult.lowSample && rumourResult.total > 0 ? ` Low sample (n = ${rumourResult.total}).` : ""} The check counts mentions: it shows the topic came up, not that it makes up most of the interview.{" "}
             <Link href={`/rumour-check?company_id=${companyId}&topic_id=${rumourTopic.id}`} className="font-medium text-ink underline underline-offset-4">
               See the experiences
             </Link>
