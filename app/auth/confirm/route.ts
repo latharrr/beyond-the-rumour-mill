@@ -1,6 +1,7 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
-import { safeNextPath } from "@/lib/validation";
+import { NEXT_COOKIE, safeNextPath } from "@/lib/validation";
 import { SITE_URL } from "@/lib/site";
 import { createClient } from "@/lib/db/server";
 
@@ -15,15 +16,18 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const tokenHash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const next = safeNextPath(
-    searchParams.get("next"),
-    type === "recovery" ? "/reset-password" : "/onboarding",
-  );
+  const jar = await cookies();
+  const saved = safeNextPath(jar.get(NEXT_COOKIE)?.value, "");
+  const fallback = type === "recovery" ? "/reset-password" : saved ? `/onboarding?next=${encodeURIComponent(saved)}` : "/onboarding";
+  const next = safeNextPath(searchParams.get("next"), fallback);
 
   if (tokenHash && type && OTP_TYPES.includes(type)) {
     const supabase = await createClient();
     const { error } = await supabase.auth.verifyOtp({ type, token_hash: tokenHash });
-    if (!error) return NextResponse.redirect(new URL(next, SITE_URL));
+    if (!error) {
+      jar.delete(NEXT_COOKIE);
+      return NextResponse.redirect(new URL(next, SITE_URL));
+    }
   }
 
   return NextResponse.redirect(new URL("/login?error=confirm", SITE_URL));

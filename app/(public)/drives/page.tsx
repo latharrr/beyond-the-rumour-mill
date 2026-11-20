@@ -31,7 +31,7 @@ export default function DrivesPage({ searchParams }: PageProps<"/drives">) {
       <PageHeader
         label="Campus drives"
         title="Drives"
-        lede="Every campus drive the placement cell has published, with its eligibility rules, date and rounds. Sign in to see which ones you qualify for, and why not."
+        lede="Every campus drive listed here, with its eligibility rules, date and rounds. Sign in to see which ones you qualify for, and why not."
       />
       <Suspense fallback={<DriveResultsFallback />}>
         <DriveResults searchParams={searchParams} />

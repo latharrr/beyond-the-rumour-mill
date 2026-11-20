@@ -1,8 +1,9 @@
 "use server";
 
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { credentialsSchema, safeNextPath } from "@/lib/validation";
+import { credentialsSchema, NEXT_COOKIE, safeNextPath } from "@/lib/validation";
 import { createClient } from "@/lib/db/server";
 
 export type AuthState = {
@@ -47,11 +48,17 @@ export async function signUp(_prev: AuthState, formData: FormData): Promise<Auth
   if (error) return { error: error.message, email: parsed.data.email };
 
   // With email confirmation enabled (production), there is no session yet.
+  const next = safeNextPath(formData.get("next"), "");
   if (!data.session) {
+    // The confirmation link comes from a fixed email template and cannot carry
+    // `next`, so remember it for an hour in a cookie that /auth/confirm reads.
+    if (next) {
+      (await cookies()).set(NEXT_COOKIE, next, { httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", maxAge: 3600 });
+    }
     return { message: "Check your email to confirm your account, then sign in.", email: parsed.data.email };
   }
 
-  redirect("/onboarding");
+  redirect(next ? `/onboarding?next=${encodeURIComponent(next)}` : "/onboarding");
 }
 
 export async function signOut() {

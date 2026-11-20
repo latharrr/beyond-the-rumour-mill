@@ -9,9 +9,18 @@ export const credentialsSchema = z.object({
 
 export type Credentials = z.infer<typeof credentialsSchema>;
 
+/** Cookie that remembers where a new student was heading across the email-confirmation round trip. */
+export const NEXT_COOKIE = "btrm_next";
+
 // Only same-origin relative paths; anything else falls back to the default.
+// Browsers strip tabs and newlines inside a URL, so "/\t/evil.example" would
+// become "//evil.example". Reject any control character, space or backslash.
 export const safeNextPath = (value: unknown, fallback = "/dashboard") =>
-  typeof value === "string" && value.startsWith("/") && !value.startsWith("//") && !value.startsWith("/\\")
+  typeof value === "string" &&
+  value.length <= 512 &&
+  value.startsWith("/") &&
+  !value.startsWith("//") &&
+  !/[\u0000-\u0020\u007f\\]/.test(value)
     ? value
     : fallback;
 

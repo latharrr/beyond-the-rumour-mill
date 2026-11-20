@@ -7,7 +7,7 @@ import type { ReactNode } from "react";
 const mono = (v: ReactNode) => <span className="type-data">{v}</span>;
 
 /**
- * The drive's official requirements, as published by the placement cell.
+ * The drive's official requirements, as entered by a project admin.
  * With `eligibility`, each row also shows whether the student's profile meets it
  * (glyph plus screen-reader text, never colour alone); the reasons are in the explainer.
  */

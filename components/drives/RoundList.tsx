@@ -4,7 +4,7 @@ import type { RoundDetail } from "@/lib/placement/data";
 
 /** The drive's rounds in order: a numbered rail with topics and resources per round. */
 export function RoundList({ rounds }: { rounds: RoundDetail[] }) {
-  if (!rounds.length) return <p className="type-body text-ink-muted">The placement cell hasn&rsquo;t published the rounds for this drive yet.</p>;
+  if (!rounds.length) return <p className="type-body text-ink-muted">Rounds haven&rsquo;t been added for this drive yet.</p>;
   return (
     <ol className="grid">
       {rounds.map((r, i) => (

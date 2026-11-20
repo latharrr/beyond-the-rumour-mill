@@ -23,7 +23,7 @@ const MODULES = [
   },
   {
     title: "Experience repository",
-    body: "Interview experiences from placed seniors. Only ones the placement cell has verified count; unverified tips stay labelled as rumours.",
+    body: "Interview experiences from placed seniors. Only ones a project admin has verified count; unverified tips stay labelled as rumours.",
     href: "/experiences",
     link: "Read experiences",
   },
@@ -45,7 +45,7 @@ export default function HomePage() {
               Prepare from evidence, <span className="font-normal text-ink-muted italic">not hostel rumours.</span>
             </h1>
             <p className="mt-8 max-w-[46ch] type-body text-pretty text-ink-muted">
-              Hostel rumours, checked against interview experiences from placed seniors that the placement cell has verified. No senior contacts
+              Hostel rumours, checked against interview experiences from placed seniors that a project admin has verified. No senior contacts
               needed.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">

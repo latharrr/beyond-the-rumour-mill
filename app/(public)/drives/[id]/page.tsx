@@ -19,7 +19,7 @@ import { listMatchedExperiences } from "@/lib/experiences/data";
 import { getMyPlanIdForDrive } from "@/lib/preparation/data";
 import { getMyProfile } from "@/lib/placement/data";
 import { branchCodeMap, listBranches } from "@/lib/taxonomy";
-import { evaluateEligibility, explainEligibility } from "@/lib/placement/eligibility";
+import { evaluateEligibility, explainEligibility, isProfileComplete } from "@/lib/placement/eligibility";
 import { formatCgpa, formatDriveDate } from "@/lib/format";
 import { breadcrumbs, jsonLd } from "@/lib/json-ld";
 import { absoluteUrl } from "@/lib/site";
@@ -79,7 +79,8 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
     user ? getMyPlanIdForDrive(user.id, drive.id) : null,
   ]);
   const codes = branchCodeMap(branches);
-  const eligibility = profile ? evaluateEligibility(profile, drive, codes) : null;
+  const profileDone = !!profile && isProfileComplete(profile);
+  const eligibility = profile && profileDone ? evaluateEligibility(profile, drive, codes) : null;
   const signIn = `/login?next=/drives/${drive.id}`;
   const open = drive.status === "upcoming" || drive.status === "ongoing";
   const now = new Date();
@@ -150,6 +151,13 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
                 ) : (
                   <IneligibilityExplainer explanations={explainEligibility(eligibility)} headingLevel="h3" />
                 )
+              ) : user ? (
+                <p className="type-small text-ink-muted">
+                  <Link href={`/onboarding?next=/drives/${drive.id}`} className={textLink}>
+                    Add your profile
+                  </Link>{" "}
+                  to check eligibility. You can generate a prep plan without it.
+                </p>
               ) : (
                 <p className="type-small text-ink-muted">
                   <Link href={signIn} className={textLink}>
@@ -175,12 +183,12 @@ async function DriveDetailView({ params }: Pick<PageProps<"/drives/[id]">, "para
                   <GeneratePlanButton driveId={drive.id} existing={!!planId} />
                 </div>
               ) : (
-                <p className="type-small text-ink-muted">
-                  <Link href={signIn} className={textLink}>
-                    Sign in
-                  </Link>{" "}
-                  to generate a prep plan for this drive.
-                </p>
+                <div className="grid gap-3">
+                  <PillLink href={signIn} variant="primary">
+                    Sign in to generate your plan
+                  </PillLink>
+                  <p className="type-small text-ink-dim">You come back to this drive after signing in. No profile needed to start.</p>
+                </div>
               )}
             </div>
           </section>

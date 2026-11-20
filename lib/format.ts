@@ -3,7 +3,7 @@
 const ROLE_LABEL: Record<string, string> = {
   alumni: "Placed senior",
   student: "Student",
-  admin: "Placement cell",
+  admin: "Project admin",
 };
 
 /** "Placed senior · Batch of 2025". Anonymised (deleted) authors → "Former student". */
