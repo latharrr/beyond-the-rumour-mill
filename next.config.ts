@@ -10,6 +10,13 @@ const nextConfig: NextConfig = {
     },
   },
   partialPrefetching: true,
+  // Viva deck: /ppt opens the PDF in the browser, /ppt/download gives the editable PPTX.
+  async redirects() {
+    return [
+      { source: "/ppt", destination: "/viva/beyond-the-rumour-mill-viva.pdf", permanent: false },
+      { source: "/ppt/download", destination: "/viva/beyond-the-rumour-mill-viva.pptx", permanent: false },
+    ];
+  },
   // /api/ask reads the project's own source files at runtime (lib/ask/knowledge.ts);
   // make sure serverless deploys ship them.
   outputFileTracingIncludes: {
