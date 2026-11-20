@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { startTransition, useActionState } from "react";
+import { startTransition, useActionState, useState } from "react";
 import { checkClaims } from "@/app/_actions/rumour";
 import { TopicPicker } from "@/components/experiences/TopicPicker";
 import { FieldError, FormMessage, label, select } from "@/components/ui/field";
@@ -19,6 +19,8 @@ import { VERDICT_TONE } from "./VerdictCard";
 export function HeroChecker({ companies, topics }: { companies: Company[]; topics: SearchableTopic[] }) {
   const [state, action, pending] = useActionState(checkClaims, null);
   const errors = state && !state.ok ? state.fieldErrors : undefined;
+  // The claim that was last submitted, so the "full check" link opens it already checked.
+  const [fullCheck, setFullCheck] = useState("/rumour-check");
 
   return (
     <form
@@ -26,6 +28,10 @@ export function HeroChecker({ companies, topics }: { companies: Company[]; topic
       onSubmit={(e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
+        const params = new URLSearchParams();
+        params.set("company_id", String(data.get("company_id") ?? ""));
+        for (const id of data.getAll("topic_id")) params.append("topic_id", String(id));
+        setFullCheck(`/rumour-check?${params}`);
         startTransition(() => action(data));
       }}
       className="grid gap-5 rounded-[var(--radius-card)] border border-line bg-panel p-5 shadow-[var(--shadow-bar)] md:p-6"
@@ -60,7 +66,7 @@ export function HeroChecker({ companies, topics }: { companies: Company[]; topic
       </div>
       <TopicPicker topics={topics} name="topic_id" label="Topics (one or more, up to 5)" multiple error={errors?.topic_ids?.[0]} />
       {state && !state.ok && !state.fieldErrors && <FormMessage ok={false}>{state.message}</FormMessage>}
-      <Button type="submit" disabled={pending} className="w-full justify-center">
+      <Button type="submit" disabled={pending} className="w-full min-w-0 justify-center px-4">
         {pending ? "Checking…" : "Check claim"}
       </Button>
       <div aria-live="polite">
@@ -92,7 +98,7 @@ export function HeroChecker({ companies, topics }: { companies: Company[]; topic
               </li>
             ))}
             <li>
-              <Link href="/rumour-check" className="type-small text-ink underline underline-offset-4">
+              <Link href={fullCheck} className="type-small text-ink underline underline-offset-4">
                 See cited experiences on the full check
               </Link>
             </li>
