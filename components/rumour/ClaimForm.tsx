@@ -1,7 +1,7 @@
 "use client";
 
 import { startTransition, useActionState } from "react";
-import { checkClaim, type ClaimCheck } from "@/app/_actions/rumour";
+import { checkClaims, type ClaimCheck } from "@/app/_actions/rumour";
 import { TopicPicker } from "@/components/experiences/TopicPicker";
 import { FieldError, FormMessage, label, select } from "@/components/ui/field";
 import { Button } from "@/components/ui/pill";
@@ -12,22 +12,22 @@ import { cn } from "@/lib/cn";
 import type { Company } from "@/lib/taxonomy";
 import { VerdictCard } from "./VerdictCard";
 
-/** Constrained claim input: company dropdown + topic picker, one claim type. */
+/** Constrained claim input: company dropdown + multi-topic picker; one verdict card per topic. */
 export function ClaimForm({
   companies,
   topics,
   initial = null,
   defaultCompanyId = "",
-  defaultTopicId,
+  defaultTopicIds = [],
 }: {
   companies: Company[];
   topics: SearchableTopic[];
   /** A claim already checked on the server (e.g. linked from the landing page). */
-  initial?: ActionState<ClaimCheck>;
+  initial?: ActionState<ClaimCheck[]>;
   defaultCompanyId?: string;
-  defaultTopicId?: string;
+  defaultTopicIds?: string[];
 }) {
-  const [state, action, pending] = useActionState(checkClaim, initial);
+  const [state, action, pending] = useActionState(checkClaims, initial);
   const errors = state && !state.ok ? state.fieldErrors : undefined;
 
   return (
@@ -70,9 +70,10 @@ export function ClaimForm({
         <TopicPicker
           topics={topics}
           name="topic_id"
-          label="Topic"
-          defaultSelected={defaultTopicId ? [defaultTopicId] : []}
-          error={errors?.topic_id?.[0]}
+          label="Topics (pick one or more, up to 5)"
+          multiple
+          defaultSelected={defaultTopicIds}
+          error={errors?.topic_ids?.[0]}
         />
         {state && !state.ok && !state.fieldErrors && <FormMessage ok={false}>{state.message}</FormMessage>}
         <Button type="submit" disabled={pending} className="w-full sm:w-auto sm:justify-self-start">
@@ -81,12 +82,16 @@ export function ClaimForm({
       </form>
       <div aria-live="polite">
         {state?.ok ? (
-          <VerdictCard result={state.data} />
+          <div className="grid gap-6">
+            {state.data.map((r, i) => (
+              <VerdictCard key={r.topic} id={`verdict-${i}`} result={r} />
+            ))}
+          </div>
         ) : (
           <div className={cn(card, "hidden p-6 md:p-8 lg:block")}>
             <p className="type-title text-ink">The verdict appears here.</p>
             <p className="mt-2 max-w-[52ch] type-body text-ink-muted">
-              Pick a company and a topic. The check counts how many verified experiences for that company mention the
+              Pick a company and one or more topics. Each topic gets its own verdict. The check counts how many verified experiences for that company mention the
               topic, and cites every one of them.
             </p>
           </div>

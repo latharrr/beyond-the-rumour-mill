@@ -1,12 +1,12 @@
 import { CompanyCards } from "@/components/research/CompanyCards";
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { checkClaim } from "@/app/_actions/rumour";
+import { checkClaims } from "@/app/_actions/rumour";
 import { card, PageHeader, pageMain } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
 import { ClaimForm } from "@/components/rumour/ClaimForm";
 import { listCompanies, listTopics } from "@/lib/taxonomy";
-import { claimSchema } from "@/lib/validation";
+import { claimsSchema } from "@/lib/validation";
 
 export const metadata: Metadata = {
   title: "Rumour check: does a company really ask that topic?",
@@ -37,24 +37,25 @@ export default function RumourCheckPage({ searchParams }: PageProps<"/rumour-che
   );
 }
 
-// ?company_id=&topic_id= (e.g. from the landing page's claim bar) arrives already checked.
+// ?company_id=&topic_id=&topic_id= (e.g. from the landing page's claim bar) arrives already checked.
 async function Claim({ searchParams }: Pick<PageProps<"/rumour-check">, "searchParams">) {
   const { company_id, topic_id } = await searchParams;
   const [companies, topics] = await Promise.all([listCompanies(), listTopics()]);
-  const claim = claimSchema.safeParse({ company_id, topic_id });
+  const topicIds = topic_id === undefined ? [] : Array.isArray(topic_id) ? topic_id : [topic_id];
+  const claim = claimsSchema.safeParse({ company_id, topic_ids: topicIds });
   if (!claim.success) return <ClaimForm companies={companies} topics={topics} />;
 
   const form = new FormData();
   form.set("company_id", claim.data.company_id);
-  form.set("topic_id", claim.data.topic_id);
-  const initial = await checkClaim(null, form);
+  for (const id of claim.data.topic_ids) form.append("topic_id", id);
+  const initial = await checkClaims(null, form);
   return (
     <ClaimForm
       companies={companies}
       topics={topics}
       initial={initial}
       defaultCompanyId={claim.data.company_id}
-      defaultTopicId={claim.data.topic_id}
+      defaultTopicIds={claim.data.topic_ids}
     />
   );
 }

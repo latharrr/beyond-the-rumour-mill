@@ -149,6 +149,17 @@ export const claimSchema = z.object({
   topic_id: uuid("topic"),
 });
 
+/** Rumour check with several topics: same company, each topic judged on its own (max 5, duplicates dropped). */
+export const MAX_CLAIM_TOPICS = 5;
+export const claimsSchema = z.object({
+  company_id: uuid("company"),
+  topic_ids: z
+    .array(uuid("topic"))
+    .min(1, "Pick at least one topic")
+    .max(MAX_CLAIM_TOPICS, `Pick at most ${MAX_CLAIM_TOPICS} topics`)
+    .transform((ids) => [...new Set(ids)]),
+});
+
 // --- Plans (generatePlan, toggleChecklistItem) -------------------------------
 export const generatePlanSchema = z.object({ drive_id: z.uuid("Missing drive id") });
 

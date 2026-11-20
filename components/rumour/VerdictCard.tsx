@@ -15,12 +15,12 @@ export const VERDICT_TONE: Record<Verdict, Tone> = {
 };
 
 /** Deterministic verdict with the experiences it cites. */
-export function VerdictCard({ result }: { result: ClaimCheck }) {
+export function VerdictCard({ result, id = "verdict" }: { result: ClaimCheck; /** Unique per card when several are on the page. */ id?: string }) {
   const tone = VERDICT_TONE[result.verdict];
   const pct = Math.round(result.frac * 100);
   return (
-    <section aria-labelledby="verdict" data-verdict={result.verdict} className={cn(card, "p-5 md:p-8")}>
-      <h2 id="verdict" className="flex items-center gap-3 type-section text-ink">
+    <section aria-labelledby={id} data-verdict={result.verdict} className={cn(card, "p-5 md:p-8")}>
+      <h2 id={id} className="flex items-center gap-3 type-section text-ink">
         <StatusDot className={cn("size-3", TONE_DOT[tone])} />
         <span className="sr-only">Verdict: </span>
         {result.verdict}
