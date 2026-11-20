@@ -8,7 +8,7 @@ import { checkClaimVerdict, type Verdict } from "@/lib/experiences/rumour";
 import { listCompanies, listTopics } from "@/lib/taxonomy";
 
 // Hostel rumours on file. Each is checked as "<company> heavily asks <topic>".
-const RUMOURS = [
+export const RUMOURS = [
   { quote: "Amazon interviews are all Leadership Principles.", company: "Amazon", topic: "Leadership Principles" },
   { quote: "TCS NQT is basically quant aptitude.", company: "TCS", topic: "Quantitative Aptitude" },
   { quote: "Infosys always throws pseudocode at you.", company: "Infosys", topic: "Pseudocode" },

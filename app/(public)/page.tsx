@@ -1,162 +1,122 @@
 import type { Metadata } from "next";
-import { type ReactNode, Suspense } from "react";
-import { DriveCard } from "@/components/drives/DriveCard";
-import { HeroChecker } from "@/components/rumour/HeroChecker";
+import Link from "next/link";
+import { Suspense } from "react";
+import { CompanyBrief, CompanyList } from "@/components/home/CompanyBrief";
 import { RuleLab } from "@/components/rumour/RuleLab";
-import { RumourRegister, RumourRegisterFallback } from "@/components/rumour/RumourRegister";
-import { RumourTicker } from "@/components/rumour/RumourTicker";
-import { ArrowLink, PillLink } from "@/components/ui/pill";
-import { SampleTag } from "@/components/ui/status";
-import { listCompanies, listTopics } from "@/lib/taxonomy";
-import { listDrives, withRoundCounts } from "@/lib/placement/data";
-import { SEED_DRIVES_ARE_SAMPLE } from "@/lib/sample-data";
+import { ArrowLink } from "@/components/ui/pill";
+import { companyResearch } from "@/lib/placement/company-research";
+import { isUuid, listDrives, type DriveSummary } from "@/lib/placement/data";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
-// The three P08 modules, rendered from data with .map().
-const MODULES = [
-  {
-    title: "Placement information",
-    body: "Every campus drive with its eligibility rules, role, date and rounds. Signed in, each drive tells you whether you qualify, and why not.",
-    href: "/drives",
-    link: "Browse drives",
-  },
-  {
-    title: "Experience repository",
-    body: "Interview experiences from placed seniors. Only ones a project admin has verified count; unverified tips stay labelled as rumours.",
-    href: "/experiences",
-    link: "Read experiences",
-  },
-  {
-    title: "Your preparation plan",
-    body: "Pick a drive and get a week-by-week checklist built from what verified seniors were asked, with resources. Tick items off as you go.",
-    href: "/dashboard",
-    link: "Open your dashboard",
-  },
-];
-
-export default function HomePage() {
+export default function HomePage({ searchParams }: PageProps<"/">) {
   return (
-    <main className="container-page pb-24 md:pb-32">
-      <section aria-labelledby="hero-title" className="pt-14 md:pt-20">
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-14">
-          <div>
-            <h1 id="hero-title" className="font-serif text-[44px] leading-[1] font-bold tracking-[-0.035em] text-balance text-ink sm:text-[64px] lg:text-[76px] lg:leading-[0.98]">
-              Prepare from evidence, <span className="font-normal text-ink-muted italic">not hostel rumours.</span>
-            </h1>
-            <p className="mt-8 max-w-[46ch] type-body text-pretty text-ink-muted">
-              Hostel rumours, checked against interview experiences from placed seniors that a project admin has verified. No senior contacts
-              needed.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <PillLink href="/drives" variant="primary">
-                See upcoming drives
-              </PillLink>
-              <ArrowLink href="/experiences/new">Share your experience</ArrowLink>
-            </div>
-          </div>
-          <Suspense fallback={<div role="status" aria-label="Loading" className="h-[460px] rounded-[var(--radius-card)] border border-line bg-panel" />}>
-            <HeroCheckerLoader />
-          </Suspense>
-        </div>
-      </section>
-
-      {/* Full-bleed: pulled out of the centred container to the screen edges. */}
-      <div className="mt-16 ml-[calc(50%-50vw)] md:mt-20">
-        <RumourTicker />
+    <main className="container-page pt-12 pb-20 md:pt-16 md:pb-28">
+      <div className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-14">
+        <Suspense fallback={<div role="status" aria-label="Loading" className="h-[560px] rounded-[var(--radius-card)] border border-line bg-panel lg:col-span-2" />}>
+          <HomeBrief searchParams={searchParams} />
+        </Suspense>
       </div>
 
-      <Step n="01" id="register-title" title="Rumours on file" lede="Each one is stamped by the evidence, not by who said it." action={<ArrowLink href="/rumour-check">Check any rumour</ArrowLink>}>
-        <Suspense fallback={<RumourRegisterFallback />}>
-          <RumourRegister />
-        </Suspense>
-      </Step>
-
-      <Step n="02" id="rule-title" title="How a rumour gets its stamp" lede="Count the verified experiences for the company that mention the topic.">
-        <div className="grid gap-10 lg:grid-cols-[1fr_minmax(0,28rem)] lg:gap-16">
-          <div className="grid max-w-[52ch] content-start gap-4 type-body text-ink-muted">
+      <section aria-label="More about the evidence" className="mt-16 grid gap-10 border-t border-line pt-10 md:mt-24 lg:grid-cols-3">
+        <div className="grid content-start">
+          <Details title="The rule, in one line">
             <p>
-              Half or more, and the rumour is <span className="text-ink">supported</span>. Fifteen percent or less, and it is{" "}
-              <span className="text-ink">not supported</span>. Anything between is <span className="text-ink">mixed</span>.
+              Count the verified experiences for the company that mention the topic. Half or more is <span className="text-ink">supported</span>.
+              Fifteen percent or less is <span className="text-ink">not supported</span>. In between is <span className="text-ink">mixed</span>.
             </p>
-            <p>Fewer than three experiences is flagged as a low sample. Unverified tips never count. Move the sliders to try it.</p>
-          </div>
-          <RuleLab />
+            <div className="mt-4">
+              <RuleLab />
+            </div>
+          </Details>
+          <Details title="What &ldquo;low sample&rdquo; means">
+            <p>Fewer than three verified experiences. The stamp still follows the rule, but one experience can swing it, so read it with care.</p>
+          </Details>
+          <Details title="Who verifies experiences">
+            <p>A project admin checks each submission before it counts. Unverified tips stay labelled as rumours and never count. This is a student project, not run by the LPU placement cell.</p>
+          </Details>
         </div>
-      </Step>
-
-      <Step n="03" id="modules-title" title="From a drive to your plan" lede="Requirements pick the evidence; the evidence becomes your checklist.">
-        <ol className="border-t border-line">
-          {MODULES.map((m) => (
-            <li key={m.href} className="grid gap-x-8 gap-y-2 border-b border-line py-6 md:grid-cols-[1fr_auto] md:items-baseline">
-              <div>
-                <h3 className="type-title text-ink">{m.title}</h3>
-                <p className="mt-1 max-w-[70ch] type-small text-ink-muted">{m.body}</p>
-              </div>
-              <ArrowLink href={m.href}>{m.link}</ArrowLink>
-            </li>
-          ))}
-        </ol>
-      </Step>
-
-      <Suspense fallback={null}>
-        <UpcomingDrives />
-      </Suspense>
+        <div className="grid content-start gap-3">
+          <h2 className="font-serif text-[22px] font-bold text-ink">Heard something else?</h2>
+          <p className="type-small text-ink-muted">Check one company and up to five topics against the same evidence. Each topic gets its own stamp.</p>
+          <ArrowLink href="/rumour-check">Open rumour check</ArrowLink>
+        </div>
+        <div className="grid content-start gap-3">
+          <h2 className="font-serif text-[22px] font-bold text-ink">Placed already?</h2>
+          <p className="type-small text-ink-muted">Add what your rounds asked. Once a project admin verifies it, it feeds every junior&rsquo;s plan for that company.</p>
+          <ArrowLink href="/experiences/new">Share your experience</ArrowLink>
+        </div>
+      </section>
     </main>
   );
 }
 
-/** Server Component: loads the company and topic lists for the hero checker. */
-async function HeroCheckerLoader() {
-  const [companies, topics] = await Promise.all([listCompanies(), listTopics()]);
-  return <HeroChecker companies={companies} topics={topics} />;
-}
+/** Server Component: picks the company from ?company=, then renders the list and its brief side by side. */
+async function HomeBrief({ searchParams }: Pick<PageProps<"/">, "searchParams">) {
+  const { company } = await searchParams;
+  const drives = await listDrives(); // open drives first, soonest first
+  if (drives.length === 0) return <NoDrives />;
 
-/** One numbered step of the home page; every section shares this header so the page reads as one path. */
-function Step({ n, id, title, lede, action, children }: { n: string; id: string; title: string; lede: string; action?: ReactNode; children: ReactNode }) {
+  // One entry per company: its first drive in that order (soonest open one, else the latest).
+  const byCompany = new Map<string, DriveSummary>();
+  const counts = new Map<string, number>();
+  for (const d of drives) {
+    if (!byCompany.has(d.company_id)) byCompany.set(d.company_id, d);
+    counts.set(d.company_id, (counts.get(d.company_id) ?? 0) + 1);
+  }
+  const entries = [...byCompany.values()];
+  const wanted = typeof company === "string" && isUuid(company) ? company : null;
+  const selected = entries.find((d) => d.company_id === wanted) ?? entries[0];
+  const others = companyResearch.length - entries.length;
+
   return (
-    <section aria-labelledby={id} className="mt-24 md:mt-32">
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="type-data text-[13px] text-accent-ink">{n}</p>
-          <h2 id={id} className="mt-2 font-serif text-[28px] leading-tight font-bold tracking-[-0.02em] text-ink md:text-[36px]">
-            {title}
-          </h2>
-          <p className="mt-1 type-small text-ink-muted">{lede}</p>
-        </div>
-        {action}
+    <>
+      <div className="min-w-0">
+        <p className="type-label text-ink-muted">Placement prep, from evidence</p>
+        <h1 id="hero-title" className="mt-4 font-serif text-[44px] leading-[1] font-bold tracking-[-0.035em] text-balance text-ink sm:text-[56px] lg:text-[60px]">
+          Prepare from evidence, <span className="font-normal text-ink-muted italic">not hostel rumours.</span>
+        </h1>
+        <p className="mt-6 max-w-[40ch] type-body text-pretty text-ink-muted">Pick a company. See its drive, what verified seniors were asked, and what to do next.</p>
+        <h2 className="mt-8 mb-3 type-label text-ink">Which company are you preparing for?</h2>
+        <CompanyList drives={entries} selectedId={selected.company_id} />
+        <p className="mt-4 type-small text-ink-muted">
+          {companyResearch.length} company guides in all.{" "}
+          <Link href="/companies" className="font-medium text-ink underline underline-offset-4">
+            Browse {others > 0 ? `the other ${others}` : "them"}
+          </Link>
+        </p>
       </div>
-      {children}
-    </section>
+      <CompanyBrief drive={selected} moreDrives={(counts.get(selected.company_id) ?? 1) - 1} />
+    </>
   );
 }
 
-/** Server Component: fetches on the server and streams in behind the Suspense fallback. */
-async function UpcomingDrives() {
-  const open = (await listDrives()).filter((d) => d.status === "upcoming" || d.status === "ongoing").slice(0, 3);
-  if (open.length === 0) return null; // nothing to show; /drives still lists past drives
-  const drives = await withRoundCounts(open);
-  const now = new Date();
+/** No drives at all: send people to what still works. */
+function NoDrives() {
   return (
-    <section aria-labelledby="drives-title" className="mt-24 md:mt-32">
-      <div className="flex flex-wrap items-baseline justify-between gap-3">
-        <h2 id="drives-title" className="font-serif text-[28px] leading-tight font-bold tracking-[-0.02em] text-ink md:text-[36px]">
-          Upcoming drives
-        </h2>
-        <ArrowLink href="/drives">All drives</ArrowLink>
+    <div className="lg:col-span-2">
+      <h1 className="font-serif text-[44px] leading-[1] font-bold tracking-[-0.035em] text-ink sm:text-[56px]">
+        Prepare from evidence, <span className="font-normal text-ink-muted italic">not hostel rumours.</span>
+      </h1>
+      <p className="mt-6 max-w-[46ch] type-body text-ink-muted">No drives are listed right now. The company guides and verified experiences are still open.</p>
+      <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3">
+        <ArrowLink href="/companies">Company guides</ArrowLink>
+        <ArrowLink href="/experiences">Verified experiences</ArrowLink>
       </div>
-      {SEED_DRIVES_ARE_SAMPLE && (
-        <div className="mt-4">
-          <SampleTag />
-        </div>
-      )}
-      <ul className="mt-4 grid gap-4 lg:grid-cols-3">
-        {drives.map((d) => (
-          <li key={d.id}>
-            <DriveCard drive={d} now={now} />
-          </li>
-        ))}
-      </ul>
-    </section>
+    </div>
+  );
+}
+
+/** A native collapsible row: no client code. */
+function Details({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <details className="group border-b border-line py-4 first:border-t">
+      <summary className="flex cursor-pointer list-none items-center justify-between font-serif text-[20px] font-bold text-ink">
+        {title}
+        <span aria-hidden="true" className="text-ink-muted group-open:hidden">+</span>
+        <span aria-hidden="true" className="hidden text-ink-muted group-open:inline">&minus;</span>
+      </summary>
+      <div className="mt-3 type-small text-ink-muted">{children}</div>
+    </details>
   );
 }
