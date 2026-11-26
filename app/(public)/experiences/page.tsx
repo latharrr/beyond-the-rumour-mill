@@ -128,7 +128,7 @@ async function Experiences({ searchParams }: Pick<PageProps<"/experiences">, "se
 function CompanyFilter({ companies, current }: { companies: Company[]; current?: string }) {
   const chip = (active: boolean) =>
     cn(
-      "hit-44 inline-flex h-9 items-center rounded-full border px-4 text-[14px] transition-colors duration-200",
+      "hit-44 inline-flex h-9 items-center rounded-[4px] border px-4 text-[14px] transition-colors duration-200",
       active ? "border-ink/16 bg-panel-2 text-ink" : "border-line text-ink-muted hover:bg-panel hover:text-ink",
     );
   return (

@@ -15,7 +15,7 @@ export function ThemeToggle() {
     const next = root.dataset.theme === "light" ? "dark" : "light";
     root.dataset.theme = next;
     try {
-      localStorage.setItem("theme", next); // remembered for the next visit
+      localStorage.setItem("btrm-theme", next); // remembered for the next visit; key shared with app/layout.tsx
     } catch {
       // Private mode can block storage; the switch still works for this visit.
     }

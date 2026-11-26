@@ -3,15 +3,18 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { ArrowLeftIcon, ArrowRightIcon, ExternalIcon } from "@/components/icons";
 import { cn } from "@/lib/cn";
 
-const pill = "inline-flex h-11 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-medium whitespace-nowrap";
-export const pillPrimary = cn(pill, "bg-amber text-paper-ink transition-transform hover:scale-[1.03] active:scale-95 disabled:opacity-60");
-export const pillSecondary = cn(pill, "border border-line text-ink transition-colors duration-200 hover:bg-panel disabled:opacity-60");
+// Full pills, 48px tall, no shadow. Primary is oxblood; hover darkens the fill 8% and slides the arrow 4px.
+const pill =
+  "group/pill inline-flex h-12 items-center justify-center gap-2 rounded-full px-6 text-[15px] font-medium whitespace-nowrap transition-colors duration-150 disabled:opacity-60";
+export const pillPrimary = cn(pill, "bg-accent text-on-accent hover:bg-accent-hover");
+export const pillSecondary = cn(pill, "border border-ink text-ink hover:bg-ink/5");
 
-/** A pill-shaped link. Reusable via the `variant` prop. */
+/** A pill-shaped link with a trailing arrow. Reusable via the `variant` prop. */
 export function PillLink({ href, variant = "secondary", children }: { href: string; variant?: "primary" | "secondary"; children: ReactNode }) {
   return (
     <Link href={href} className={variant === "primary" ? pillPrimary : pillSecondary}>
       {children}
+      <ArrowRightIcon className="size-4 transition-transform duration-200 ease-[var(--ease-out-3)] group-hover/pill:translate-x-1" />
     </Link>
   );
 }
@@ -26,12 +29,12 @@ export function Button({
   return <button type={type} className={cn(variant === "primary" ? pillPrimary : pillSecondary, className)} {...rest} />;
 }
 
-/** Text link with a trailing arrow; underline on hover. */
+/** Text link with a trailing arrow; underlined on hover. */
 export function ArrowLink({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
   return (
-    <Link href={href} className={cn("group hit-44 inline-flex items-center gap-1.5 font-medium text-ink underline-offset-4 hover:underline", className)}>
-      {children}
-      <ArrowRightIcon className="size-4 transition-transform duration-200 ease-[var(--ease-out-3)] group-hover:translate-x-0.5" />
+    <Link href={href} className={cn("group hit-44 inline-flex items-center gap-1.5 font-medium text-ink", className)}>
+      <span className="link-draw">{children}</span>
+      <ArrowRightIcon className="size-4" />
     </Link>
   );
 }
@@ -43,7 +46,7 @@ export const textLink = "text-ink underline decoration-ink-dim underline-offset-
 export function BackLink({ href, children }: { href: string; children: ReactNode }) {
   return (
     <Link href={href} className="group hit-44 inline-flex items-center gap-1.5 type-small text-ink-muted underline-offset-4 hover:text-ink hover:underline">
-      <ArrowLeftIcon className="size-4 transition-transform duration-200 ease-[var(--ease-out-3)] group-hover:-translate-x-0.5" />
+      <ArrowLeftIcon className="size-4" />
       {children}
     </Link>
   );

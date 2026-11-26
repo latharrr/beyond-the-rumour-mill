@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="60" viewBox="0 0 200 60" preserveAspectRatio="none">
+  <!-- Rubber-stamp mask: full ink inside, ragged edges where the rubber met the paper. Stretched over the stamp by the stamp-ink utility. -->
+  <filter id="ink" x="-4%" y="-10%" width="108%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="4" result="warp" />
+    <feDisplacementMap in="SourceGraphic" in2="warp" scale="7" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+  <rect x="4" y="4" width="192" height="52" fill="#000" filter="url(#ink)" />
+</svg>

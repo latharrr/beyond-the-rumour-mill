@@ -50,7 +50,7 @@ export function TopicPicker({ topics, name, multiple = false, defaultSelected = 
         <div className="mt-3 flex flex-wrap items-center gap-1.5">
           <span className="sr-only">Selected:</span>
           {selected.map((id) => (
-            <span key={id} className="inline-flex h-8 items-center gap-1 rounded-full border border-ink/16 bg-panel-2 pr-1 pl-3 text-[13px] text-ink">
+            <span key={id} className="inline-flex h-8 items-center gap-1 rounded-[4px] border border-ink/16 bg-panel-2 pr-1 pl-3 text-[13px] text-ink">
               {byId.get(id)?.label}
               {multiple && (
                 <button

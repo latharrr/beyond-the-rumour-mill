@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Geist_Mono } from "next/font/google";
+import { Archivo, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { jsonLd } from "@/lib/json-ld";
@@ -12,17 +12,14 @@ const archivo = Archivo({
   variable: "--font-archivo",
 });
 
-// Fontshare fonts (ITF Free Font License), self-hosted from app/fonts via next/font/local.
-const switzer = localFont({
-  src: [
-    { path: "./fonts/switzer-400.woff2", weight: "400" },
-    { path: "./fonts/switzer-500.woff2", weight: "500" },
-    { path: "./fonts/switzer-600.woff2", weight: "600" },
-  ],
+// Body and UI.
+const hanken = Hanken_Grotesk({
+  subsets: ["latin"],
   display: "swap",
-  variable: "--font-switzer",
+  variable: "--font-hanken",
 });
 
+// Zodiak (Fontshare, ITF Free Font License), self-hosted from app/fonts via next/font/local.
 const zodiak = localFont({
   src: [
     { path: "./fonts/zodiak-400.woff2", weight: "400" },
@@ -35,12 +32,12 @@ const zodiak = localFont({
   variable: "--font-zodiak",
 });
 
-// Numbers only, never the LCP text: not preloaded, so it doesn't compete with the text fonts.
-const geistMono = Geist_Mono({
+// Meta labels, stamps, dates. Never the LCP text, so not preloaded.
+const mono = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
   preload: false,
-  variable: "--font-geist-mono",
+  variable: "--font-jetbrains",
 });
 
 export const metadata: Metadata = {
@@ -71,23 +68,21 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Browser UI colour (mobile address bar) follows the OS theme.
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f4ef" },
-    { media: "(prefers-color-scheme: dark)", color: "#111114" },
-  ],
-  colorScheme: "dark light",
+  // Light paper is the only default; dark is opt-in from the toggle, never from the OS.
+  themeColor: "#f4f1ea",
+  colorScheme: "light",
 };
 
 /*
  * Runs in the browser before the page paints, so the page never flashes the
- * wrong theme. Saved choice ("theme" in localStorage) wins; otherwise the OS
- * setting decides. Plain JS on purpose: React hasn't loaded yet at this point.
+ * wrong theme. Light unless the visitor picked dark with the toggle; the OS
+ * setting is ignored. The key was bumped to "btrm-theme" (keep in sync with
+ * components/nav/ThemeToggle.tsx): older builds saved "dark" under "theme",
+ * which is cleared here so nobody is stuck on it. Plain JS: React hasn't loaded.
  */
 const THEME_SCRIPT = `try {
-  var t = localStorage.getItem("theme");
-  if (t !== "light" && t !== "dark") t = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-  document.documentElement.dataset.theme = t;
+  localStorage.removeItem("theme");
+  document.documentElement.dataset.theme = localStorage.getItem("btrm-theme") === "dark" ? "dark" : "light";
 } catch (e) {}`;
 
 const WEBSITE_LD = {
@@ -108,7 +103,7 @@ const WEBSITE_LD = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${archivo.variable} ${switzer.variable} ${zodiak.variable} ${geistMono.variable}`} suppressHydrationWarning>
+    <html lang="en" data-theme="light" className={`${archivo.variable} ${hanken.variable} ${zodiak.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>

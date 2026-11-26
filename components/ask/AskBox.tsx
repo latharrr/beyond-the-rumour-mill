@@ -98,7 +98,7 @@ export function AskBox() {
               setQuestion(s);
               ask(s);
             }}
-            className="rounded-full border border-line px-3 py-1.5 text-left text-[13px] text-ink-muted transition-colors hover:bg-panel-2 hover:text-ink disabled:opacity-60"
+            className="rounded-[4px] border border-line px-3 py-1.5 text-left text-[13px] text-ink-muted transition-colors hover:bg-panel-2 hover:text-ink disabled:opacity-60"
           >
             {s}
           </button>

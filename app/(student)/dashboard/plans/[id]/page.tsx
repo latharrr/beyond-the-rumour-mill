@@ -71,7 +71,7 @@ async function Plan({ params }: Pick<PageProps<"/dashboard/plans/[id]">, "params
           <a
             href={`/api/plans/${plan.id}/export`}
             download
-            className="inline-flex h-11 items-center gap-2 rounded-full border border-line px-5 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-panel"
+            className="inline-flex h-11 items-center gap-2 rounded-[4px] border border-line px-5 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-panel"
           >
             <DownloadIcon className="size-4" />
             Export as Markdown

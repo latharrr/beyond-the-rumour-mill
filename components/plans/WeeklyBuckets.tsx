@@ -43,7 +43,7 @@ export function WeeklyBuckets({
                     from <time dateTime={from} className="type-data">{formatDriveDate(from)}</time>
                   </span>
                 )}
-                {now && <span className="rounded-full border border-line px-2 py-0.5 type-label text-ink">This week</span>}
+                {now && <span className="rounded-[4px] border border-line px-2 py-0.5 type-label text-ink">This week</span>}
               </div>
               <span className="type-small text-ink-muted">
                 <span className="type-data text-ink">

@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import { pillPrimary, pillSecondary } from "@/components/ui/pill";
 import { cn } from "@/lib/cn";
 
 // Shared loading / error / not-found screens used by each route group's
 // special files and by in-page <Suspense> fallbacks.
 
-const pill = "inline-flex h-11 items-center justify-center rounded-full px-6 text-[15px] font-medium whitespace-nowrap";
 
 /** Inline status line for a <Suspense> fallback. */
 export function LoadingState({ label = "Loading…", className }: { label?: string; className?: string }) {
@@ -63,10 +63,10 @@ export function ErrorState({ error, retry, homeHref = "/" }: { error: unknown; r
         title="Something went wrong"
         actions={
           <>
-            <button type="button" onClick={() => retry()} className={cn(pill, "bg-amber text-paper-ink")}>
+            <button type="button" onClick={() => retry()} className={pillPrimary}>
               Try again
             </button>
-            <Link href={homeHref} className={cn(pill, "border border-line text-ink transition-colors duration-200 hover:bg-panel")}>
+            <Link href={homeHref} className={pillSecondary}>
               Go back
             </Link>
           </>
@@ -85,11 +85,11 @@ export function NotFoundState({ message, homeHref = "/", homeLabel = "Go home" }
       title="Not found"
       actions={
         <>
-          <Link href={homeHref} className={cn(pill, "bg-amber text-paper-ink")}>
+          <Link href={homeHref} className={pillPrimary}>
             {homeLabel}
           </Link>
           {homeHref !== "/drives" && (
-            <Link href="/drives" className={cn(pill, "border border-line text-ink transition-colors duration-200 hover:bg-panel")}>
+            <Link href="/drives" className={pillSecondary}>
               Browse drives
             </Link>
           )}
