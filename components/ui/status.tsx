@@ -19,7 +19,7 @@ export function StatusPill({ tone, children, onPaper = false, className }: { ton
   return (
     <span
       className={cn(
-        "inline-flex h-7 shrink-0 items-center gap-2 rounded-full border px-2.5 text-[13px] font-medium",
+        "inline-flex h-7 shrink-0 items-center gap-2 rounded-[4px] border px-2.5 text-[13px] font-medium",
         onPaper ? "border-paper-ink/12 text-paper-ink" : "border-line bg-ground/50 text-ink",
         className,
       )}
@@ -35,7 +35,7 @@ export function SampleTag({ onPaper = false }: { onPaper?: boolean }) {
   return (
     <span
       className={cn(
-        "inline-flex h-6 shrink-0 items-center rounded-full border px-2.5 type-label",
+        "inline-flex h-6 shrink-0 items-center rounded-[3px] border border-dashed px-2.5 type-label",
         onPaper ? "border-paper-ink/12 text-paper-ink/60" : "border-line bg-ground/60 text-ink-muted",
       )}
     >
@@ -46,5 +46,5 @@ export function SampleTag({ onPaper = false }: { onPaper?: boolean }) {
 
 /** A topic or tag chip on dark. */
 export function Chip({ children, className }: { children: ReactNode; className?: string }) {
-  return <span className={cn("inline-flex h-7 items-center rounded-full border border-line px-2.5 text-[13px] text-ink", className)}>{children}</span>;
+  return <span className={cn("inline-flex h-7 items-center rounded-[4px] border border-line px-2.5 text-[13px] text-ink", className)}>{children}</span>;
 }

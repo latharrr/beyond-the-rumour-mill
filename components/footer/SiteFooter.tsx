@@ -2,11 +2,13 @@ import Link from "next/link";
 import { type ReactNode, Suspense } from "react";
 import Image from "next/image";
 import { getSessionUser } from "@/lib/auth";
+import { formatDriveDate } from "@/lib/format";
+import { researchChecked } from "@/lib/placement/company-research";
 
 const GITHUB = "https://github.com/latharrr/beyond-the-rumour-mill";
 
 const LINK =
-  "inline-flex min-h-11 min-w-11 items-center text-[15px] text-ink-muted underline-offset-4 transition-colors duration-200 hover:text-ink hover:underline";
+  "inline-flex min-h-11 min-w-11 items-center text-[15px] text-ink-muted underline-offset-4 hover:text-ink hover:underline";
 
 function FooterLink({ href, children }: { href: string; children: ReactNode }) {
   return (
@@ -75,23 +77,29 @@ function AccountLinksFallback() {
 
 /**
  * The site footer on every public page: link columns, then the brand closing
- * the scroll as a full-width amber wordmark, then the legal line.
+ * the scroll as a full-width ink wordmark, then the legal line. Sits on the
+ * alternate paper with a small mono filing block.
  */
 export function SiteFooter() {
-
   return (
-    <footer className="mt-20 border-t border-line md:mt-32">
+    <footer className="mt-20 border-t border-line bg-panel-2 md:mt-32">
       <div className="container-page pt-12 md:pt-16">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:gap-14">
           <div className="flex flex-col gap-6">
             <p className="max-w-[34ch] type-body text-pretty text-ink-muted">
               Placement prep from official drives and verified senior experiences. Rumours stay labelled as rumours.
             </p>
-            <dl className="grid max-w-[34ch] grid-cols-[auto_1fr] items-baseline gap-x-4 gap-y-2 type-small">
-              <dt className="type-label text-ink-dim">Verdicts</dt>
-              <dd className="text-ink-muted">Supported, Mixed evidence or Not supported, each citing its experiences.</dd>
-              <dt className="type-label text-ink-dim">Rumours</dt>
-              <dd className="text-ink-muted">Shown, labelled, and left out of every count.</dd>
+            <dl className="grid max-w-[44ch] grid-cols-[auto_1fr] items-baseline gap-x-4 gap-y-2 border-y border-line py-4 font-mono text-[12px] tracking-[0.06em] text-ink uppercase">
+              <dt className="text-ink-dim">File no.</dt>
+              <dd>P08 · Beyond the Rumour Mill</dd>
+              <dt className="text-ink-dim">Filed by</dt>
+              <dd>LPU CA2 · Group 8</dd>
+              <dt className="text-ink-dim">Last updated</dt>
+              <dd>{formatDriveDate(researchChecked)}</dd>
+              <dt className="text-ink-dim">Verdicts</dt>
+              <dd className="normal-case">Supported, Mixed evidence or Not supported, each citing its experiences.</dd>
+              <dt className="text-ink-dim">Rumours</dt>
+              <dd className="normal-case">Shown, labelled, and left out of every count.</dd>
             </dl>
           </div>
           <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
@@ -119,7 +127,7 @@ export function SiteFooter() {
 
         {/* The wordmark is a decorative setting of the name; assistive tech reads the plain text. */}
         <div className="@container mt-16 md:mt-24">
-          <p className="text-accent-ink">
+          <p className="text-ink">
             <span className="sr-only">Beyond the Rumour Mill</span>
             <span aria-hidden="true" className="block overflow-hidden pb-[0.04em] type-wordmark [--wm-measure:4.376]">
               <span data-line className="block">

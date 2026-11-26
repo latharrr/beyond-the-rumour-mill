@@ -14,14 +14,14 @@ const LINKS = [
   { href: "/rumour-check", label: "Rumour check" },
 ] as const;
 
-/** Fixed top navigation. Two effects with cleanup: scroll shadow and Escape-to-close. */
+/** Fixed top navigation: paper with a hairline; past 80px it sits on the lighter surface paper. No blur, no motion. Escape closes the menu. */
 export function SiteNav({ account }: { account: ReactNode }) {
   const headerRef = useRef<HTMLElement>(null);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const update = () => {
-      headerRef.current?.setAttribute("data-scrolled", String(window.scrollY > 4));
+      headerRef.current?.setAttribute("data-scrolled", String(window.scrollY > 80));
     };
     update();
     window.addEventListener("scroll", update, { passive: true });
@@ -44,7 +44,7 @@ export function SiteNav({ account }: { account: ReactNode }) {
       <div
         data-bar-backdrop
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[var(--nav-h)] border-b border-line bg-ground/85 opacity-0 backdrop-blur-md transition-opacity group-data-[scrolled=true]/header:opacity-100 md:h-[var(--nav-h-md)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-[var(--nav-h)] border-b border-line bg-bg group-data-[scrolled=true]/header:bg-surface md:h-[var(--nav-h-md)]"
       />
       <nav aria-label="Main" className="relative mx-auto h-[var(--nav-h)] max-w-[1200px] px-4 md:h-[var(--nav-h-md)] md:px-6">
         <div className="relative grid h-full grid-cols-[auto_1fr] items-center gap-3 md:grid-cols-[1fr_auto_1fr] md:gap-4">
@@ -61,7 +61,7 @@ export function SiteNav({ account }: { account: ReactNode }) {
             {LINKS.map((l) => (
               <li key={l.href}>
                 <Link prefetch={true} href={l.href} className="group hit-44 inline-flex text-[15px]">
-                  <span className="text-ink-muted group-hover:text-ink group-hover:underline">{l.label}</span>
+                  <span className="text-ink-2 link-draw group-hover:text-ink">{l.label}</span>
                   <NavigationProgress />
                 </Link>
               </li>

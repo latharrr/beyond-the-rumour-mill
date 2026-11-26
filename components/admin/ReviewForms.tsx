@@ -35,7 +35,7 @@ export function ReviewForms({ experienceId }: { experienceId: string }) {
           type="submit"
           disabled={verifying || rejecting}
           className={cn(
-            "inline-flex h-11 w-full items-center justify-center rounded-full border border-rumour/40 px-6 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-rumour/10 disabled:opacity-60",
+            "inline-flex h-11 w-full items-center justify-center rounded-[4px] border border-rumour/40 px-6 text-[15px] font-medium text-ink transition-colors duration-200 hover:bg-rumour/10 disabled:opacity-60",
           )}
         >
           {rejecting ? "Rejecting…" : "Reject"}

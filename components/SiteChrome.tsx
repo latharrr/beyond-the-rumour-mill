@@ -9,7 +9,7 @@ export function SiteChrome({ children }: { children: ReactNode }) {
     <>
       <a
         href="#content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-full focus:bg-paper focus:px-4 focus:py-2 focus:text-paper-ink"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-[4px] focus:bg-surface focus:px-4 focus:py-2 focus:text-paper-ink"
       >
         Skip to content
       </a>
