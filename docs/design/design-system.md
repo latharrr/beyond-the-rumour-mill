@@ -25,9 +25,20 @@ No blue, no orange, no gradients, no glass, no offset or brutalist shadows. `--s
 
 ## Type
 
-- **Display:** Zodiak (self-hosted serif), weight 400, tracking −0.03em. Hero 140–160px, section headings 112px desktop.
-- **UI:** Hanken Grotesk 15/24.
-- **Meta and stamps:** JetBrains Mono, 11px uppercase, 0.1em tracking (`type-label`). `n` in sample sizes stays lowercase.
+- **Display:** Gambarino (Fontshare, self-hosted, `app/fonts`), regular, tracking −0.02em. Gambarino has no italic or bold, so the same `font-serif` family uses Zodiak for italic (rumour quotes) and bold.
+- **UI and body:** Switzer (Fontshare, self-hosted), 15/24.
+- **Handwriting:** Reenie Beanie (`font-hand`), only for the struck-out "hostel rumours" in the hero and small annotations.
+- **Meta and stamps:** JetBrains Mono, 11–12px uppercase, 0.1em tracking (`type-label`). `n` in sample sizes stays lowercase.
+
+## Hero (first viewport)
+
+`components/home/hero/`: `Hero`, `Desk`, `StickyNote`, `Stamp`, `CompanySearch`, `TicketStrip`.
+
+- Exactly one screen from 768px up (`100svh` minus the nav); headline, search and desk all above the fold at 1280×720. No column guides in the hero.
+- Headline in two lines at up to 104px across the full width; the desk starts beside the second line and fills down to the drive strip on the fold.
+- Desk: three rumour notes (sticky, kraft, white) on top of a peeking prep brief. Every 2.4s the next note lifts 8px and comes to the front, its stamp slams (1.4 → 1, 120ms) and the desk jolts 2px; then the next three rumours are dealt. Hover pauses; notes drift 10px and the brief 4px against the cursor. Two notes on phones.
+- Entrance once, about 1.2s, in CSS: meta fades, lines rise, strike draws at 0.6s, search slides up, notes drop (70ms stagger).
+- Reduced motion: first notes already stamped, no loop, no parallax, strip still.
 
 ## Layout
 
@@ -49,4 +60,4 @@ Primary: `accent` fill, `#FFFDF8` text, fully rounded, 48px tall, no shadow; hov
 
 ## Motion
 
-Only five things move: masked line reveals (`data-split`), notes dropping onto the desk with a small settle, stamps slamming in (scale 1.4 → 1, 120ms), the hero strike-through drawing on scroll, and the ticket hover lift (6px). Nothing else animates. Lenis smooth scroll stays. Under `prefers-reduced-motion` nothing runs: notes and stamps are in place and the strike is already drawn. Code: `lib/motion.ts`, `components/home/HomeMotion.tsx`.
+Below the hero only these move: masked line reveals (`data-split`), notes dropping onto the desk with a small settle, stamps slamming in (scale 1.4 → 1, 120ms), and the ticket hover lift (6px). Nothing else animates. Lenis smooth scroll stays. Under `prefers-reduced-motion` nothing runs: notes and stamps are in place and the strike is already drawn. Code: `lib/motion.ts`, `components/home/HomeMotion.tsx`.

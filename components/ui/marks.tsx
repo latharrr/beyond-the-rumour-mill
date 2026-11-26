@@ -7,9 +7,9 @@ import { cn } from "@/lib/cn";
 
 /**
  * A hand-drawn oxblood line through the words it sits on (absolutely
- * positioned over a relative parent). Hidden under motion until HomeMotion
- * draws it on scroll (stroke-dashoffset 1.1 → 0 on pathLength 1; the 0.1 extra hides the round cap's dot); under reduced
- * motion it is simply there.
+ * positioned over a relative parent). Under motion it draws itself 0.6s after
+ * load (strike-draw: stroke-dashoffset 1.1 → 0 on pathLength 1; the 0.1 extra
+ * hides the round cap's dot); under reduced motion it is simply there.
  */
 export function Strike({ className }: { className?: string }) {
   return (
@@ -24,7 +24,7 @@ export function Strike({ className }: { className?: string }) {
         stroke="currentColor"
         strokeWidth="3.6"
         strokeLinecap="round"
-        className="motion-safe:[stroke-dashoffset:1.1]"
+        className="motion-safe:strike-draw"
       />
     </svg>
   );

@@ -3,10 +3,10 @@ import Link from "next/link";
 import { cache, Suspense, type ReactNode } from "react";
 import { BriefSkeleton, CompanyBrief, CompanyList } from "@/components/home/CompanyBrief";
 import { HomeMotion, Hydrated } from "@/components/home/HomeMotion";
+import { Hero } from "@/components/home/hero/Hero";
 import { RuleLab } from "@/components/rumour/RuleLab";
 import { RUMOURS, RumourRegister, RumourRegisterFallback } from "@/components/rumour/RumourRegister";
 import { ArrowLink, PillLink } from "@/components/ui/pill";
-import { Strike } from "@/components/ui/marks";
 import { SampleTag } from "@/components/ui/status";
 import { getSessionUser } from "@/lib/auth";
 import { listVerifiedExperiences } from "@/lib/experiences/data";
@@ -38,41 +38,14 @@ export default function HomePage({ searchParams }: PageProps<"/">) {
     <main data-home className="relative z-[1] bg-bg">
       <HomeMotion />
 
-      {/* Hero */}
-      <section data-hero aria-labelledby="hero-title" className="relative">
-        <Guides />
-        <div className="relative container-page pt-8 pb-24 md:pt-12 md:pb-40">
-          <div className={`${GRID} type-label text-ink-2 motion-safe:animate-rise`}>
-            <p className="col-span-3 md:col-span-4">Placement prep, from evidence</p>
-            <p className="hidden md:col-span-3 md:col-start-7 md:block">LPU CA2 · Group 8</p>
-            <p className="col-start-4 text-right md:col-start-12">P08</p>
-          </div>
-          <div className={`mt-20 md:mt-32 ${GRID}`}>
-            <h1 id="hero-title" className="col-span-4 font-serif text-[clamp(52px,10vw,160px)] leading-[0.9] font-normal tracking-[-0.03em] text-ink md:col-span-12 lg:col-span-9">
-              <span className="block overflow-hidden pb-[0.08em]">
-                <span className="block motion-safe:line-up">Prepare from evidence,</span>
-              </span>
-              <span className="block overflow-hidden pb-[0.08em]">
-                <span className="block text-ink-2 italic motion-safe:line-up [--d:80ms]">
-                  not{" "}
-                  {/* Hearsay, struck out: an oxblood pen line draws through each word as you scroll (HomeMotion). */}
-                  <span className="relative">
-                    hostel
-                    <Strike className="top-[0.44em] left-[-0.04em] h-[0.24em] w-[calc(100%+0.08em)]" />
-                  </span>{" "}
-                  <span className="relative">
-                    rumours
-                    <Strike className="top-[0.42em] left-[-0.04em] h-[0.24em] w-[calc(100%+0.08em)]" />
-                  </span>
-                  .
-                </span>
-              </span>
-            </h1>
-          </div>
+      <Hero drives={getDrives()} evidence={getEvidence()} />
 
-          <div className={`mt-24 gap-y-14 md:mt-40 ${GRID}`}>
+      {/* The full prep brief for the chosen company (?company=), which the hero search opens. */}
+      <section aria-label="Prep brief" className="relative">
+        <Guides />
+        <div className="relative container-page pt-16 pb-24 md:pt-24 md:pb-40">
+          <div className={`gap-y-14 ${GRID}`}>
             <div className="col-span-4 grid content-start gap-6 md:col-span-6 lg:col-span-4">
-              <p className="max-w-[36ch] type-body text-pretty text-ink-2">Pick a company. See its drive, what verified seniors were asked, and what to do next.</p>
               <ArrowLink href="#companies">Choose a company</ArrowLink>
               <p className="max-w-[36ch] border-t border-line pt-6 type-small text-ink-2">
                 Every verdict counts verified senior experiences. Hostel tips stay labelled as rumours and never count.

@@ -114,7 +114,62 @@
   }
 }
 @utility line-up {
-  animation: line-up 1.1s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both;
+  animation: line-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both;
+}
+
+/*
+ * Hero entrance, once, about 1.2s in all: meta fades, headline lines rise
+ * (line-up), the strike draws at 0.6s, the search slides up, notes drop onto
+ * the desk. Stagger with --d. Used with motion-safe:, so reduced motion shows
+ * the final state.
+ */
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes hero-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+@keyframes desk-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-40px) rotate(5deg);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(3px) rotate(-0.6deg);
+  }
+}
+@keyframes strike-draw {
+  from {
+    stroke-dashoffset: 1.1;
+  }
+}
+@utility hero-fade {
+  animation: hero-fade 0.4s ease-out var(--d, 0s) both;
+}
+@utility hero-up {
+  animation: hero-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0s) both;
+}
+@utility desk-drop {
+  animation: desk-drop 0.45s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0s) both;
+}
+@utility strike-draw {
+  animation: strike-draw 0.4s cubic-bezier(0.65, 0, 0.35, 1) 0.6s both;
+}
+
+/* The hero's drive strip: the list is rendered twice, so moving it by -50% loops seamlessly. */
+@theme {
+  --animate-ticker: ticker 60s linear infinite;
+  @keyframes ticker {
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 /* Underline on hover, no animation. Uses ::before so it can sit beside hit-44's ::after. */
@@ -177,10 +232,11 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-zodiak), ui-serif, Georgia, serif;
+  --font-sans: var(--font-switzer), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-display-serif), ui-serif, Georgia, serif;
+  --font-hand: var(--font-reenie), "Bradley Hand", cursive;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
-  --font-display: var(--font-archivo), var(--font-hanken), sans-serif;
+  --font-display: var(--font-archivo), var(--font-switzer), sans-serif;
 }
 
 /* Type roles */

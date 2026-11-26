@@ -4,9 +4,9 @@ import Lenis from "lenis";
 import { useEffect } from "react";
 import { dropAndStamp, gsap, ScrollTrigger, splitLines } from "@/lib/motion";
 
-// Only five things move on this page: masked line reveals, the rumour notes
-// dropping onto the desk, their stamps slamming down, the hero strike-through
-// drawing, and the ticket hover (CSS). Nothing else animates.
+// Below the hero only four things move: masked line reveals, the rumour notes
+// dropping onto the desk, their stamps slamming down, and the ticket hover
+// (CSS). The hero runs its own entrance (CSS) and desk loop (hero/Desk.tsx).
 
 // Streamed sections GSAP touches, each closed by a <Hydrated name> inside its Suspense boundary.
 const STREAMED = ["board"];
@@ -71,9 +71,6 @@ function setup() {
     // Notes in the same row land one after another.
     const cols = matchMedia("(min-width: 1024px)").matches ? 3 : matchMedia("(min-width: 640px)").matches ? 2 : 1;
     $$("[data-drop]").forEach((card, i) => dropAndStamp(card, { delay: (i % cols) * 0.1 }));
-
-    // Hero: the pen strikes through "hostel rumours" over the first stretch of scrolling.
-    gsap.to("[data-strike]", { strokeDashoffset: 0, ease: "none", stagger: 0.6, scrollTrigger: { trigger: "[data-hero]", start: "top top", end: "+=260", scrub: true } });
 
     return () => {
       gsap.ticker.remove(raf);

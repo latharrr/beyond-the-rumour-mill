@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { VERDICT_TONE } from "@/components/rumour/VerdictCard";
-import type { Tone } from "@/components/ui/status";
+import { Stamp } from "@/components/home/hero/Stamp";
 import { Paperclip } from "@/components/ui/marks";
 import { stretchedLink } from "@/components/ui/surface";
 import { cn } from "@/lib/cn";
 import { listVerifiedExperiences } from "@/lib/experiences/data";
-import { checkClaimVerdict, type Verdict } from "@/lib/experiences/rumour";
+import { checkClaimVerdict } from "@/lib/experiences/rumour";
 import { listCompanies, listTopics } from "@/lib/taxonomy";
 
 // Hostel rumours on file. Each is checked as "<company> heavily asks <topic>".
@@ -17,21 +16,6 @@ export const RUMOURS = [
   { quote: "TCS interviews are all OOP.", company: "TCS", topic: "OOP" },
   { quote: "Infosys is all about SQL.", company: "Infosys", topic: "SQL" },
 ];
-
-const STAMP_TEXT: Record<Verdict, string> = {
-  "Supported": "Supported",
-  "Mixed evidence": "Mixed",
-  "Not supported": "Not supported",
-  "No verified evidence yet": "Unproven",
-};
-
-// Stamps are solid ink with paper-coloured letters; the colours stay the same in dark mode, like the paper they sit on.
-const STAMP_INK: Record<Tone, string> = {
-  verified: "bg-stamp-ok",
-  mixed: "bg-stamp-mixed",
-  rumour: "bg-stamp-no",
-  neutral: "bg-stamp-none",
-};
 
 // Each note rests slightly off-square (within ±2deg), alternating sticky yellow and kraft.
 const TILT = ["-rotate-[1.6deg]", "rotate-[1.2deg]", "-rotate-[0.6deg]", "rotate-[2deg]", "-rotate-[1.4deg]", "rotate-[0.8deg]"];
@@ -67,10 +51,10 @@ export function Citations({ ids, onPaper = false }: { ids: string[]; /** On a pa
  * footnoted with the experiences it cites. HomeMotion drops each note onto
  * the desk and slams its stamp down as it scrolls into view.
  */
-export async function RumourRegister({ evidence }: { evidence: ReturnType<typeof listVerifiedExperiences> }) {
+/** Every rumour on file, checked against verified experiences by the same rule as /rumour-check. */
+export async function checkRumours(evidence: ReturnType<typeof listVerifiedExperiences>) {
   const [{ experiences }, companies, topics] = await Promise.all([evidence, listCompanies(), listTopics()]);
-
-  const entries = RUMOURS.flatMap((r, i) => {
+  return RUMOURS.flatMap((r, i) => {
     const company = companies.find((c) => c.name === r.company);
     const topic = topics.find((t) => t.label === r.topic);
     if (!company || !topic) return [];
@@ -81,6 +65,12 @@ export async function RumourRegister({ evidence }: { evidence: ReturnType<typeof
     );
     return [{ ...r, n: String(i + 1).padStart(2, "0"), result, href: `/rumour-check?company_id=${company.id}&topic_id=${topic.id}` }];
   });
+}
+
+export type CheckedRumour = Awaited<ReturnType<typeof checkRumours>>[number];
+
+export async function RumourRegister({ evidence }: { evidence: ReturnType<typeof listVerifiedExperiences> }) {
+  const entries = await checkRumours(evidence);
 
   return (
     <ol className="grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
@@ -126,16 +116,7 @@ export async function RumourRegister({ evidence }: { evidence: ReturnType<typeof
                 "No verified experiences yet"
               )}
             </p>
-            <span
-              data-stamp
-              aria-hidden="true"
-              className={cn(
-                "shrink-0 -rotate-[6deg] rounded-[3px] px-3 py-1.5 stamp-ink font-mono text-[19px] leading-none font-bold tracking-[0.06em] text-object-paper uppercase",
-                STAMP_INK[VERDICT_TONE[e.result.verdict]],
-              )}
-            >
-              {STAMP_TEXT[e.result.verdict]}
-            </span>
+            <Stamp verdict={e.result.verdict} />
           </div>
         </li>
       ))}

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import { Archivo, JetBrains_Mono, Reenie_Beanie } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { jsonLd } from "@/lib/json-ld";
@@ -12,24 +12,40 @@ const archivo = Archivo({
   variable: "--font-archivo",
 });
 
-// Body and UI.
-const hanken = Hanken_Grotesk({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-hanken",
-});
-
-// Zodiak (Fontshare, ITF Free Font License), self-hosted from app/fonts via next/font/local.
-const zodiak = localFont({
+// Body and UI: Switzer (Fontshare, ITF Free Font License), self-hosted from app/fonts.
+const switzer = localFont({
   src: [
-    { path: "./fonts/zodiak-400.woff2", weight: "400" },
-    { path: "./fonts/zodiak-400-italic.woff2", weight: "400", style: "italic" },
-    { path: "./fonts/zodiak-700.woff2", weight: "700" },
-    { path: "./fonts/zodiak-700-italic.woff2", weight: "700", style: "italic" },
-    { path: "./fonts/zodiak-800.woff2", weight: "800" },
+    { path: "./fonts/switzer-400.woff2", weight: "400" },
+    { path: "./fonts/switzer-500.woff2", weight: "500" },
+    { path: "./fonts/switzer-600.woff2", weight: "600" },
   ],
   display: "swap",
-  variable: "--font-zodiak",
+  variable: "--font-switzer",
+});
+
+/*
+ * Display serif: Gambarino (Fontshare, ITF Free Font License) for upright 400.
+ * Gambarino has no italic or bold, so the same family borrows Zodiak's for
+ * those (rumour quotes are italic). Self-hosted from app/fonts.
+ */
+const display = localFont({
+  src: [
+    { path: "./fonts/gambarino-400.woff2", weight: "400", style: "normal" },
+    { path: "./fonts/zodiak-400-italic.woff2", weight: "400", style: "italic" },
+    { path: "./fonts/zodiak-700.woff2", weight: "700", style: "normal" },
+    { path: "./fonts/zodiak-700-italic.woff2", weight: "700", style: "italic" },
+    { path: "./fonts/zodiak-800.woff2", weight: "800", style: "normal" },
+  ],
+  display: "swap",
+  variable: "--font-display-serif",
+});
+
+// Handwriting: the struck-out rumour words in the hero and small annotations.
+const hand = Reenie_Beanie({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-reenie",
 });
 
 // Meta labels, stamps, dates. Never the LCP text, so not preloaded.
@@ -103,7 +119,7 @@ const WEBSITE_LD = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" data-theme="light" className={`${archivo.variable} ${hanken.variable} ${zodiak.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" data-theme="light" className={`${archivo.variable} ${switzer.variable} ${display.variable} ${hand.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
